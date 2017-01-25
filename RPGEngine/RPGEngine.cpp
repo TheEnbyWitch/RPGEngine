@@ -7,6 +7,7 @@ ALLEGRO_EVENT_QUEUE* aEventQueue;
 ALLEGRO_TIMER* aTimer;
 ALLEGRO_DISPLAY* aDisplay;
 ALLEGRO_FONT* font;
+ALLEGRO_TEXTLOG *txtLog;
 
 ALLEGRO_BITMAP* gameLogo;
 
@@ -27,6 +28,9 @@ void init(void)
 {
 	//char * k = new char[500];
 	//abort_game(k);
+	if (!al_init())
+		abort_game("Failed to initialize allegro");
+	//al_open_native_text_log("Log", ALLEGRO_TEXTLOG_MONOSPACE | ALLEGRO_TEXTLOG_NO_CLOSE);
 	rpge_printf(
 		"%s\n%s\n%s\n",
 		"*********************",
@@ -38,11 +42,12 @@ void init(void)
 	PHYSFS_mount("_build", NULL, 0);
 	PHYSFS_mount("_resources", NULL, 1);
 	PHYSFS_mount("_audio", "sound/", 1);
-	if (!al_init())
-		abort_game("Failed to initialize allegro");
 
 	if (!al_install_keyboard())
 		abort_game("Failed to install keyboard");
+
+	if (!al_install_mouse())
+		abort_game("Failed to install mouse");
 
 	if (!al_init_image_addon())
 		abort_game("How come the image addon isn't loading dude");
@@ -117,6 +122,8 @@ std::string drawBitmap;
 double prevTimestamp = 0;
 double curTimestamp = 0;
 uint32_t lineOffset = 0;
+int menuIndex = 0;
+float menuIndexSelectFrac[maxMenuIndex];
 void game_loop(void)
 {
 	bool redraw = true;
@@ -188,10 +195,32 @@ void game_loop(void)
 			{
 				if (lineOffset > 0) lineOffset--;
 			}
+
+			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
+			{
+				menuIndex++;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
+			{
+				menuIndex--;
+			}
 			//get_user_input();
 		}
 
 		if (redraw && al_is_event_queue_empty(aEventQueue)) {
+			for (int i = 0; i < maxMenuIndex; i++)
+			{
+				if (menuIndex == i)
+				{
+					menuIndexSelectFrac[i] += 0.1f;
+				}
+				else
+				{
+					menuIndexSelectFrac[i] -= 0.1f;
+				}
+				if (menuIndexSelectFrac[i] > 1) menuIndexSelectFrac[i] = 1;
+				if (menuIndexSelectFrac[i] < 0) menuIndexSelectFrac[i] = 0;
+			}
 			redraw = false;
 			gf++;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -210,9 +239,9 @@ void game_loop(void)
 			if (gameState == GAME_STATE_MENU)
 			{
 				gUI.DrawWindowWithText("GAME", 16, 16, 256, 16);
-				gUI.DrawColoredWindow(16, 40, 256, 16, al_map_rgb(255, 0, 0));
-				gUI.DrawColoredWindow(16, 64, (sin((float)gf/45.0f)*sin((float)gf / 45.0f))*256, 16, al_map_rgb(0, 255, 0));
-				gUI.DrawColoredWindow(16, 88, 256, 16, al_map_rgb(0, 0, 255));
+				gUI.DrawMenuOption(0, 16, 40, 256, 16, "START");
+				gUI.DrawMenuOption(1, 16, 64, 256, 16, "OPTIONS");
+				gUI.DrawColoredMenuOption(2, 16, 88, 256, 16, "QUIT", al_map_rgb(255, 0, 0));
 			}
 
 			if (showCon)

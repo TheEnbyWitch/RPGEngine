@@ -7,6 +7,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
+#define maxMenuIndex 128
 
 #include "targetver.h"
 #include "Branding.h"
@@ -33,12 +34,15 @@ extern ALLEGRO_EVENT_QUEUE* aEventQueue;
 extern ALLEGRO_TIMER* aTimer;
 extern ALLEGRO_DISPLAY* aDisplay;
 extern ALLEGRO_FONT *font;
+//extern ALLEGRO_TEXTLOG *txtLog;
 
 extern std::ifstream gameConfig;
 
 extern std::string consoleLog;
 
 extern bool bInitialized;
+extern int menuIndex;
+extern float menuIndexSelectFrac[maxMenuIndex];
 
 typedef enum {
 	GAME_STATE_ENGINE_INTRO,
