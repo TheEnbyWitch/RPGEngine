@@ -216,10 +216,11 @@ void game_loop(void)
 				}
 				else
 				{
+					//_ASSERT(menuIndex == 0);
+					//_ASSERT(i != 0);
 					menuIndexSelectFrac[i] -= 0.1f;
 				}
-				if (menuIndexSelectFrac[i] > 1) menuIndexSelectFrac[i] = 1;
-				if (menuIndexSelectFrac[i] < 0) menuIndexSelectFrac[i] = 0;
+				menuIndexSelectFrac[i] = __min(__max(0.0f, menuIndexSelectFrac[i]), 1.0f);
 			}
 			redraw = false;
 			gf++;

@@ -37,19 +37,15 @@ void UI::DrawColoredMenuOption(int index, int x, int y, int width, int height, c
 	int rw = width;
 	int rh = height;
 	ALLEGRO_COLOR rc = color;
-	if (index == menuIndex)
-	{
-		rx += 8 * menuIndexSelectFrac[index];
-		//rw -= 8 * menuIndexSelectFrac[index];
-		rc.r += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-		rc.g += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-		rc.b += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-		if (rc.r > 1) rc.r = 1;
-		if (rc.g > 1) rc.g = 1;
-		if (rc.b > 1) rc.b = 1;
-	}
+	rx += (int)(8.0f * menuIndexSelectFrac[index]);
+	//rw -= 8 * menuIndexSelectFrac[index];
+	rc.r += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+	rc.g += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+	rc.b += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+	rc.r = __min(rc.r, 1);
+	rc.g = __min(rc.g, 1);
+	rc.b = __min(rc.b, 1);
 	DrawColoredWindowWithText(text, rx, ry, rw, rh, rc, ALLEGRO_ALIGN_CENTER);
-		
 }
 
 void UI::DrawWindowWithText(const char * txt, int x, int y, int width, int height, int align)
