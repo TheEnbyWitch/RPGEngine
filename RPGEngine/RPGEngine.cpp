@@ -106,6 +106,8 @@ void shutdown(void)
 	if (aEventQueue)
 		al_destroy_event_queue(aEventQueue);
 
+	PHYSFS_deinit();
+
 	gameConfig.close();
 }
 bool showCon = false;
@@ -114,6 +116,7 @@ int gf = 0;
 std::string drawBitmap;
 double prevTimestamp = 0;
 double curTimestamp = 0;
+uint32_t lineOffset = 0;
 void game_loop(void)
 {
 	bool redraw = true;
@@ -175,6 +178,16 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_TILDE)
 				showCon = !showCon;
+
+			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
+			{
+				lineOffset++;
+			}
+
+			if (event.keyboard.keycode == ALLEGRO_KEY_PGDN)
+			{
+				if (lineOffset > 0) lineOffset--;
+			}
 			//get_user_input();
 		}
 
@@ -204,11 +217,24 @@ void game_loop(void)
 
 			if (showCon)
 			{
+				//std::string * conLogLines;
+				int lines = 1;
+				for (int i = 0; i < consoleLog.length(); i++)
+					if (consoleLog[i] == '\n') lines++;
+				//conLogLines = new std::string[lines];
+				int pos = 0;
+				for (int i = 0; i < lines; i++)
+				{
+					for (; pos < consoleLog.length() && consoleLog[pos] != '\n'; pos++)
+					{
+						//conLogLines[i].append(consoleLog[pos]);
+					}
+				}
 				gUI.DrawColoredWindowWithText(consoleLog.c_str(), 6, 6, 628, 468, al_map_rgb(0, 128, 255));
+				//delete conLogLines;
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;
-			//al_draw_multiline_text(font, al_map_rgb(255, 255, 255), 0, 0, 640, 13, ALLEGRO_ALIGN_LEFT, consoleLog.c_str());
 			al_flip_display();
 		}
 	}
