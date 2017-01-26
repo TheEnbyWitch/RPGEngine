@@ -279,8 +279,8 @@ void game_loop(void)
 					resultConLog.insert(0, 1, consoleLog[i]);	
 				}
 				
-				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, 480 - ((MAX_LINES_SHOWN * 14) + 6 + 14 + 6), 628, MAX_LINES_SHOWN*14, al_map_rgb(0, 128, 255));
-				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, 480 - (14 + 6), 628, 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
+				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, 480 - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), 628, (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
+				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, 480 - (13 + 6), 628, 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;

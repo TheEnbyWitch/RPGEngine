@@ -8,7 +8,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #define maxMenuIndex 128
-#define MAX_LINES_SHOWN 15
+#define MAX_LINES_SHOWN 20
 
 #include "targetver.h"
 #include "Branding.h"
