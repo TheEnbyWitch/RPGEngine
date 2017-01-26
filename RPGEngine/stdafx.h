@@ -62,7 +62,7 @@ extern gameInfo_t gameInfo;
 #include "Common.h"
 #include "UI.h"
 
-extern UI gUI;
+extern rUI gUI;
 
 
 

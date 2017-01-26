@@ -19,7 +19,7 @@ gameState_e gameState = GAME_STATE_ENGINE_INTRO;
 json gameIntroJSON;
 
 //GAME MODULES
-UI gUI;
+rUI gUI;
 
 bool bInitialized = false;
 bool bUseIntro = false;

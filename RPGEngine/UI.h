@@ -1,9 +1,9 @@
 #pragma once
-class UI
+class rUI
 {
 public:
-	UI();
-	~UI();
+	rUI();
+	~rUI();
 	ALLEGRO_BITMAP* windowBG;
 
 	void DrawWindow(int x, int y, int width, int height);

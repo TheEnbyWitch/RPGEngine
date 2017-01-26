@@ -2,35 +2,35 @@
 #include "UI.h"
 
 
-UI::UI()
+rUI::rUI()
 {
 }
 
 
-UI::~UI()
+rUI::~rUI()
 {
 }
 
-void UI::DrawWindow(int x, int y, int width, int height)
+void rUI::DrawWindow(int x, int y, int width, int height)
 {
 	al_draw_bitmap_region(windowBG, 0, 0, 4, 4, x-4, y-4, NULL);
 	al_draw_bitmap_region(windowBG, 12, 12, 4, 4, x + width, y + height, NULL);
 	al_draw_scaled_bitmap(windowBG, 4, 4, 4, 4, x, y, width, height, NULL);
 }
 
-void UI::DrawColoredWindow(int x, int y, int width, int height, ALLEGRO_COLOR color)
+void rUI::DrawColoredWindow(int x, int y, int width, int height, ALLEGRO_COLOR color)
 {
 	al_draw_tinted_bitmap_region(windowBG, color, 0, 0, 4, 4, x - 4, y - 4, NULL);
 	al_draw_tinted_bitmap_region(windowBG, color, 12, 12, 4, 4, x + width, y + height, NULL);
 	al_draw_tinted_scaled_bitmap(windowBG, color, 4, 4, 4, 4, x, y, width, height, NULL);
 }
 
-void UI::DrawMenuOption(int index, int x, int y, int width, int height, const char * text)
+void rUI::DrawMenuOption(int index, int x, int y, int width, int height, const char * text)
 {
 	DrawColoredMenuOption(index, x, y, width, height, text, al_map_rgb(0, 128, 255));
 }
 
-void UI::DrawColoredMenuOption(int index, int x, int y, int width, int height, const char * text, ALLEGRO_COLOR color)
+void rUI::DrawColoredMenuOption(int index, int x, int y, int width, int height, const char * text, ALLEGRO_COLOR color)
 {
 	int rx = x;
 	int ry = y;
@@ -48,12 +48,12 @@ void UI::DrawColoredMenuOption(int index, int x, int y, int width, int height, c
 	DrawColoredWindowWithText(text, rx, ry, rw, rh, rc, ALLEGRO_ALIGN_CENTER);
 }
 
-void UI::DrawWindowWithText(const char * txt, int x, int y, int width, int height, int align)
+void rUI::DrawWindowWithText(const char * txt, int x, int y, int width, int height, int align)
 {
 	DrawColoredWindowWithText(txt, x, y, width, height, al_map_rgb(255, 255, 255), align);
 }
 
-void UI::DrawColoredWindowWithText(const char * txt, int x, int y, int width, int height, ALLEGRO_COLOR color, int align)
+void rUI::DrawColoredWindowWithText(const char * txt, int x, int y, int width, int height, ALLEGRO_COLOR color, int align)
 {
 	DrawColoredWindow(x, y, width, height, color);
 	if(align == ALLEGRO_ALIGN_LEFT)
@@ -86,7 +86,7 @@ int getavgfps()
 	return (int)a;
 }
 
-void UI::DrawFPS(double dt)
+void rUI::DrawFPS(double dt)
 {
 	updatefps((int)(1 / dt));
 	char * f = va("%d FPS", getavgfps());
