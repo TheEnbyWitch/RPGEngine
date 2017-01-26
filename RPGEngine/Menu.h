@@ -6,7 +6,7 @@
 
 TYPEDEF_MENU_ACTION_FUNC(MenuAction_t);
 
-enum {
+typedef enum {
 	ITEM_TYPE_WINDOW,
 	ITEM_TYPE_TEXT,
 	ITEM_TYPE_BUTTON,
@@ -26,6 +26,7 @@ typedef struct rImageAttr_s {
 typedef struct rMenuItem_s {
 	rRect_t rect;
 	char * text;
+	rMenuItemType type;
 	ALLEGRO_COLOR color;
 	ALLEGRO_COLOR text_color;
 
