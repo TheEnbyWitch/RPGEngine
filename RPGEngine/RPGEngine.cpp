@@ -184,7 +184,11 @@ void game_loop(void)
 
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_TILDE)
+			{
 				showCon = !showCon;
+				consoleInput.clear();
+			}
+				
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
@@ -195,16 +199,25 @@ void game_loop(void)
 			{
 				if (lineOffset > 0) lineOffset--;
 			}
-
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
+			if (!showCon)
 			{
-				menuIndex++;
+				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
+				{
+					menuIndex++;
+				}
+				if (event.keyboard.keycode == ALLEGRO_KEY_UP)
+				{
+					menuIndex--;
+				}
 			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-			{
-				menuIndex--;
+			else {
+				// NEEDS A REWRITE DAMN IT
+				char input = (char)event.keyboard.keycode+ 'a' - 1 + (event.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
+				if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
+					if(consoleInput.length() > 0) consoleInput.erase(consoleInput.length() - 1);
+				if(input >= 32)
+					consoleInput += input;
 			}
-			//get_user_input();
 		}
 
 		if (redraw && al_is_event_queue_empty(aEventQueue)) {
@@ -216,8 +229,6 @@ void game_loop(void)
 				}
 				else
 				{
-					//_ASSERT(menuIndex == 0);
-					//_ASSERT(i != 0);
 					menuIndexSelectFrac[i] -= 0.1f;
 				}
 				menuIndexSelectFrac[i] = __min(__max(0.0f, menuIndexSelectFrac[i]), 1.0f);
@@ -247,16 +258,29 @@ void game_loop(void)
 
 			if (showCon)
 			{
-				std::string * resultConLogLines;
-				int lines = 1;
+				std::string resultConLog;
+				int currentLines = 0;
+				int lines = 0;
 				for (int i = 0; i < consoleLog.length(); i++)
-					if (consoleLog[i] == '\n') lines++;
-				for (int i = consoleLog.length()-1; i >= 0; i--)
 				{
-
+					if (consoleLog[i] == '\n')
+						lines++;
+				}
+				if (lineOffset+MAX_LINES_SHOWN > lines) lineOffset = lines-MAX_LINES_SHOWN;
+				for (int i = consoleLog.length() - 1; i >= 0; i--)
+				{
+					if (consoleLog[i] == '\n')
+					{
+						currentLines++;
+					}
+					if (currentLines > MAX_LINES_SHOWN+lineOffset)
+						break;
+					if (currentLines < lineOffset) continue;
+					resultConLog.insert(0, 1, consoleLog[i]);	
 				}
 				
-				gUI.DrawColoredWindowWithText(consoleLog.c_str(), 6, 6, 628, 468, al_map_rgb(0, 128, 255));
+				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, 480 - ((MAX_LINES_SHOWN * 14) + 6 + 14 + 6), 628, MAX_LINES_SHOWN*14, al_map_rgb(0, 128, 255));
+				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, 480 - (14 + 6), 628, 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;

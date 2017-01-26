@@ -8,6 +8,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #define maxMenuIndex 128
+#define MAX_LINES_SHOWN 15
 
 #include "targetver.h"
 #include "Branding.h"
@@ -25,6 +26,7 @@
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
 #include <allegro5\allegro_physfs.h>
+#include <allegro5\keyboard.h>
 
 #include <allegro5\allegro_native_dialog.h>
 #include "json.hpp"
@@ -39,6 +41,7 @@ extern ALLEGRO_FONT *font;
 extern std::ifstream gameConfig;
 
 extern std::string consoleLog;
+extern std::string consoleInput;
 
 extern bool bInitialized;
 extern int menuIndex;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 std::string consoleLog;
+std::string consoleInput;
 
 void abort_game_ex(const char* message, const char* header = "The game was forced to abort")
 {
