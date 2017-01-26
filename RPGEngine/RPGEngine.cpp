@@ -247,21 +247,16 @@ void game_loop(void)
 
 			if (showCon)
 			{
-				//std::string * conLogLines;
+				std::string * resultConLogLines;
 				int lines = 1;
 				for (int i = 0; i < consoleLog.length(); i++)
 					if (consoleLog[i] == '\n') lines++;
-				//conLogLines = new std::string[lines];
-				int pos = 0;
-				for (int i = 0; i < lines; i++)
+				for (int i = consoleLog.length()-1; i >= 0; i--)
 				{
-					for (; pos < consoleLog.length() && consoleLog[pos] != '\n'; pos++)
-					{
-						//conLogLines[i].append(consoleLog[pos]);
-					}
+
 				}
+				
 				gUI.DrawColoredWindowWithText(consoleLog.c_str(), 6, 6, 628, 468, al_map_rgb(0, 128, 255));
-				//delete conLogLines;
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;
