@@ -70,6 +70,8 @@ extern gameInfo_t gameInfo;
 
 extern rUI gUI;
 
+void initialize_menus();
+
 
 
 // TODO: reference additional headers your program requires here

@@ -24,15 +24,15 @@ typedef struct rImageAttr_s {
 } rImageAttr_t;
 
 typedef struct rTextAttr_s {
-	int align;
+	int align = ALLEGRO_ALIGN_LEFT;
 } rTextAttr_t;
 
 typedef struct rMenuItem_s {
-	rRect_t rect;
+	rRect_t rect = { 0, 0, 0, 0 };
 	char * text;
 	rMenuItemType type;
-	ALLEGRO_COLOR color;
-	ALLEGRO_COLOR text_color;
+	ALLEGRO_COLOR color = al_map_rgb(0,128,255);
+	ALLEGRO_COLOR text_color = al_map_rgb(255,255,255);
 
 	//TYPE SPECIFIC
 	// -- BUTTON
@@ -43,6 +43,14 @@ typedef struct rMenuItem_s {
 	rTextAttr_t textAttributes;
 } rMenuItem_t;
 
+typedef struct rMenuVars_s {
+	int selectedIndex;
+	float menuIndexSelectFrac[maxMenuIndex];
+} rMenuVars_t;
+
+extern std::vector<class rMenu> Menus;
+extern char * activeMenu;
+
 class rMenu
 {
 public:
@@ -51,10 +59,7 @@ public:
 
 	bool isActive;
 	char * name;
-
-	int selectedIndex;
-	int menuIndex = 0;
-	float menuIndexSelectFrac[maxMenuIndex];
+	rMenuVars_t vars;
 	std::vector<rMenuItem_t> items;
 
 	void Draw();

@@ -88,6 +88,8 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
+	initialize_menus();
+
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
 
@@ -115,6 +117,39 @@ void shutdown(void)
 
 	gameConfig.close();
 }
+
+void initialize_menus()
+{
+#define BUTTON_RECT(index) rRect_t{ 16, 16+(index * 24), 256, 16}
+	rMenu main;
+	main.name = "main";
+	main.isActive = false;
+
+	rMenuItem_t start;
+	start.text = "START";
+	start.type = ITEM_TYPE_BUTTON;
+	start.buttonAttributes.index = 0;
+	start.rect = BUTTON_RECT(0);
+	main.items.push_back(start);
+
+	rMenuItem_t options;
+	options.text = "OPTIONS";
+	options.type = ITEM_TYPE_BUTTON;
+	options.buttonAttributes.index = 1;
+	options.rect = BUTTON_RECT(1);
+	main.items.push_back(options);
+
+	rMenuItem_t quit;
+	quit.text = "QUIT";
+	quit.type = ITEM_TYPE_BUTTON;
+	quit.buttonAttributes.index = 2;
+	quit.rect = BUTTON_RECT(2);
+	quit.color = al_map_rgb(255, 0, 0);
+	main.items.push_back(quit);
+
+	Menus.push_back(main);
+}
+
 bool showCon = false;
 int frames = 0;
 int gf = 0;
@@ -199,8 +234,22 @@ void game_loop(void)
 			{
 				if (lineOffset > 0) lineOffset--;
 			}
+			for (int i = 0; i < Menus.size(); i++)
+			{
+				rMenu * menu = &Menus[i];
+				if (!strcmp(menu->name, activeMenu))
+				{
+					menu->isActive = true;
+					menu->Key(event.keyboard.keycode);
+				}
+				else
+				{
+					menu->isActive = false;
+				}
+			}
 			if (!showCon)
 			{
+				/*
 				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
 				{
 					menuIndex++;
@@ -209,6 +258,7 @@ void game_loop(void)
 				{
 					menuIndex--;
 				}
+				*/
 			}
 			else {
 				// NEEDS A REWRITE DAMN IT
@@ -221,6 +271,7 @@ void game_loop(void)
 		}
 
 		if (redraw && al_is_event_queue_empty(aEventQueue)) {
+			/*
 			for (int i = 0; i < maxMenuIndex; i++)
 			{
 				if (menuIndex == i)
@@ -232,7 +283,7 @@ void game_loop(void)
 					menuIndexSelectFrac[i] -= 0.1f;
 				}
 				menuIndexSelectFrac[i] = __min(__max(0.0f, menuIndexSelectFrac[i]), 1.0f);
-			}
+			}*/
 			redraw = false;
 			gf++;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -250,10 +301,28 @@ void game_loop(void)
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
+				/*
 				gUI.DrawWindowWithText("GAME", 16, 16, 256, 16);
 				gUI.DrawMenuOption(0, 16, 40, 256, 16, "START");
 				gUI.DrawMenuOption(1, 16, 64, 256, 16, "OPTIONS");
 				gUI.DrawColoredMenuOption(2, 16, 88, 256, 16, "QUIT", al_map_rgb(255, 0, 0));
+				*/
+				if (activeMenu != "main")
+					activeMenu = "main";
+				for (int i = 0; i < Menus.size(); i++)
+				{
+					rMenu * menu = &Menus[i];
+					if (!strcmp(menu->name, activeMenu))
+					{
+						menu->isActive = true;
+						menu->Frame();
+						menu->Draw();
+					}
+					else
+					{
+						menu->isActive = false;
+					}
+				}
 			}
 
 			if (showCon)

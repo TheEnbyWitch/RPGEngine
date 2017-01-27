@@ -1,4 +1,6 @@
 #pragma once
+#include "stdafx.h"
+#include "Menu.h"
 class rUI
 {
 public:

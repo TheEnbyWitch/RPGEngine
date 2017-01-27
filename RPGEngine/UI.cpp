@@ -39,11 +39,11 @@ void rUI::DrawColoredMenuOption(int index, int x, int y, int width, int height, 
 	ALLEGRO_COLOR rc = color;
 	if (parent != NULL)
 	{
-		rx += (int)(8.0f * parent->menuIndexSelectFrac[parent->selectedIndex]);
+		rx += (int)(8.0f * parent->vars.menuIndexSelectFrac[index]);
 		//rw -= 8 * menuIndexSelectFrac[index];
-		rc.r += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
-		rc.g += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
-		rc.b += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
+		rc.r += 60.0f * parent->vars.menuIndexSelectFrac[index] / 255.0f;
+		rc.g += 60.0f * parent->vars.menuIndexSelectFrac[index] / 255.0f;
+		rc.b += 60.0f * parent->vars.menuIndexSelectFrac[index] / 255.0f;
 		rc.r = __min(rc.r, 1);
 		rc.g = __min(rc.g, 1);
 		rc.b = __min(rc.b, 1);
