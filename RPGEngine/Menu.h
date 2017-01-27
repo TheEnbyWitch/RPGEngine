@@ -26,6 +26,7 @@ typedef struct rImageAttr_s {
 typedef struct rMenuItem_s {
 	rRect_t rect;
 	char * text;
+	rMenuItemType type;
 	ALLEGRO_COLOR color;
 	ALLEGRO_COLOR text_color;
 
