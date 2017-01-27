@@ -6,7 +6,7 @@
 
 TYPEDEF_MENU_ACTION_FUNC(MenuAction_t);
 
-enum {
+typedef enum {
 	ITEM_TYPE_WINDOW,
 	ITEM_TYPE_TEXT,
 	ITEM_TYPE_BUTTON,
