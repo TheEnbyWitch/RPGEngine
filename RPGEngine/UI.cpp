@@ -25,27 +25,51 @@ void rUI::DrawColoredWindow(int x, int y, int width, int height, ALLEGRO_COLOR c
 	al_draw_tinted_scaled_bitmap(windowBG, color, 4, 4, 4, 4, x, y, width, height, NULL);
 }
 
-void rUI::DrawMenuOption(int index, int x, int y, int width, int height, const char * text)
+void rUI::DrawMenuOption(int index, int x, int y, int width, int height, const char * text, rMenu * parent)
 {
-	DrawColoredMenuOption(index, x, y, width, height, text, al_map_rgb(0, 128, 255));
+	DrawColoredMenuOption(index, x, y, width, height, text, al_map_rgb(0, 128, 255), parent);
 }
 
-void rUI::DrawColoredMenuOption(int index, int x, int y, int width, int height, const char * text, ALLEGRO_COLOR color)
+void rUI::DrawColoredMenuOption(int index, int x, int y, int width, int height, const char * text, ALLEGRO_COLOR color, rMenu * parent)
 {
 	int rx = x;
 	int ry = y;
 	int rw = width;
 	int rh = height;
 	ALLEGRO_COLOR rc = color;
-	rx += (int)(8.0f * menuIndexSelectFrac[index]);
-	//rw -= 8 * menuIndexSelectFrac[index];
-	rc.r += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-	rc.g += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-	rc.b += 60.0f * menuIndexSelectFrac[index] / 255.0f;
-	rc.r = __min(rc.r, 1);
-	rc.g = __min(rc.g, 1);
-	rc.b = __min(rc.b, 1);
+	if (parent != NULL)
+	{
+		rx += (int)(8.0f * parent->menuIndexSelectFrac[parent->selectedIndex]);
+		//rw -= 8 * menuIndexSelectFrac[index];
+		rc.r += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
+		rc.g += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
+		rc.b += 60.0f * parent->menuIndexSelectFrac[parent->selectedIndex] / 255.0f;
+		rc.r = __min(rc.r, 1);
+		rc.g = __min(rc.g, 1);
+		rc.b = __min(rc.b, 1);
+	}
+	else
+	{
+		rx += (int)(8.0f * menuIndexSelectFrac[index]);
+		//rw -= 8 * menuIndexSelectFrac[index];
+		rc.r += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+		rc.g += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+		rc.b += 60.0f * menuIndexSelectFrac[index] / 255.0f;
+		rc.r = __min(rc.r, 1);
+		rc.g = __min(rc.g, 1);
+		rc.b = __min(rc.b, 1);
+	}
 	DrawColoredWindowWithText(text, rx, ry, rw, rh, rc, ALLEGRO_ALIGN_CENTER);
+}
+
+void rUI::DrawColoredText(const char * txt, int x, int y, int width, ALLEGRO_COLOR color, int align)
+{
+	if (align == ALLEGRO_ALIGN_LEFT)
+		al_draw_multiline_text(font, color, x + 2, y + 2, width - 4, 13, align, txt);
+	else if (align == ALLEGRO_ALIGN_CENTER)
+		al_draw_multiline_text(font, color, x + ((width - 4) / 2) + 2, y + 2, width - 4, 13, align, txt);
+	else
+		al_draw_multiline_text(font, color, x + width - 2, y + 2, width - 4, 13, align, txt);
 }
 
 void rUI::DrawWindowWithText(const char * txt, int x, int y, int width, int height, int align)
@@ -55,13 +79,18 @@ void rUI::DrawWindowWithText(const char * txt, int x, int y, int width, int heig
 
 void rUI::DrawColoredWindowWithText(const char * txt, int x, int y, int width, int height, ALLEGRO_COLOR color, int align)
 {
+	DrawColoredWindowWithColoredText(txt, x, y, width, height, color, al_map_rgb(255,255,255), align);
+}
+
+void rUI::DrawColoredWindowWithColoredText(const char * txt, int x, int y, int width, int height, ALLEGRO_COLOR color, ALLEGRO_COLOR textclr, int align)
+{
 	DrawColoredWindow(x, y, width, height, color);
-	if(align == ALLEGRO_ALIGN_LEFT)
-		al_draw_multiline_text(font, al_map_rgb(255, 255, 255), x + 2, y + 2, width - 4, 13, align, txt);
-	else if(align == ALLEGRO_ALIGN_CENTER)
-		al_draw_multiline_text(font, al_map_rgb(255, 255, 255), x + ((width - 4)/2) + 2, y + 2, width - 4, 13, align, txt);
+	if (align == ALLEGRO_ALIGN_LEFT)
+		al_draw_multiline_text(font, textclr, x + 2, y + 2, width - 4, 13, align, txt);
+	else if (align == ALLEGRO_ALIGN_CENTER)
+		al_draw_multiline_text(font, textclr, x + ((width - 4) / 2) + 2, y + 2, width - 4, 13, align, txt);
 	else
-		al_draw_multiline_text(font, al_map_rgb(255, 255, 255), x + width - 2, y + 2, width - 4, 13, align, txt);
+		al_draw_multiline_text(font, textclr, x + width - 2, y + 2, width - 4, 13, align, txt);
 }
 
 int fpsval[60];

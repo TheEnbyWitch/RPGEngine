@@ -47,6 +47,8 @@ extern bool bInitialized;
 extern int menuIndex;
 extern float menuIndexSelectFrac[maxMenuIndex];
 
+extern bool showCon;
+
 typedef enum {
 	GAME_STATE_ENGINE_INTRO,
 	GAME_STATE_INTRO,
@@ -64,6 +66,7 @@ extern gameInfo_t gameInfo;
 
 #include "Common.h"
 #include "UI.h"
+#include "Menu.h"
 
 extern rUI gUI;
 

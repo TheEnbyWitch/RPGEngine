@@ -23,6 +23,10 @@ typedef struct rImageAttr_s {
 	rScaledRegion_t region;
 } rImageAttr_t;
 
+typedef struct rTextAttr_s {
+	int align;
+} rTextAttr_t;
+
 typedef struct rMenuItem_s {
 	rRect_t rect;
 	char * text;
@@ -35,6 +39,8 @@ typedef struct rMenuItem_s {
 	rButtonAttr_t buttonAttributes;
 	// -- IMAGE
 	rImageAttr_t imageAttributes;
+	// -- TEXT
+	rTextAttr_t textAttributes;
 } rMenuItem_t;
 
 class rMenu
@@ -47,9 +53,12 @@ public:
 	char * name;
 
 	int selectedIndex;
+	int menuIndex = 0;
+	float menuIndexSelectFrac[maxMenuIndex];
 	std::vector<rMenuItem_t> items;
 
 	void Draw();
 	void Key(int keycode);
+	void Frame();
 };
 
