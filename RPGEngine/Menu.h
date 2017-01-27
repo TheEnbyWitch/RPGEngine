@@ -15,7 +15,7 @@ typedef enum {
 
 typedef struct rButtonAttr_s {
 	int index;
-	MenuAction_t *onClick;
+	MenuAction_t *onClick = NULL;
 } rButtonAttr_t;
 
 typedef struct rImageAttr_s {
@@ -44,7 +44,7 @@ typedef struct rMenuItem_s {
 } rMenuItem_t;
 
 typedef struct rMenuVars_s {
-	int selectedIndex;
+	int selectedIndex = 0;
 	float menuIndexSelectFrac[maxMenuIndex];
 } rMenuVars_t;
 

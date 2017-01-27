@@ -2,8 +2,7 @@
 #include "Menu.h"
 
 std::vector<class rMenu> Menus;
-char * activeMenu;
-
+char * activeMenu = "main";
 
 rMenu::rMenu()
 {
@@ -16,18 +15,19 @@ rMenu::~rMenu()
 
 void rMenu::Draw()
 {
-	for each (rMenuItem_t item in items)
+	for(int i = 0; i < this->items.size(); i++)
 	{
-		switch (item.type)
+		rMenuItem_t *item = &items[i];
+		switch (item->type)
 		{
 		case ITEM_TYPE_WINDOW:
-			gUI.DrawColoredWindow(item.rect.X, item.rect.Y, item.rect.W, item.rect.H, item.color);
+			gUI.DrawColoredWindow(item->rect.X, item->rect.Y, item->rect.W, item->rect.H, item->color);
 			break;
 		case ITEM_TYPE_TEXT:
-			gUI.DrawColoredText(item.text, item.rect.X, item.rect.Y, item.rect.W, item.text_color, item.textAttributes.align);
+			gUI.DrawColoredText(item->text, item->rect.X, item->rect.Y, item->rect.W, item->text_color, item->textAttributes.align);
 			break;
 		case ITEM_TYPE_BUTTON:
-			gUI.DrawColoredMenuOption(item.buttonAttributes.index, item.rect.X, item.rect.Y, item.rect.W, item.rect.H, item.text, item.color, this);
+			gUI.DrawColoredMenuOption(item->buttonAttributes.index, item->rect.X, item->rect.Y, item->rect.W, item->rect.H, item->text, item->color, this);
 			break;
 		}
 	}
@@ -44,6 +44,15 @@ void rMenu::Key(int keycode)
 		if (keycode == ALLEGRO_KEY_UP)
 		{
 			this->vars.selectedIndex--;
+		}
+		if (keycode == ALLEGRO_KEY_ENTER)
+		{
+			for (int i = 0; i < this->items.size(); i++)
+			{
+				rMenuItem_t *item = &items[i];
+				if (item->type != ITEM_TYPE_BUTTON) continue;
+				if (item->buttonAttributes.onClick != NULL && item->buttonAttributes.index == this->vars.selectedIndex) item->buttonAttributes.onClick();
+			}
 		}
 	}
 }

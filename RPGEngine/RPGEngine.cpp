@@ -118,6 +118,16 @@ void shutdown(void)
 	gameConfig.close();
 }
 
+MENU_ACTION_FUNC(StartGame)
+{
+	rpge_printf("game should start\n");
+}
+
+MENU_ACTION_FUNC(QuitGame)
+{
+	exit(0);
+}
+
 void initialize_menus()
 {
 #define BUTTON_RECT(index) rRect_t{ (640/2)-200, 16+(index * 24), 400, 16}
@@ -130,6 +140,7 @@ void initialize_menus()
 	start.type = ITEM_TYPE_BUTTON;
 	start.buttonAttributes.index = 0;
 	start.rect = BUTTON_RECT(3);
+	start.buttonAttributes.onClick = &StartGame;
 	main.items.push_back(start);
 
 	rMenuItem_t options;
@@ -145,6 +156,7 @@ void initialize_menus()
 	quit.buttonAttributes.index = 2;
 	quit.rect = BUTTON_RECT(5);
 	quit.color = al_map_rgb(255, 0, 0);
+	quit.buttonAttributes.onClick = &QuitGame;
 	main.items.push_back(quit);
 
 	rMenuItem_t title;
@@ -308,8 +320,6 @@ void game_loop(void)
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
-				if (activeMenu != "main")
-					activeMenu = "main";
 				for (int i = 0; i < Menus.size(); i++)
 				{
 					rMenu * menu = &Menus[i];
