@@ -120,7 +120,7 @@ void shutdown(void)
 
 void initialize_menus()
 {
-#define BUTTON_RECT(index) rRect_t{ 16, 16+(index * 24), 256, 16}
+#define BUTTON_RECT(index) rRect_t{ (640/2)-200, 16+(index * 24), 400, 16}
 	rMenu main;
 	main.name = "main";
 	main.isActive = false;
@@ -129,23 +129,30 @@ void initialize_menus()
 	start.text = "START";
 	start.type = ITEM_TYPE_BUTTON;
 	start.buttonAttributes.index = 0;
-	start.rect = BUTTON_RECT(0);
+	start.rect = BUTTON_RECT(3);
 	main.items.push_back(start);
 
 	rMenuItem_t options;
 	options.text = "OPTIONS";
 	options.type = ITEM_TYPE_BUTTON;
 	options.buttonAttributes.index = 1;
-	options.rect = BUTTON_RECT(1);
+	options.rect = BUTTON_RECT(4);
 	main.items.push_back(options);
 
 	rMenuItem_t quit;
 	quit.text = "QUIT";
 	quit.type = ITEM_TYPE_BUTTON;
 	quit.buttonAttributes.index = 2;
-	quit.rect = BUTTON_RECT(2);
+	quit.rect = BUTTON_RECT(5);
 	quit.color = al_map_rgb(255, 0, 0);
 	main.items.push_back(quit);
+
+	rMenuItem_t title;
+	title.text = "something something the game";
+	title.rect = BUTTON_RECT(0);
+	title.type = ITEM_TYPE_TEXT;
+	title.textAttributes.align = ALLEGRO_ALIGN_CENTER;
+	main.items.push_back(title);
 
 	Menus.push_back(main);
 }
@@ -301,12 +308,6 @@ void game_loop(void)
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
-				/*
-				gUI.DrawWindowWithText("GAME", 16, 16, 256, 16);
-				gUI.DrawMenuOption(0, 16, 40, 256, 16, "START");
-				gUI.DrawMenuOption(1, 16, 64, 256, 16, "OPTIONS");
-				gUI.DrawColoredMenuOption(2, 16, 88, 256, 16, "QUIT", al_map_rgb(255, 0, 0));
-				*/
 				if (activeMenu != "main")
 					activeMenu = "main";
 				for (int i = 0; i < Menus.size(); i++)
