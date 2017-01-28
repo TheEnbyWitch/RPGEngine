@@ -1,0 +1,73 @@
+{
+	"name": "main",
+	"items": [{
+		"rect": [
+			16,
+			16,
+			256,
+			16
+		],
+		"text": "START",
+		"type": 2,
+		"color": [
+			0,
+			128,
+			255,
+			255
+		],
+		"textcolor": [
+			255,
+			255,
+			255,
+			255
+		],
+		"onClick": "openmenu newgame",
+		"index": 0
+	}, {
+		"rect": [
+			16,
+			40,
+			256,
+			16
+		],
+		"text": "OPTIONS",
+		"type": 2,
+		"color": [
+			0,
+			128,
+			255,
+			255
+		],
+		"textcolor": [
+			255,
+			255,
+			255,
+			255
+		],
+		"onClick": "openmenu options",
+		"index": 1
+	}, {
+		"rect": [
+			16,
+			16,
+			256,
+			16
+		],
+		"text": "QUIT",
+		"type": 2,
+		"color": [
+			255,
+			0,
+			0,
+			255
+		],
+		"textcolor": [
+			255,
+			255,
+			255,
+			255
+		],
+		"onClick": "quitgame",
+		"index": 2
+	}]
+}

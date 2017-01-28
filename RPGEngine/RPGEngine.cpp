@@ -140,7 +140,7 @@ void initialize_menus()
 	start.type = ITEM_TYPE_BUTTON;
 	start.buttonAttributes.index = 0;
 	start.rect = BUTTON_RECT(3);
-	start.buttonAttributes.onClick = &StartGame;
+	start.buttonAttributes.onClickFunc = &StartGame;
 	main.items.push_back(start);
 
 	rMenuItem_t options;
@@ -156,7 +156,7 @@ void initialize_menus()
 	quit.buttonAttributes.index = 2;
 	quit.rect = BUTTON_RECT(5);
 	quit.color = al_map_rgb(255, 0, 0);
-	quit.buttonAttributes.onClick = &QuitGame;
+	quit.buttonAttributes.onClickFunc = &QuitGame;
 	main.items.push_back(quit);
 
 	rMenuItem_t title;
