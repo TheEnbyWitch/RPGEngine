@@ -21,7 +21,8 @@
 			255,
 			255
 		],
-		"onClick": "openmenu newgame",
+		"onClick": "openmenu",
+		"onClickArgs": "startgame",
 		"index": 0
 	}, {
 		"rect": [
@@ -44,12 +45,13 @@
 			255,
 			255
 		],
-		"onClick": "openmenu options",
+		"onClick": "openmenu",
+		"onClickArgs": "options",
 		"index": 1
 	}, {
 		"rect": [
 			16,
-			16,
+			64,
 			256,
 			16
 		],
@@ -68,6 +70,7 @@
 			255
 		],
 		"onClick": "quitgame",
+		"onClickArgs": "",
 		"index": 2
 	}]
 }

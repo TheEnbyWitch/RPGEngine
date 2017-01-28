@@ -18,7 +18,7 @@ rMenu::~rMenu() {}
 vector<string> get_all_files_names_within_folder(string folder)
 {
 	vector<string> names;
-	string search_path = folder + "/*.*";
+	string search_path = folder + "/*.jmenu";
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = ::FindFirstFile(search_path.c_str(), &fd);
 	if (hFind != INVALID_HANDLE_VALUE) {
@@ -55,46 +55,41 @@ void Process(string input, string name)
 		int items = inputFile["items"].size();
 		cout << "Menu name:  " << inputFile["name"].get<string>() << endl;
 		cout << "Item count: " << inputFile["items"].size() << endl;
-		result.name = (char *)menuName.c_str();
+		memcpy(result.name, menuName.c_str(), sizeof(result.name));
 		for (int i = 0; i < items; i++)
 		{
-			for (json::iterator it = inputFile["items"][i].begin(); it != inputFile["items"][i].end(); ++it) {
-				rMenuItem_t item;
-				if (it.key() == "rect")
-				{
-					item.rect = rRect_t{ it.value()[0].get<int>(),it.value()[1].get<int>(),it.value()[2].get<int>(),it.value()[3].get<int>() };
-				}
-				if (it.key() == "type")
-				{
-					item.type = (rMenuItemType)((int)it.value());
-				}
-				if (it.key() == "index")
-				{
-					item.buttonAttributes.index = it.value();
-				}
-				if (it.key() == "text")
-				{
-					item.text = (char *)it.value().get<string>().c_str();
-				}
-				if (it.key() == "onClick")
-				{
-					item.buttonAttributes.onClick = (char *)it.value().get<string>().c_str();
-				}
-				if (it.key() == "color")
-				{
-					item.color = al_map_rgba(it.value()[0].get<int>(), it.value()[1].get<int>(), it.value()[2].get<int>(), it.value()[3].get<int>());
-				}
-				if (it.key() == "textcolor")
-				{
-					item.text_color = al_map_rgba(it.value()[0].get<int>(), it.value()[1].get<int>(), it.value()[2].get<int>(), it.value()[3].get<int>());
-				}
-				result.items.push_back(item);
-			}
+			cout << "Processing item[" << i << "]" << endl;
+			json item = inputFile["items"][i];
+			rMenuItem_t itemr;
+			// text
+			memcpy(itemr.text, item["text"].get<string>().c_str(), sizeof(itemr.text));
+			cout << "text: " << itemr.text << endl;
+			// rect
+			itemr.rect.X = item["rect"][0].get<int>();
+			itemr.rect.Y = item["rect"][1].get<int>();
+			itemr.rect.W = item["rect"][2].get<int>();
+			itemr.rect.H = item["rect"][3].get<int>();
+			cout << "rect: {" << itemr.rect.X << ", " << itemr.rect.Y << ", " << itemr.rect.W << ", " << itemr.rect.H << "}" << endl;
+			// type
+			itemr.type = (rMenuItemType)item["type"].get<int>();
+			cout << "type: " << itemr.type << endl;
+			// color
+			itemr.color = al_map_rgba(item["color"][0].get<unsigned char>(), item["color"][1].get<unsigned char>(), item["color"][2].get<unsigned char>(), item["color"][3].get<unsigned char>());
+			cout << "color: {" << (int)itemr.color.r << ", " << (int)itemr.color.g << ", " << (int)itemr.color.b << ", " << (int)itemr.color.a << "}" << endl;
+			// textcolor
+			itemr.text_color = al_map_rgba(item["textcolor"][0].get<unsigned char>(), item["textcolor"][1].get<unsigned char>(), item["textcolor"][2].get<unsigned char>(), item["textcolor"][3].get<unsigned char>());
+			cout << "textcolor: {" << (int)itemr.text_color.r << ", " << (int)itemr.text_color.g << ", " << (int)itemr.text_color.b << ", " << (int)itemr.text_color.a << "}" << endl;
+			// BUTTON SPECIFIC
+			itemr.buttonAttributes.index = item["index"].get<int>();
+			memcpy(itemr.buttonAttributes.onClick, item["onClick"].get<string>().c_str(), sizeof(itemr.buttonAttributes.onClick));
+			memcpy(itemr.buttonAttributes.onClickArgs, item["onClickArgs"].get<string>().c_str(), sizeof(itemr.buttonAttributes.onClickArgs));
+			result.items.push_back(itemr);
 		}
 		size_t lastindex = name.find_last_of(".");
 		string rawname = name.substr(0, lastindex);
 		string output = "menu/" + rawname + ".rmenu";
 		FILE * o;
+		remove(output.c_str());
 		fopen_s(&o, output.c_str(), "wb");
 		if (o == NULL)
 		{
@@ -102,9 +97,7 @@ void Process(string input, string name)
 			return;
 		}
 		fwrite(rMenuMagic, 1, sizeof(rMenuMagic), o);
-		int nSize = sizeof(result.name);
-		fwrite(&nSize, sizeof(int), 1, o);
-		fwrite(result.name, 1, nSize, o);
+		fwrite(result.name, 1, sizeof(result.name), o);
 		fwrite(&items, sizeof(int), 1, o);
 		for (int i = 0; i < items; i++)
 		{
@@ -125,6 +118,10 @@ void Process(string input, string name)
 	catch (std::domain_error ex)
 	{
 		cout << ex.what() << endl;
+	}
+	catch (std::exception ex2)
+	{
+		cout << ex2.what() << endl;
 	}
 }
 

@@ -132,6 +132,8 @@ void initialize_menus()
 {
 #define BUTTON_RECT(index) rRect_t{ (640/2)-200, 16+(index * 24), 400, 16}
 	rMenu main;
+	main = rMenu::ReadMenu("main");
+	/*
 	main.name = "main";
 	main.isActive = false;
 
@@ -165,7 +167,7 @@ void initialize_menus()
 	title.type = ITEM_TYPE_TEXT;
 	title.textAttributes.align = ALLEGRO_ALIGN_CENTER;
 	main.items.push_back(title);
-
+	*/
 	Menus.push_back(main);
 }
 

@@ -10,10 +10,10 @@ TYPEDEF_MENU_ACTION_FUNC(MenuAction_t);
 
 #ifdef _RPG_COMPILER
 typedef struct rColor_s {
-	int r;
-	int g;
-	int b;
-	int a;
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char a;
 } rColor_t;
 #define ALLEGRO_COLOR rColor_t
 #define al_map_rgb(r,g,b) ALLEGRO_COLOR{r,g,b,255}
@@ -38,6 +38,12 @@ typedef struct rScaledRegion_s {
 	int destinationH;
 } rScaledRegion_t;
 #else
+typedef struct rColor_s {
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+	unsigned char a;
+} rColor_t;
 #endif
 
 const char * rMenuMagic = "rMENU";
@@ -51,15 +57,15 @@ typedef enum {
 
 typedef struct rButtonAttr_s {
 	int index;
-	char * onClick;
+	char onClick[32];
+	char onClickArgs[256];
 	MenuAction_t *onClickFunc = NULL;
 } rButtonAttr_t;
 
 typedef struct rImageAttr_s {
-#ifdef _RPG_COMPILER
-	char *image;
-#else
-	ALLEGRO_BITMAP* image;
+	char imagePath[256];
+#ifndef _RPG_COMPILER
+	//ALLEGRO_BITMAP* image;
 #endif
 	rScaledRegion_t region;
 } rImageAttr_t;
@@ -75,10 +81,10 @@ typedef struct rTextAttr_s {
 
 typedef struct rMenuItem_s {
 	rRect_t rect = { 0, 0, 0, 0 };
-	char * text;
+	char text[1024];
 	rMenuItemType type;
-	ALLEGRO_COLOR color = al_map_rgb(0,128,255);
-	ALLEGRO_COLOR text_color = al_map_rgb(255,255,255);
+	ALLEGRO_COLOR color;
+	ALLEGRO_COLOR text_color;
 
 	//TYPE SPECIFIC
 	// -- BUTTON
@@ -88,6 +94,22 @@ typedef struct rMenuItem_s {
 	// -- TEXT
 	rTextAttr_t textAttributes;
 } rMenuItem_t;
+
+typedef struct rMenuItemPreProc_s {
+	rRect_t rect = { 0, 0, 0, 0 };
+	char text[1024];
+	rMenuItemType type;
+	rColor_t color;
+	rColor_t text_color;
+
+	//TYPE SPECIFIC
+	// -- BUTTON
+	rButtonAttr_t buttonAttributes;
+	// -- IMAGE
+	rImageAttr_t imageAttributes;
+	// -- TEXT
+	rTextAttr_t textAttributes;
+} rMenuItemPreProc_t;
 
 typedef struct rMenuVars_s {
 	int selectedIndex = 0;
@@ -105,12 +127,14 @@ public:
 	~rMenu();
 
 	bool isActive;
-	char * name;
+	char name[16];
 	rMenuVars_t vars;
 	std::vector<rMenuItem_t> items;
 
 	void Draw();
 	void Key(int keycode);
 	void Frame();
+
+	static rMenu ReadMenu(char * filename);
 };
 
