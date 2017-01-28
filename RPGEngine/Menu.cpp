@@ -59,7 +59,7 @@ void rMenu::Key(int keycode)
 			{
 				rMenuItem_t *item = &items[i];
 				if (item->type != ITEM_TYPE_BUTTON) continue;
-				if (item->buttonAttributes.onClickFunc != NULL && item->buttonAttributes.index == this->vars.selectedIndex) item->buttonAttributes.onClickFunc();
+				//if (item->buttonAttributes.onClickFunc != NULL && item->buttonAttributes.index == this->vars.selectedIndex) item->buttonAttributes.onClickFunc();
 			}
 		}
 	}

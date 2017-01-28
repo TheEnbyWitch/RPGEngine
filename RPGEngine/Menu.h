@@ -59,7 +59,7 @@ typedef struct rButtonAttr_s {
 	int index;
 	char onClick[32];
 	char onClickArgs[256];
-	MenuAction_t *onClickFunc = NULL;
+	//MenuAction_t *onClickFunc = NULL;
 } rButtonAttr_t;
 
 typedef struct rImageAttr_s {
