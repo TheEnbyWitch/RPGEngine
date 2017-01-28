@@ -83,22 +83,6 @@ typedef struct rMenuItem_s {
 	rRect_t rect = { 0, 0, 0, 0 };
 	char text[1024];
 	rMenuItemType type;
-	ALLEGRO_COLOR color;
-	ALLEGRO_COLOR text_color;
-
-	//TYPE SPECIFIC
-	// -- BUTTON
-	rButtonAttr_t buttonAttributes;
-	// -- IMAGE
-	rImageAttr_t imageAttributes;
-	// -- TEXT
-	rTextAttr_t textAttributes;
-} rMenuItem_t;
-
-typedef struct rMenuItemPreProc_s {
-	rRect_t rect = { 0, 0, 0, 0 };
-	char text[1024];
-	rMenuItemType type;
 	rColor_t color;
 	rColor_t text_color;
 
@@ -109,7 +93,7 @@ typedef struct rMenuItemPreProc_s {
 	rImageAttr_t imageAttributes;
 	// -- TEXT
 	rTextAttr_t textAttributes;
-} rMenuItemPreProc_t;
+} rMenuItem_t;
 
 typedef struct rMenuVars_s {
 	int selectedIndex = 0;

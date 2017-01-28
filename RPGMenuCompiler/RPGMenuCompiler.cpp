@@ -96,7 +96,7 @@ void Process(string input, string name)
 			cout << "File was processed successfully, but the output file couldn't be opened!" << endl;
 			return;
 		}
-		fwrite(rMenuMagic, 1, sizeof(rMenuMagic), o);
+		fwrite(rMenuMagic, 1, 6, o);
 		fwrite(result.name, 1, sizeof(result.name), o);
 		fwrite(&items, sizeof(int), 1, o);
 		for (int i = 0; i < items; i++)

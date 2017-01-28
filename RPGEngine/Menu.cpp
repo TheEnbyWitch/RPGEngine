@@ -4,6 +4,13 @@
 
 std::vector<class rMenu> Menus;
 char * activeMenu = "main";
+namespace rColor
+{
+	ALLEGRO_COLOR toAllegro(rColor_t clr)
+	{
+		return al_map_rgba(clr.r, clr.g, clr.b, clr.a);
+	}
+}
 
 rMenu::rMenu()
 {
@@ -22,13 +29,13 @@ void rMenu::Draw()
 		switch (item->type)
 		{
 		case ITEM_TYPE_WINDOW:
-			gUI.DrawColoredWindow(item->rect.X, item->rect.Y, item->rect.W, item->rect.H, item->color);
+			gUI.DrawColoredWindow(item->rect.X, item->rect.Y, item->rect.W, item->rect.H, rColor::toAllegro(item->color));
 			break;
 		case ITEM_TYPE_TEXT:
-			gUI.DrawColoredText(item->text, item->rect.X, item->rect.Y, item->rect.W, item->text_color, item->textAttributes.align);
+			gUI.DrawColoredText(item->text, item->rect.X, item->rect.Y, item->rect.W, rColor::toAllegro(item->text_color), item->textAttributes.align);
 			break;
 		case ITEM_TYPE_BUTTON:
-			gUI.DrawColoredMenuOption(item->buttonAttributes.index, item->rect.X, item->rect.Y, item->rect.W, item->rect.H, item->text, item->color, this);
+			gUI.DrawColoredMenuOption(item->buttonAttributes.index, item->rect.X, item->rect.Y, item->rect.W, item->rect.H, item->text, rColor::toAllegro(item->color), this);
 			break;
 		}
 	}
@@ -82,8 +89,8 @@ rMenu rMenu::ReadMenu(char * name)
 	sprintf(filename, "menu/%s.rmenu", name);
 	rpge_printf("Opening menu: %s\n", filename);
 	menufile = al_fopen(filename, "rb");
-	char magic[sizeof(rMenuMagic)];
-	al_fread(menufile, magic, sizeof(rMenuMagic));
+	char magic[6];
+	al_fread(menufile, magic, 6);
 	rpge_printf("menu magic: %s\n", magic);
 	al_fread(menufile, result.name, sizeof(result.name));
 	int itemCount;
@@ -91,17 +98,10 @@ rMenu rMenu::ReadMenu(char * name)
 	rpge_printf("item count: %d\n", itemCount);
 	for (int i = 0; i < itemCount; i++)
 	{
-		rMenuItemPreProc_t item;
-		rMenuItem_t itemResult;
-		al_fread(menufile, &item, sizeof(rMenuItemPreProc_t));
+		rMenuItem_t item;
+		al_fread(menufile, &item, sizeof(rMenuItem_t));
 		rpge_printf("Processing item with text %s\n", item.text);
-		memcpy(itemResult.text, item.text, sizeof(item.text));
-		itemResult.type = item.type;
-		itemResult.color = al_map_rgba(item.color.r, item.color.g, item.color.b, item.color.a);
-		itemResult.text_color = al_map_rgba(item.text_color.r, item.text_color.g, item.text_color.b, item.text_color.a);
-		memcpy(&itemResult.rect, &item.rect, sizeof(rRect_t));
-		memcpy(&itemResult.buttonAttributes, &item.buttonAttributes, sizeof(rButtonAttr_t));
-		result.items.push_back(itemResult);
+		result.items.push_back(item);
 	}
 	al_fclose(menufile);
 	/*
