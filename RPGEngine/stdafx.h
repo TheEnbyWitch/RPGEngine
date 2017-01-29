@@ -75,6 +75,7 @@ extern gameInfo_t gameInfo;
 #include "rPlayer.h"
 #include "rScript.h"
 #include "rBitmap.h"
+#include "rTile.h"
 
 extern rUI gUI;
 extern rScript gScript;

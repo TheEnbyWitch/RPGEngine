@@ -12,6 +12,6 @@ public:
 	~rBitmap();
 	std::vector<rBitmapEntry_t> entries;
 
-	ALLEGRO_BITMAP* GetBitmap(char* name);
+	ALLEGRO_BITMAP* GetBitmap(char* fname, bool getEmissive = false);
 };
 

@@ -96,8 +96,7 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
-	actor = al_load_bitmap("actor.tga");
-	player.SetImage("Actor.tga");
+	player.SetImage("Actor");
 
 	initialize_menus();
 
@@ -196,6 +195,7 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
+					gWorld.Frame();
 					ALLEGRO_KEYBOARD_STATE state;
 					al_get_keyboard_state(&state);
 					frames++;

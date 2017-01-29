@@ -11,8 +11,14 @@ rBitmap::~rBitmap()
 {
 }
 
-ALLEGRO_BITMAP * rBitmap::GetBitmap(char * name)
+ALLEGRO_BITMAP * rBitmap::GetBitmap(char * fname, bool getEmissive)
 {
+	if (strcmp(fname, "null") == 0) return NULL;
+	char name[256];
+	if(getEmissive)
+		sprintf(name, "%s_e.tga", fname);
+	else
+		sprintf(name, "%s.tga", fname);
 	for (int i = 0; i < entries.size(); i++)
 	{
 		if (strcmp(name, entries[i].name) == 0)

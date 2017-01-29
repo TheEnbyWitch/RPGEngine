@@ -51,8 +51,11 @@ void rEntity::SetImage(char * path)
 void rEntity::Draw()
 {
 	ALLEGRO_BITMAP * bm = gBitmap.GetBitmap(pathToImage);
+	ALLEGRO_BITMAP * embm = gBitmap.GetBitmap(pathToImage, true);
+	ALLEGRO_COLOR tint = gWorld.GetColorTint();
 	rScaledRegion_t r = GetScaledRegion();
-	al_draw_scaled_bitmap(bm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+	al_draw_tinted_scaled_bitmap(bm, tint, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+	if(embm != NULL) al_draw_scaled_bitmap(embm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
 }
 
 void rEntity::Frame()
