@@ -11,6 +11,12 @@ rWorld::~rWorld()
 {
 }
 
+void rWorld::Frame()
+{
+	timeOfDay += 0.005;
+	if (timeOfDay > 1) timeOfDay -= 1;
+}
+
 void rWorld::CreateEntity(rEntityClass classname)
 {
 	rEntity newEnt;

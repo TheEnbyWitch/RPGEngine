@@ -20,14 +20,15 @@ public:
 	rEntity();
 	~rEntity();
 
+	int Layer = 1;
 	int Level = 1;
-	float PositionX = 0;
-	float PositionY = 0;
-	float Speed = 0.05;
+	int PositionX = 0;
+	int PositionY = 0;
+	int Speed = 2;
 	rEntityDirection Direction = ENT_DIRECTION_DOWN;
 	int animationFrame = 0;
 	bool isMoving = false;
-	char* pathToImage;
+	char pathToImage[256];
 	rEntityClass classn;
 
 	int* GetScreenPos();
@@ -39,7 +40,7 @@ public:
 	void Move(int x, int y);
 
 private:
-	float TargetX = 0;
-	float TargetY = 0;
+	int TargetX = 0;
+	int TargetY = 0;
 };
 

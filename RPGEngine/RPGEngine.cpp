@@ -22,6 +22,7 @@ gameState_e gameState = GAME_STATE_ENGINE_INTRO;
 rUI gUI;
 rScript gScript;
 rBitmap gBitmap;
+rWorld gWorld;
 
 rPlayer player;
 
@@ -195,6 +196,26 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
+					ALLEGRO_KEYBOARD_STATE state;
+					al_get_keyboard_state(&state);
+					frames++;
+					if (al_key_down(&state, ALLEGRO_KEY_DOWN))
+					{
+						player.Move(0, 1);
+					}
+					if (al_key_down(&state, ALLEGRO_KEY_UP))
+					{
+						player.Move(0, -1);
+					}
+					if (al_key_down(&state, ALLEGRO_KEY_LEFT))
+					{
+						player.Move(-1, 0);
+					}
+					if (al_key_down(&state, ALLEGRO_KEY_RIGHT))
+					{
+						player.Move(1, 0);
+					}
+					player.Frame();
 
 				}
 			}
@@ -208,7 +229,7 @@ void game_loop(void)
 				showCon = !showCon;
 				consoleInput.clear();
 			}
-				
+				/*
 			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
 				player.Direction = ENT_DIRECTION_DOWN;
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
@@ -217,7 +238,7 @@ void game_loop(void)
 				player.Direction = ENT_DIRECTION_LEFT;
 			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
 				player.Direction = ENT_DIRECTION_RIGHT;
-
+				*/
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
 				lineOffset++;
