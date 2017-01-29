@@ -29,8 +29,8 @@
 #include <allegro5\keyboard.h>
 
 #include <allegro5\allegro_native_dialog.h>
-#include "json.hpp"
-using json = nlohmann::json;
+//#include "json.hpp"
+//using json = nlohmann::json;
 
 extern ALLEGRO_EVENT_QUEUE* aEventQueue;
 extern ALLEGRO_TIMER* aTimer;
@@ -46,6 +46,9 @@ extern std::string consoleInput;
 extern bool bInitialized;
 extern int menuIndex;
 extern float menuIndexSelectFrac[maxMenuIndex];
+
+extern int __width;
+extern int __height;
 
 extern bool showCon;
 
@@ -67,8 +70,15 @@ extern gameInfo_t gameInfo;
 #include "Common.h"
 #include "UI.h"
 #include "Menu.h"
+#include "rWorld.h"
+#include "rEntity.h"
+#include "rPlayer.h"
+#include "rScript.h"
+#include "rBitmap.h"
 
 extern rUI gUI;
+extern rScript gScript;
+extern rBitmap gBitmap;
 
 void initialize_menus();
 

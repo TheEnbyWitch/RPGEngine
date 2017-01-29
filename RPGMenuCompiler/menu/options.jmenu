@@ -1,5 +1,5 @@
 {
-	"name": "main",
+	"name": "options",
 	"items": [{
 		"rect": [
 			16,
@@ -7,7 +7,7 @@
 			256,
 			16
 		],
-		"text": "START",
+		"text": "I have no idea",
 		"type": 2,
 		"color": [
 			0,
@@ -21,7 +21,7 @@
 			255,
 			255
 		],
-		"onClick": "startgame",
+		"onClick": "",
 		"onClickArgs": "",
 		"index": 0
 	}, {

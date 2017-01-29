@@ -193,7 +193,12 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="rBitmap.h" />
+    <ClInclude Include="rEntity.h" />
     <ClInclude Include="rMath.h" />
+    <ClInclude Include="rPlayer.h" />
+    <ClInclude Include="rScript.h" />
+    <ClInclude Include="rWorld.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UI.h" />
@@ -201,8 +206,13 @@
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="rBitmap.cpp" />
+    <ClCompile Include="rEntity.cpp" />
     <ClCompile Include="rMath.cpp" />
     <ClCompile Include="RPGEngine.cpp" />
+    <ClCompile Include="rPlayer.cpp" />
+    <ClCompile Include="rScript.cpp" />
+    <ClCompile Include="rWorld.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

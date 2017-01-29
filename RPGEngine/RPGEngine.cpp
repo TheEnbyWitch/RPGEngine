@@ -10,19 +10,26 @@ ALLEGRO_FONT* font;
 ALLEGRO_TEXTLOG *txtLog;
 
 ALLEGRO_BITMAP* gameLogo;
+ALLEGRO_BITMAP* actor;
 
 
 std::ifstream gameConfig;
 gameInfo_t gameInfo;
 gameState_e gameState = GAME_STATE_ENGINE_INTRO;
 
-json gameIntroJSON;
 
 //GAME MODULES
 rUI gUI;
+rScript gScript;
+rBitmap gBitmap;
+
+rPlayer player;
 
 bool bInitialized = false;
 bool bUseIntro = false;
+
+int __width = 960;
+int __height = 540;
 
 void init(void)
 {
@@ -59,7 +66,7 @@ void init(void)
 		abort_game("Failed to create timer");
 
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
-	aDisplay = al_create_display(640, 480);
+	aDisplay = al_create_display(__width, __height);
 	rpge_printf("Display modes: \n");
 	for (int i = 0; i < al_get_num_display_modes(); i++)
 	{
@@ -88,10 +95,15 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
+	actor = al_load_bitmap("actor.tga");
+	player.SetImage("Actor.tga");
+
 	initialize_menus();
 
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
+
+	gScript.ExecuteScript();
 
 #ifdef USE_INTRO
 	std::ifstream gmIntro("gameintro");
@@ -118,57 +130,9 @@ void shutdown(void)
 	gameConfig.close();
 }
 
-MENU_ACTION_FUNC(StartGame)
-{
-	rpge_printf("game should start\n");
-}
-
-MENU_ACTION_FUNC(QuitGame)
-{
-	exit(0);
-}
-
 void initialize_menus()
 {
-#define BUTTON_RECT(index) rRect_t{ (640/2)-200, 16+(index * 24), 400, 16}
-	rMenu main;
-	main = rMenu::ReadMenu("main");
-	/*
-	main.name = "main";
-	main.isActive = false;
-
-	rMenuItem_t start;
-	start.text = "START";
-	start.type = ITEM_TYPE_BUTTON;
-	start.buttonAttributes.index = 0;
-	start.rect = BUTTON_RECT(3);
-	start.buttonAttributes.onClickFunc = &StartGame;
-	main.items.push_back(start);
-
-	rMenuItem_t options;
-	options.text = "OPTIONS";
-	options.type = ITEM_TYPE_BUTTON;
-	options.buttonAttributes.index = 1;
-	options.rect = BUTTON_RECT(4);
-	main.items.push_back(options);
-
-	rMenuItem_t quit;
-	quit.text = "QUIT";
-	quit.type = ITEM_TYPE_BUTTON;
-	quit.buttonAttributes.index = 2;
-	quit.rect = BUTTON_RECT(5);
-	quit.color = al_map_rgb(255, 0, 0);
-	quit.buttonAttributes.onClickFunc = &QuitGame;
-	main.items.push_back(quit);
-
-	rMenuItem_t title;
-	title.text = "something something the game";
-	title.rect = BUTTON_RECT(0);
-	title.type = ITEM_TYPE_TEXT;
-	title.textAttributes.align = ALLEGRO_ALIGN_CENTER;
-	main.items.push_back(title);
-	*/
-	Menus.push_back(main);
+	Menus.push_back(rMenu::ReadMenu("main"));
 }
 
 bool showCon = false;
@@ -237,7 +201,7 @@ void game_loop(void)
 		}
 		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-
+				
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_TILDE)
 			{
@@ -270,16 +234,6 @@ void game_loop(void)
 			}
 			if (!showCon)
 			{
-				/*
-				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-				{
-					menuIndex++;
-				}
-				if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-				{
-					menuIndex--;
-				}
-				*/
 			}
 			else {
 				// NEEDS A REWRITE DAMN IT
@@ -292,40 +246,30 @@ void game_loop(void)
 		}
 
 		if (redraw && al_is_event_queue_empty(aEventQueue)) {
-			/*
-			for (int i = 0; i < maxMenuIndex; i++)
-			{
-				if (menuIndex == i)
-				{
-					menuIndexSelectFrac[i] += 0.1f;
-				}
-				else
-				{
-					menuIndexSelectFrac[i] -= 0.1f;
-				}
-				menuIndexSelectFrac[i] = __min(__max(0.0f, menuIndexSelectFrac[i]), 1.0f);
-			}*/
 			redraw = false;
-			gf++;
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			curTimestamp = al_get_time();
 			if (gameState == GAME_STATE_ENGINE_INTRO)
 			{
 				if(bInitialized)
-					al_draw_multiline_text(font, al_map_rgb(255, 255, 255), 640 / 2, 480 / 2, 640, 13, ALLEGRO_ALIGN_CENTER, "POWERED BY\nRPGEngine");
+					al_draw_multiline_text(font, al_map_rgb(255, 255, 255), __width / 2, __height / 2, __width, 13, ALLEGRO_ALIGN_CENTER, "POWERED BY\nRPGEngine");
 				else
-					al_draw_multiline_text(font, al_map_rgb(255, 255, 255), 640 / 2, 480 / 2, 640, 13, ALLEGRO_ALIGN_CENTER, "RPGEngine\nencountered an error! Check log!");
+					al_draw_multiline_text(font, al_map_rgb(255, 255, 255), __width / 2, __height / 2, __width, 13, ALLEGRO_ALIGN_CENTER, "RPGEngine\nencountered an error! Check log!");
 			}
 			if (gameState == GAME_STATE_INTRO)
 			{
 				
+			}
+			if (gameState == GAME_STATE_INGAME)
+			{
+				player.Draw();
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
 				for (int i = 0; i < Menus.size(); i++)
 				{
 					rMenu * menu = &Menus[i];
-					if (!strcmp(menu->name, activeMenu))
+					if (strcmp(menu->name, activeMenu) == 0)
 					{
 						menu->isActive = true;
 						menu->Frame();
@@ -361,8 +305,8 @@ void game_loop(void)
 					resultConLog.insert(0, 1, consoleLog[i]);	
 				}
 				
-				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, 480 - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), 628, (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
-				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, 480 - (13 + 6), 628, 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
+				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
+				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;

@@ -3,11 +3,27 @@
 #include "stdafx.h"
 #endif
 
-#define MENU_ACTION_FUNC(name) void name()
+#define MENU_ACTION_FUNC(name) void name(char * argument)
 #define TYPEDEF_MENU_ACTION_FUNC(name) typedef MENU_ACTION_FUNC(name)
 
 TYPEDEF_MENU_ACTION_FUNC(MenuAction_t);
+#ifndef _RPG_COMPILER
+MENU_ACTION_FUNC(M_OpenMenu);
+MENU_ACTION_FUNC(M_QuitGame);
+MENU_ACTION_FUNC(M_StartGame);
 
+
+typedef struct rMenuActionFunc_s {
+	char * name;
+	MenuAction_t *func;
+} rMenuActionFunc_t;
+
+static rMenuActionFunc_t menuActionFuncs[]{
+{"openmenu", &M_OpenMenu },
+{"quitgame", &M_QuitGame },
+{"startgame", &M_StartGame }	
+};
+#endif
 #ifdef _RPG_COMPILER
 typedef struct rColor_s {
 	unsigned char r;
@@ -52,7 +68,8 @@ typedef enum {
 	ITEM_TYPE_WINDOW,
 	ITEM_TYPE_TEXT,
 	ITEM_TYPE_BUTTON,
-	ITEM_TYPE_IMAGE
+	ITEM_TYPE_IMAGE,
+	ITEM_TYPE_LOADING_BAR
 } rMenuItemType;
 
 typedef struct rButtonAttr_s {
@@ -120,5 +137,5 @@ public:
 	void Frame();
 
 	static rMenu ReadMenu(char * filename);
+	static void ExecuteAction(char * func, char * arg);
 };
-

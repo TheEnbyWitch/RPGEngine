@@ -1,0 +1,28 @@
+{
+	"name": "loading",
+	"items": [{
+		"rect": [
+			16,
+			448,
+			608,
+			16
+		],
+		"text": "LOADING",
+		"type": 4,
+		"color": [
+			0,
+			128,
+			255,
+			255
+		],
+		"textcolor": [
+			255,
+			255,
+			255,
+			255
+		],
+		"onClick": "",
+		"onClickArgs": "",
+		"index": 0
+	}]
+}

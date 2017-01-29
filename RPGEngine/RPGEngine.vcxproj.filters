@@ -42,6 +42,21 @@
     <ClInclude Include="rMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +75,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

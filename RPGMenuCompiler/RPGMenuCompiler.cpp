@@ -102,16 +102,6 @@ void Process(string input, string name)
 		for (int i = 0; i < items; i++)
 		{
 			fwrite(&result.items[i], sizeof(result.items[i]), 1, o);
-			/*
-			cout << result.items[i].rect.X << endl;
-			cout << result.items[i].rect.Y << endl;
-			cout << result.items[i].rect.W << endl;
-			cout << result.items[i].rect.H << endl;
-			fwrite(&result.items[i].rect.X, sizeof(int), 1, o);
-			fwrite(&result.items[i].rect.Y, sizeof(int), 1, o);
-			fwrite(&result.items[i].rect.W, sizeof(int), 1, o);
-			fwrite(&result.items[i].rect.H, sizeof(int), 1, o); // rRect_t
-			*/
 		}
 		fclose(o);
 	}

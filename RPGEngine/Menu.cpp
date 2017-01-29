@@ -1,6 +1,6 @@
 #include "Menu.h"
 #include "stdafx.h"
-#include "Menu.h"
+//#include "Menu.h"
 
 std::vector<class rMenu> Menus;
 char * activeMenu = "main";
@@ -59,7 +59,7 @@ void rMenu::Key(int keycode)
 			{
 				rMenuItem_t *item = &items[i];
 				if (item->type != ITEM_TYPE_BUTTON) continue;
-				//if (item->buttonAttributes.onClickFunc != NULL && item->buttonAttributes.index == this->vars.selectedIndex) item->buttonAttributes.onClickFunc();
+				if (item->buttonAttributes.index == this->vars.selectedIndex) rMenu::ExecuteAction(item->buttonAttributes.onClick, item->buttonAttributes.onClickArgs);
 			}
 		}
 	}
@@ -104,21 +104,31 @@ rMenu rMenu::ReadMenu(char * name)
 		result.items.push_back(item);
 	}
 	al_fclose(menufile);
-	/*
-	fopen_s(&o, output.c_str(), "wb");
-	if (o == NULL)
-	{
-		cout << "File was processed successfully, but the output file couldn't be opened!" << endl;
-		return;
-	}
-	fwrite(rMenuMagic, 1, sizeof(rMenuMagic), o);
-	fwrite(result.name, 1, sizeof(result.name), o);
-	fwrite(&items, sizeof(int), 1, o);
-	for (int i = 0; i < items; i++)
-	{
-		fwrite(&result.items[i], sizeof(result.items[i]), 1, o);
-	}
-	fclose(o);
-	*/
 	return result;
+}
+
+void rMenu::ExecuteAction(char * func, char * arg)
+{
+	for (int i = 0; i < sizeof(menuActionFuncs) / sizeof(rMenuActionFunc_t); i++)
+	{
+		if (strcmp(func, menuActionFuncs[i].name) == 0)
+		{
+			menuActionFuncs[i].func(arg);
+		}
+	}
+}
+
+MENU_ACTION_FUNC(M_OpenMenu)
+{
+	activeMenu = argument;
+}
+
+MENU_ACTION_FUNC(M_QuitGame)
+{
+	exit(0);
+}
+
+MENU_ACTION_FUNC(M_StartGame)
+{
+	gameState = GAME_STATE_INGAME;
 }

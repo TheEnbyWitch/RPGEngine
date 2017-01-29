@@ -121,11 +121,11 @@ void rUI::DrawFPS(double dt)
 	char * f = va("%d FPS", getavgfps());
 	if (dt < (1.0f / 30.0f))
 	{
-		DrawColoredWindowWithText(f, 640 - (12+al_get_text_width(font, f)), 6, al_get_text_width(font, f)+6, 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
+		DrawColoredWindowWithText(f, __width - (12+al_get_text_width(font, f)), 6, al_get_text_width(font, f)+6, 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
 	}
 	else
 	{
-		DrawColoredWindowWithText(f, 640 - (12 + al_get_text_width(font, f)), 6, al_get_text_width(font, f) + 6, 14, al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_RIGHT);
+		DrawColoredWindowWithText(f, __width - (12 + al_get_text_width(font, f)), 6, al_get_text_width(font, f) + 6, 14, al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_RIGHT);
 	}
 	delete f;
 }
