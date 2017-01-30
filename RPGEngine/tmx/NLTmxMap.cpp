@@ -50,12 +50,11 @@ NLTmxMap* NLLoadTmxMap( char *xml )
         layer->width = atoi( layernode->first_attribute( "width" )->value() );
         layer->height = atoi( layernode->first_attribute( "height" )->value() );
         
-        // TODO assert that the "encoding" attribute is set to "CSV" here.
-        
-        const char* data = layernode->first_node( "data" )->value();
-        
-        layer->data = new int[ layer->width * layer->height ];
-        
+        //const char* data = layernode->first_node( "data" )->value();
+		int dataSize = layer->width * layer->height;
+        layer->data = new int[dataSize];
+		// CSV wasn't working with the XML parser
+        /*
         char* copy = (char*) malloc( strlen( data ) + 1 );
         strcpy( copy, data );
         char* item = strtok( copy, separators );
@@ -69,6 +68,14 @@ NLTmxMap* NLLoadTmxMap( char *xml )
         }
 
         free( copy );
+		*/
+		// XML
+		xml_node<> *dataNode = layernode->first_node("data")->first_node("tile");
+		for (int i = 0; i < dataSize; i++)
+		{
+			layer->data[i] = atoi(dataNode->first_attribute("gid")->value());
+			dataNode = dataNode->next_sibling("tile");
+		}
         
         map->layers.push_back( layer );
         
@@ -76,13 +83,14 @@ NLTmxMap* NLLoadTmxMap( char *xml )
     }
     
     xml_node<> *objectgroupnode = mapnode->first_node( "objectgroup" );
-    
+   
     while ( objectgroupnode ) {
         NLTmxMapObjectGroup* group = new NLTmxMapObjectGroup();
         
         group->name = objectgroupnode->first_attribute( "name" )->value();
-        group->width = atoi( objectgroupnode->first_attribute( "width" )->value() );
-        group->height = atoi( objectgroupnode->first_attribute( "height" )->value() );
+//		NOT USED
+//        group->width = atoi( objectgroupnode->first_attribute( "width" )->value() );
+//        group->height = atoi( objectgroupnode->first_attribute( "height" )->value() );
         
         xml_attribute<> *visibleattr = objectgroupnode->first_attribute( "visible" );
         if ( visibleattr ) {
@@ -144,6 +152,7 @@ NLTmxMap* NLLoadTmxMap( char *xml )
         map->groups.push_back( group );
         
         objectgroupnode = objectgroupnode->next_sibling( "objectgroup" );
+		if (objectgroupnode == NULL) break;
     }
     
     free( (void*) xml );
