@@ -7,10 +7,12 @@ public:
 	~rMap();
 
 	void ProcessMap();
-
+	int maxLayers = 0;
 	char name[16];
 	NLTmxMap *map;
 	std::vector<rTile> tiles;
-	bool isActive = false;
+	std::vector<rEntity> entities;
+	bool isActive = true;
+	bool wasProcessed = false;
 };
 

@@ -13,6 +13,8 @@ public:
     string name;
     int tileWidth;
     int tileHeight;
+	int tileCount;
+	int columns;
     string filename;
 };
 

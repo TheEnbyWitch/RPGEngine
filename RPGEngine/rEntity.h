@@ -20,6 +20,8 @@ public:
 	rEntity();
 	~rEntity();
 
+	ALLEGRO_BITMAP* cachedBitmap;
+
 	int Layer = 1;
 	int Level = 1;
 	int PositionX = 0;

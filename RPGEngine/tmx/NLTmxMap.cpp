@@ -30,6 +30,8 @@ NLTmxMap* NLLoadTmxMap( char *xml )
         tileset->name = tilesetnode->first_attribute( "name" )->value();
         tileset->tileWidth =  atoi( tilesetnode->first_attribute( "tilewidth" )->value() );
         tileset->tileHeight = atoi( tilesetnode->first_attribute( "tileheight" )->value() );
+		tileset->tileCount = atoi(tilesetnode->first_attribute("tilecount")->value());
+		tileset->columns = atoi(tilesetnode->first_attribute("columns")->value());
         tileset->filename = tilesetnode->first_node( "image" )->first_attribute( "source" )->value();
         
         //cout << "Tileset " << tileset->name << " filename " << tileset->filename << endl;

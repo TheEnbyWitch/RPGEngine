@@ -83,6 +83,7 @@ extern rUI gUI;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
+extern rPlayer player;
 
 void initialize_assets();
 

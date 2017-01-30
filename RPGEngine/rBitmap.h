@@ -11,7 +11,12 @@ public:
 	rBitmap();
 	~rBitmap();
 	std::vector<rBitmapEntry_t> entries;
+	ALLEGRO_BITMAP* default;
 
-	ALLEGRO_BITMAP* GetBitmap(char* fname, bool getEmissive = false);
+	ALLEGRO_BITMAP* GetBitmap(char* fname, bool getEmissive = false, bool dontAddExtension = false);
+	ALLEGRO_BITMAP* GetDefaultBitmap();
+
+private:
+	ALLEGRO_BITMAP* ReturnValidImage(ALLEGRO_BITMAP* bm);
 };
 

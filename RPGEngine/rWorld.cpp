@@ -20,6 +20,35 @@ void rWorld::Frame()
 void rWorld::Draw()
 {
 	int currentLayer = 0;
+	rMap *loadedMap = NULL;
+	for (int i = 0; i < loadedMaps.size(); i++)
+	{
+		if (loadedMaps[i].isActive)
+		{
+			loadedMap = &loadedMaps[i];
+			break;
+		}
+	}
+	if (loadedMap == NULL) abort_game("Tried to draw NULL map!");
+	if (loadedMap->wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
+	al_hold_bitmap_drawing(true);
+	for (int i = 0; i < loadedMap->maxLayers; i++)
+	{
+		int tileSize = loadedMap->tiles.size();
+		for (int o = 0; o < tileSize; o++)
+		{
+			if(loadedMap->tiles[o].Layer == i) loadedMap->tiles[o].Draw();
+		}
+		int entSize = loadedMap->entities.size();
+		for (int o = 0; o < entSize; o++)
+		{
+			if (loadedMap->entities[o].Layer == i) loadedMap->entities[o].Draw();
+		}
+		if (i == 1) player.Draw();
+	}
+	al_hold_bitmap_drawing(false);
+	if(loadedMap->maxLayers <= 1)
+		player.Draw();
 }
 
 void rWorld::LoadMap(char * name)
@@ -29,8 +58,9 @@ void rWorld::LoadMap(char * name)
 	rMap result;
 	result.map = NLLoadTmxMap(ReadMap(path));
 	memcpy(result.name, name, 16);
-	rpge_printf("data for 0: %d", result.map->layers[0]->data[0]);
+	rpge_printf("Loaded map %s\n", path);
 	loadedMaps.push_back(result);
+	loadedMaps[loadedMaps.size() - 1].ProcessMap();
 }
 
 double GetMod(double v, double mod)
