@@ -20,6 +20,8 @@ public:
 	rEntity();
 	~rEntity();
 
+	ALLEGRO_BITMAP* cachedBitmap;
+
 	int Layer = 1;
 	int Level = 1;
 	int PositionX = 0;
@@ -29,6 +31,7 @@ public:
 	int animationFrame = 0;
 	bool isMoving = false;
 	char pathToImage[256];
+	char pathToEmmisiveLayer[256] = "null";
 	rEntityClass classn;
 
 	int* GetScreenPos();

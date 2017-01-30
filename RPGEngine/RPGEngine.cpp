@@ -12,7 +12,6 @@ ALLEGRO_TEXTLOG *txtLog;
 ALLEGRO_BITMAP* gameLogo;
 ALLEGRO_BITMAP* actor;
 
-
 std::ifstream gameConfig;
 gameInfo_t gameInfo;
 gameState_e gameState = GAME_STATE_ENGINE_INTRO;
@@ -38,6 +37,8 @@ void init(void)
 	//abort_game(k);
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
+	for (int i = 0; i < 15; i++)
+		rpge_printf("\n");
 	//al_open_native_text_log("Log", ALLEGRO_TEXTLOG_MONOSPACE | ALLEGRO_TEXTLOG_NO_CLOSE);
 	rpge_printf(
 		"%s\n%s\n%s\n",
@@ -67,14 +68,17 @@ void init(void)
 		abort_game("Failed to create timer");
 
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
+	//al_set_new_display_flags(ALLEGRO_OPENGL);
 	aDisplay = al_create_display(__width, __height);
+	/*
 	rpge_printf("Display modes: \n");
 	for (int i = 0; i < al_get_num_display_modes(); i++)
 	{
 		ALLEGRO_DISPLAY_MODE   disp_data;
 		al_get_display_mode(i, &disp_data);
 		rpge_printf("%dx%d %dHz\n", disp_data.width, disp_data.height, disp_data.refresh_rate);
-	}
+	}*/
 	if (!aDisplay)
 		abort_game("Failed to create display");
 
@@ -96,10 +100,9 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
-	actor = al_load_bitmap("actor.tga");
-	player.SetImage("Actor.tga");
+	player.SetImage("Actor");
 
-	initialize_menus();
+	initialize_assets();
 
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
@@ -131,9 +134,10 @@ void shutdown(void)
 	gameConfig.close();
 }
 
-void initialize_menus()
+void initialize_assets()
 {
 	Menus.push_back(rMenu::ReadMenu("main"));
+	gWorld.LoadMap("untitled");
 }
 
 bool showCon = false;
@@ -196,6 +200,7 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
+					gWorld.Frame();
 					ALLEGRO_KEYBOARD_STATE state;
 					al_get_keyboard_state(&state);
 					frames++;
@@ -291,7 +296,7 @@ void game_loop(void)
 			}
 			if (gameState == GAME_STATE_INGAME)
 			{
-				player.Draw();
+				gWorld.Draw();
 			}
 			if (gameState == GAME_STATE_MENU)
 			{

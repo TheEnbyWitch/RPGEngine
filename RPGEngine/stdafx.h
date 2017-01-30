@@ -20,6 +20,7 @@
 #include <unordered_map>
 
 #include <physfs.h>
+#include "tmx\NLTmxMap.h"
 
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>
@@ -69,9 +70,11 @@ extern gameInfo_t gameInfo;
 
 #include "Common.h"
 #include "UI.h"
+#include "rEntity.h"
+#include "rTile.h"
+#include "rMap.h"
 #include "Menu.h"
 #include "rWorld.h"
-#include "rEntity.h"
 #include "rPlayer.h"
 #include "rScript.h"
 #include "rBitmap.h"
@@ -80,8 +83,9 @@ extern rUI gUI;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
+extern rPlayer player;
 
-void initialize_menus();
+void initialize_assets();
 
 
 
