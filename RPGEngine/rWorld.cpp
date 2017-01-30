@@ -13,8 +13,9 @@ rWorld::~rWorld()
 
 void rWorld::Frame()
 {
-	timeOfDay += 0.005;
+	timeOfDay += 0.00005;
 	if (timeOfDay > 1) timeOfDay -= 1;
+	currentTOD = ProcessTOD();
 }
 
 void rWorld::Draw()
@@ -85,16 +86,7 @@ ALLEGRO_COLOR MixColors(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2, double weight)
 
 ALLEGRO_COLOR rWorld::GetColorTint()
 {
-	ALLEGRO_COLOR res;
-	int colorPos = 0;
-	if (timeOfDay > 0.25)	colorPos = 1;
-	if (timeOfDay > 0.5)	colorPos = 2;
-	if (timeOfDay > 0.75)	colorPos = 3;
-	double mix = GetMod(timeOfDay, 0.25)*4.0;
-	ALLEGRO_COLOR c1 = timeOfDayTint[colorPos];
-	ALLEGRO_COLOR c2 = timeOfDayTint[(colorPos+1 > 3 ? colorPos-3 : colorPos+1)];
-	res = MixColors(c1, c2, mix);
-	return res;
+	return currentTOD;
 }
 
 char * rWorld::ReadMap(char * path)
@@ -116,4 +108,18 @@ char * rWorld::ReadMap(char * path)
 	al_fread(map, script, size);
 	script[size] = '\0';
 	return script;
+}
+
+ALLEGRO_COLOR rWorld::ProcessTOD()
+{
+	ALLEGRO_COLOR res;
+	int colorPos = 0;
+	if (timeOfDay > 0.25)	colorPos = 1;
+	if (timeOfDay > 0.5)	colorPos = 2;
+	if (timeOfDay > 0.75)	colorPos = 3;
+	double mix = GetMod(timeOfDay, 0.25)*4.0;
+	ALLEGRO_COLOR c1 = timeOfDayTint[colorPos];
+	ALLEGRO_COLOR c2 = timeOfDayTint[(colorPos + 1 > 3 ? colorPos - 3 : colorPos + 1)];
+	res = MixColors(c1, c2, mix);
+	return res;
 }
