@@ -193,8 +193,13 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="RapidXML\rapidxml.hpp" />
+    <ClInclude Include="RapidXML\rapidxml_iterators.hpp" />
+    <ClInclude Include="RapidXML\rapidxml_print.hpp" />
+    <ClInclude Include="RapidXML\rapidxml_utils.hpp" />
     <ClInclude Include="rBitmap.h" />
     <ClInclude Include="rEntity.h" />
+    <ClInclude Include="rMap.h" />
     <ClInclude Include="rMath.h" />
     <ClInclude Include="rPlayer.h" />
     <ClInclude Include="rScript.h" />
@@ -202,6 +207,7 @@
     <ClInclude Include="rWorld.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="tmx\NLTmxMap.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +215,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="rBitmap.cpp" />
     <ClCompile Include="rEntity.cpp" />
+    <ClCompile Include="rMap.cpp" />
     <ClCompile Include="rMath.cpp" />
     <ClCompile Include="RPGEngine.cpp" />
     <ClCompile Include="rPlayer.cpp" />
@@ -220,6 +227,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="tmx\NLTmxMap.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="UI.cpp" />
   </ItemGroup>

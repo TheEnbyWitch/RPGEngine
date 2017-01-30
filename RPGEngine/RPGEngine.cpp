@@ -12,7 +12,6 @@ ALLEGRO_TEXTLOG *txtLog;
 ALLEGRO_BITMAP* gameLogo;
 ALLEGRO_BITMAP* actor;
 
-
 std::ifstream gameConfig;
 gameInfo_t gameInfo;
 gameState_e gameState = GAME_STATE_ENGINE_INTRO;
@@ -68,13 +67,14 @@ void init(void)
 
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 	aDisplay = al_create_display(__width, __height);
+	/*
 	rpge_printf("Display modes: \n");
 	for (int i = 0; i < al_get_num_display_modes(); i++)
 	{
 		ALLEGRO_DISPLAY_MODE   disp_data;
 		al_get_display_mode(i, &disp_data);
 		rpge_printf("%dx%d %dHz\n", disp_data.width, disp_data.height, disp_data.refresh_rate);
-	}
+	}*/
 	if (!aDisplay)
 		abort_game("Failed to create display");
 
@@ -98,7 +98,7 @@ void init(void)
 
 	player.SetImage("Actor");
 
-	initialize_menus();
+	initialize_assets();
 
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
@@ -130,9 +130,10 @@ void shutdown(void)
 	gameConfig.close();
 }
 
-void initialize_menus()
+void initialize_assets()
 {
 	Menus.push_back(rMenu::ReadMenu("main"));
+	gWorld.LoadMap("example");
 }
 
 bool showCon = false;

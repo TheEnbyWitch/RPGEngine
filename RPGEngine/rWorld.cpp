@@ -22,6 +22,17 @@ void rWorld::Draw()
 	int currentLayer = 0;
 }
 
+void rWorld::LoadMap(char * name)
+{
+	char path[256];
+	sprintf(path, "maps/%s.tmx", name);
+	rMap result;
+	result.map = NLLoadTmxMap(ReadMap(path));
+	memcpy(result.name, name, 16);
+	rpge_printf("data for 0: %d", result.map->layers[0]->data[0]);
+	loadedMaps.push_back(result);
+}
+
 double GetMod(double v, double mod)
 {
 	while (v > mod)
@@ -56,9 +67,23 @@ ALLEGRO_COLOR rWorld::GetColorTint()
 	return res;
 }
 
-void rWorld::CreateEntity(rEntityClass classname)
+char * rWorld::ReadMap(char * path)
 {
-	rEntity newEnt;
-	newEnt.classn = classname;
-	entities.push_back(newEnt);
+	ALLEGRO_FILE * map;
+	map = al_fopen(path, "rb");
+	if (map == NULL)
+	{
+		char error[512];
+		sprintf(error, "Map doesn't exist!\n%s", path);
+		abort_game(error);
+		return nullptr;
+	}
+	int size;
+	al_fseek(map, 0, ALLEGRO_SEEK_END);
+	size = al_ftell(map);
+	al_fseek(map, 0, ALLEGRO_SEEK_SET);
+	char *script = (char *)malloc(size+1);
+	al_fread(map, script, size);
+	script[size] = '\0';
+	return script;
 }

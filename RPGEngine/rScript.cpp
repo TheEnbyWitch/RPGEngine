@@ -18,7 +18,7 @@ char * rScript::ReadScript(char * name)
 	if (scr == NULL)
 	{
 		char error[512];
-		sprintf(error, "Failed reading script!\%s", name);
+		sprintf(error, "Failed reading script!\n%s", name);
 		abort_game(error);
 		return nullptr;
 	}

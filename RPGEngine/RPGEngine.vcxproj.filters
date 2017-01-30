@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\TMX">
+      <UniqueIdentifier>{f5865bb9-9ce9-4e3b-bb74-297bd47031f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RapidXML">
+      <UniqueIdentifier>{d2fbced5-9ff4-44dd-8a0c-148ad55f613e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,6 +66,24 @@
     <ClInclude Include="rTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tmx\NLTmxMap.h">
+      <Filter>Source Files\TMX</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidXML\rapidxml.hpp">
+      <Filter>Source Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidXML\rapidxml_iterators.hpp">
+      <Filter>Source Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidXML\rapidxml_print.hpp">
+      <Filter>Source Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="RapidXML\rapidxml_utils.hpp">
+      <Filter>Source Files\RapidXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -96,6 +120,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tmx\NLTmxMap.cpp">
+      <Filter>Source Files\TMX</Filter>
+    </ClCompile>
+    <ClCompile Include="rMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

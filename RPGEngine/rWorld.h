@@ -17,10 +17,12 @@ public:
 #undef al_map_rgb
 	void Frame();
 	void Draw();
+	void LoadMap(char* name);
 	ALLEGRO_COLOR GetColorTint();
 	
-	std::vector<rEntity> entities;
-	std::vector<rTile> tiles;
-	void CreateEntity(rEntityClass classname);
+	std::vector<rMap> loadedMaps;
+
+private:
+	char* ReadMap(char * path);
 };
 
