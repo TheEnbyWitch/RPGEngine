@@ -24,9 +24,9 @@ rScaledRegion_t rTile::GetScaledRegionForTile()
 	sc.sourceX = (tileID * 32) % (columns * 32);
 	int Yofs = 0;
 	int o = tileID;
-	while (o > columns)
+	while (o >= columns)
 	{
-		o -= columns;
+		o -= (columns);
 		Yofs++;
 	}
 	sc.sourceY = Yofs * 32;
