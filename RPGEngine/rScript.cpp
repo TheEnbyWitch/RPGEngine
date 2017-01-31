@@ -4,11 +4,15 @@
 
 rScript::rScript()
 {
+	luaState = luaL_newstate();
+	luaL_openlibs(luaState);
+	lua_register(luaState, "print", SCR_Print);
+	SCR_Print(luaState);
 }
-
 
 rScript::~rScript()
 {
+	lua_close(luaState);
 }
 
 char * rScript::ReadScript(char * name)
@@ -23,16 +27,26 @@ char * rScript::ReadScript(char * name)
 		return nullptr;
 	}
 	int size = al_fsize(scr);
-	char * script = new char[size];
+	char * script = new char[size+1];
 	al_fread(scr, script, size);
+	script[size] = '\0';
 	return script;
 }
 
 void rScript::ExecuteScript()
 {
+	luaL_dostring(luaState, ReadScript("main.lua"));
+	lua_getglobal(luaState, "main");
+	lua_call(luaState, 0, 0);
 }
 
-void SCR_Print(std::string txt)
+int SCR_Print(lua_State *state)
 {
-	rpge_printf("%s\n", txt.c_str());
+	int args = lua_gettop(state);
+	for (int i = 0; i <= args; i++)
+	{
+		rpge_printf("%s ", lua_tostring(state, i));
+	}
+	rpge_printf("\n");
+	return 0;
 }
