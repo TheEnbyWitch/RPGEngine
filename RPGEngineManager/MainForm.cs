@@ -7,14 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace RPGEngineManager
 {
     public partial class MainForm : Form
     {
+        string WorkingDirectory;
         public MainForm()
         {
             InitializeComponent();
+            WorkingDirectory = (Path.GetFullPath(Application.StartupPath + "/../"));
+            this.Text = "RPGEngine Manager - " + WorkingDirectory;
         }
     }
 }
