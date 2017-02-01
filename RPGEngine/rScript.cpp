@@ -7,7 +7,6 @@ rScript::rScript()
 	luaState = luaL_newstate();
 	luaL_openlibs(luaState);
 	lua_register(luaState, "print", SCR_Print);
-	SCR_Print(luaState);
 }
 
 rScript::~rScript()
@@ -38,15 +37,32 @@ void rScript::ExecuteScript()
 	luaL_dostring(luaState, ReadScript("main.lua"));
 	lua_getglobal(luaState, "main");
 	lua_call(luaState, 0, 0);
+	lua_pop(luaState, 1);
 }
 
-int SCR_Print(lua_State *state)
+void rScript::ExecuteLevelScript(char * name)
+{
+	//char path[256];
+	//sprintf(path, "maps/%s.lua", name);
+	
+	rpge_printf("Executing init(\"%s\")\n", name);
+	char str[64];
+	sprintf(str, "%s_init", name);
+	lua_settop(luaState, 0);
+	lua_getglobal(luaState, "init");
+	lua_pushstring(luaState, name);
+	lua_call(luaState, 1, 0);
+	lua_pop(luaState, 1);
+}
+
+SCR_FUNC(Print)
 {
 	int args = lua_gettop(state);
-	for (int i = 0; i <= args; i++)
+	for (int i = 1; i <= args; i++)
 	{
 		rpge_printf("%s ", lua_tostring(state, i));
 	}
 	rpge_printf("\n");
+	lua_pop(state, 1);
 	return 0;
 }

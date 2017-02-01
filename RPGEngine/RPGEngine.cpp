@@ -96,6 +96,8 @@ void init(void)
 	al_register_event_source(aEventQueue, al_get_keyboard_event_source());
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
 	al_register_event_source(aEventQueue, al_get_display_event_source(aDisplay));
+
+	gScript.ExecuteScript();
 	
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
@@ -107,7 +109,7 @@ void init(void)
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
 
-	gScript.ExecuteScript();
+	
 
 #ifdef USE_INTRO
 	std::ifstream gmIntro("gameintro");

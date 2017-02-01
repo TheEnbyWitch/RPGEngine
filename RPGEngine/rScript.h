@@ -14,6 +14,7 @@ public:
 
 	char* ReadScript(char* name);
 	void ExecuteScript();
+	void ExecuteLevelScript(char * name);
 
 };
 
