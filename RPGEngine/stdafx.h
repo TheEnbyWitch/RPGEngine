@@ -4,6 +4,7 @@
 //
 
 #pragma once
+#pragma warning( disable : 4018)
 
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
@@ -69,11 +70,11 @@ typedef struct gameInfo_s {
 extern gameInfo_t gameInfo;
 
 #include "Common.h"
-#include "UI.h"
+#include "rUI.h"
 #include "rEntity.h"
 #include "rTile.h"
 #include "rMap.h"
-#include "Menu.h"
+#include "rMenu.h"
 #include "rWorld.h"
 #include "rPlayer.h"
 #include "rScript.h"

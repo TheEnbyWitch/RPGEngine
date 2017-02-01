@@ -22,6 +22,7 @@ public:
 
 	ALLEGRO_BITMAP* cachedBitmap;
 
+	char uniqueID[10];
 	int Layer = 1;
 	int Level = 1;
 	int PositionX = 0;

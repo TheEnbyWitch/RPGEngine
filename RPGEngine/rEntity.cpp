@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "rEntity.h"
 
+unsigned int entID = 5;
 
 rEntity::rEntity()
 {
+	sprintf(uniqueID, "ENT%06d\0", entID);
+	entID++;
 }
 
 

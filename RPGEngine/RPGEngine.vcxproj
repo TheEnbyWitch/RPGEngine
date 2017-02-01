@@ -196,7 +196,7 @@
     <ClInclude Include="Branding.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="json.hpp" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="rMenu.h" />
     <ClInclude Include="RapidXML\rapidxml.hpp" />
     <ClInclude Include="RapidXML\rapidxml_iterators.hpp" />
     <ClInclude Include="RapidXML\rapidxml_print.hpp" />
@@ -212,11 +212,11 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="tmx\NLTmxMap.h" />
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="rUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
-    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="rMenu.cpp" />
     <ClCompile Include="rBitmap.cpp" />
     <ClCompile Include="rEntity.cpp" />
     <ClCompile Include="rMap.cpp" />
@@ -238,7 +238,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="rUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

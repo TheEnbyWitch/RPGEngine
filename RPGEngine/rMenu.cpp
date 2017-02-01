@@ -1,6 +1,5 @@
-#include "Menu.h"
+#include "rMenu.h"
 #include "stdafx.h"
-//#include "Menu.h"
 
 std::vector<class rMenu> Menus;
 char * activeMenu = "main";
