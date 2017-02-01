@@ -101,3 +101,8 @@ void rEntity::Move(int x, int y)
 		isMoving = true;
 	}
 }
+
+void rEntity::Interact()
+{
+
+}

@@ -42,6 +42,7 @@ public:
 	void Draw();
 	void Frame();
 	void Move(int x, int y);
+	void Interact();
 
 private:
 	int TargetX = 0;

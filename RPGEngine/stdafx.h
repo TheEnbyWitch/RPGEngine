@@ -22,6 +22,7 @@
 
 #include <physfs.h>
 #include "tmx\NLTmxMap.h"
+#include "Lua\lua.hpp"
 
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>
