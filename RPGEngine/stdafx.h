@@ -5,6 +5,7 @@
 
 #pragma once
 #pragma warning( disable : 4018)
+#undef _UNICODE
 
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
@@ -22,7 +23,12 @@
 
 #include <physfs.h>
 #include "tmx\NLTmxMap.h"
+#ifdef __USE_LUA
 #include "Lua\lua.hpp"
+#endif
+#include <squirrel.h>
+#include <sqstdmath.h>
+#include <sqstdstring.h>
 
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>
