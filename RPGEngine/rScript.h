@@ -25,9 +25,9 @@ public:
 
 char * ReadScript(char* name);
 
-void SQPrintFunc(HSQUIRRELVM SQ_UNUSED_ARG, const SQChar * s, ...);
+void SQPrintFunc(HSQUIRRELVM v, const SQChar * s, ...);
 
-void SQErrorFunc(HSQUIRRELVM SQ_UNUSED_ARG, const SQChar * s, ...);
+void SQErrorFunc(HSQUIRRELVM v, const SQChar * s, ...);
 
 void SQCompilerError(HSQUIRRELVM v, const SQChar * desc, const SQChar * source, SQInteger line, SQInteger column);
 
