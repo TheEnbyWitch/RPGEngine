@@ -11,6 +11,7 @@
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #define maxMenuIndex 128
 #define MAX_LINES_SHOWN 20
+#define __USE_ANGELSCRIPT
 
 #include "targetver.h"
 #include "Branding.h"
@@ -26,9 +27,19 @@
 #ifdef __USE_LUA
 #include "Lua\lua.hpp"
 #endif
+#ifdef __USE_SQUIRREL
 #include <squirrel.h>
 #include <sqstdmath.h>
 #include <sqstdstring.h>
+#endif
+#ifdef __USE_ANGELSCRIPT
+#include "AngelScript\include\angelscript.h"
+#include "AngelScript\add_on\scriptarray\scriptarray.h"
+#include "AngelScript\add_on\scriptbuilder\scriptbuilder.h"
+#include "AngelScript\add_on\scriptstdstring\scriptstdstring.h"
+#include "AngelScript\add_on\scriptmath\scriptmath.h"
+#include "AngelScript\add_on\weakref\weakref.h"
+#endif
 
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>

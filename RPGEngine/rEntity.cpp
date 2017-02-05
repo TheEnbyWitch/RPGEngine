@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "rEntity.h"
 
-unsigned int entID = 5;
+unsigned int entID = 0;
+std::vector<rEntity *> entityList;
 
 rEntity::rEntity()
 {
+	entityList.push_back(this);
 	sprintf(uniqueID, "ENT%06d\0", entID);
 	entID++;
 }
@@ -12,6 +14,32 @@ rEntity::rEntity()
 
 rEntity::~rEntity()
 {
+	if(weakRefFlag != NULL)
+		weakRefFlag->Set(true);
+}
+
+int rEntity::AddRef()
+{
+	return ++refCount;
+}
+
+int rEntity::Release()
+{
+	if (--refCount == 0)
+	{
+		delete this;
+		return 0;
+	}
+	return refCount;
+}
+
+asILockableSharedBool *rEntity::GetWeakRefFlag()
+{
+	if (!weakRefFlag)
+	{
+		weakRefFlag = asCreateLockableSharedBool();
+	}
+	return weakRefFlag;
 }
 
 int * rEntity::GetScreenPos()
@@ -49,16 +77,20 @@ rScaledRegion_t rEntity::GetScaledRegion()
 void rEntity::SetImage(char * path)
 {
 	strcpy(pathToImage, path);
+	isImageSet = true;
 }
 
 void rEntity::Draw()
 {
-	ALLEGRO_BITMAP * bm = gBitmap.GetBitmap(pathToImage);
-	ALLEGRO_BITMAP * embm = gBitmap.GetBitmap(pathToImage, true);
-	ALLEGRO_COLOR tint = gWorld.GetColorTint();
-	rScaledRegion_t r = GetScaledRegion();
-	al_draw_tinted_scaled_bitmap(bm, tint, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
-	if(embm != NULL) al_draw_scaled_bitmap(embm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+	if (isImageSet)
+	{
+		ALLEGRO_BITMAP * bm = gBitmap.GetBitmap(pathToImage);
+		ALLEGRO_BITMAP * embm = gBitmap.GetBitmap(pathToImage, true);
+		ALLEGRO_COLOR tint = gWorld.GetColorTint();
+		rScaledRegion_t r = GetScaledRegion();
+		al_draw_tinted_scaled_bitmap(bm, tint, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+		if (embm != NULL) al_draw_scaled_bitmap(embm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+	}
 }
 
 void rEntity::Frame()
@@ -88,7 +120,7 @@ void rEntity::Frame()
 		isMoving = false;
 }
 
-void rEntity::Move(int x, int y)
+bool rEntity::Move(int x, int y)
 {
 	if (!isMoving)
 	{
@@ -99,10 +131,21 @@ void rEntity::Move(int x, int y)
 		TargetX = PositionX + x*32;
 		TargetY = PositionY + y*32;
 		isMoving = true;
+		return true;
 	}
+	return false;
 }
 
 void rEntity::Interact()
 {
+	gScript.EntInteract(this);
+}
 
+rEntity *GetEntityById(string id)
+{
+	for (int i = 0; i < entityList.size(); i++)
+	{
+		if (strcmp(entityList[i]->uniqueID, id.c_str()) == 0) return entityList[i];
+	}
+	return NULL;
 }

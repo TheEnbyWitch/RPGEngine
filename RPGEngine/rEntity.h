@@ -31,9 +31,15 @@ public:
 	rEntityDirection Direction = ENT_DIRECTION_DOWN;
 	int animationFrame = 0;
 	bool isMoving = false;
+	bool isImageSet = false;
 	char pathToImage[256];
 	char pathToEmmisiveLayer[256] = "null";
 	rEntityClass classn;
+
+	int AddRef();
+	int Release();
+
+	asILockableSharedBool * GetWeakRefFlag();
 
 	int* GetScreenPos();
 	int* GetSourcePos();
@@ -41,11 +47,17 @@ public:
 	void SetImage(char * path);
 	void Draw();
 	void Frame();
-	void Move(int x, int y);
+	bool Move(int x, int y);
 	void Interact();
 
 private:
 	int TargetX = 0;
 	int TargetY = 0;
+
+protected:
+	int refCount;
+	asILockableSharedBool *weakRefFlag;
 };
 
+rEntity *GetEntityById(string id);
+extern std::vector<rEntity *> entityList;

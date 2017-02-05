@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "rScript.h"
 
-
+#ifdef __USE_SQUIRREL
 void SQPrintFunc(HSQUIRRELVM SQ_UNUSED_ARG(v), const SQChar *s, ...)
 {
 	va_list vl;
@@ -35,6 +35,31 @@ SQInteger SQRegisterFunc(HSQUIRRELVM v, SQFUNCTION f, const char *fname)
 	sq_pop(v, 1); //pops the root table    
 	return 0;
 }
+#endif
+
+#ifdef __USE_ANGELSCRIPT
+void ASMessageCallback(const asSMessageInfo *msg, void *param)
+{
+	const char *type = "ERR ";
+	if (msg->type == asMSGTYPE_WARNING)
+		type = "WARN";
+	else if (msg->type == asMSGTYPE_INFORMATION)
+		type = "INFO";
+	rpge_printf("[AS] %s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
+
+	if (msg->type == asMSGTYPE_ERROR)
+	{
+		((rScript *)param)->hasCompileErrors = true;
+	}
+}
+
+int ASIncludeCallback(const char *include, const char *from, CScriptBuilder *builder, void *userParam)
+{
+	rpge_printf("[AS] %s> Including %s\n", from, include);
+	return builder->AddSectionFromMemory((char *)include, ReadScript((char *)include));
+}
+
+#endif
 
 rScript::rScript()
 {
@@ -43,6 +68,7 @@ rScript::rScript()
 	luaL_openlibs(luaState);
 	lua_register(luaState, "print", SCR_Print);
 #endif
+#ifdef __USE_SQUIRREL
 	squirrelVM = sq_open(1024);
 	sq_setprintfunc(squirrelVM, SQPrintFunc, SQErrorFunc);
 	sq_pushroottable(squirrelVM);
@@ -52,6 +78,29 @@ rScript::rScript()
 	sqstd_register_stringlib(squirrelVM);
 
 	SQRegisterFunc(squirrelVM, SCR_Print, "print_kek");
+#endif
+#ifdef __USE_ANGELSCRIPT
+	asEngine = asCreateScriptEngine();
+	int r = asEngine->SetMessageCallback(asFUNCTION(ASMessageCallback), this, asCALL_CDECL);
+	
+	RegisterScriptArray(asEngine, true);
+	RegisterStdString(asEngine);
+	//RegisterScriptMath(asEngine);
+	r = asScriptBuilder.StartNewModule(asEngine, 0);
+	asScriptBuilder.SetIncludeCallback(&ASIncludeCallback, nullptr);
+#ifdef _DEBUG
+	asScriptBuilder.DefineWord("DEBUG");
+#endif
+	r = asEngine->RegisterGlobalFunction("void print(string &in)", asFUNCTION(SCR_Print), asCALL_CDECL);
+	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
+	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
+
+	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
+
+	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
+#endif
 }
 
 rScript::~rScript()
@@ -59,7 +108,9 @@ rScript::~rScript()
 #ifdef __USE_LUA
 	lua_close(luaState);
 #endif
+#ifdef __USE_SQUIRREL
 	sq_close(squirrelVM);
+#endif
 }
 
 char * ReadScript(char * name)
@@ -79,7 +130,7 @@ char * ReadScript(char * name)
 	script[size] = '\0';
 	return script;
 }
-
+#ifdef __USE_SQUIRREL
 SQInteger file_lexfeedASCII(SQUserPointer file) {
 	int ret;
 	char c;
@@ -88,9 +139,10 @@ SQInteger file_lexfeedASCII(SQUserPointer file) {
 		return c;
 	return 0;
 }
-
+#endif
 void rScript::ExecuteScript()
 {
+#ifdef __USE_SQUIRREL
 	mainScript = al_fopen("game.doot", "rb");
 	if (!mainScript)
 	{
@@ -107,13 +159,25 @@ void rScript::ExecuteScript()
 	sq_pushinteger(squirrelVM, 1);
 	sq_call(squirrelVM, 2, SQFalse, SQFalse);
 	sq_pop(squirrelVM, 2);
+#endif
 #ifdef __USE_LUA
 	luaL_dostring(luaState, ReadScript("main.lua"));
 	lua_getglobal(luaState, "main");
 	lua_call(luaState, 0, 0);
 	lua_pop(luaState, 1);
 #endif
-	
+	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
+	asScriptBuilder.BuildModule();
+	if (hasCompileErrors)
+		abort_game("AngelScript encountered errors when compiling. Check log for more info.");
+	scriptContext = asEngine->CreateContext();
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl("void main()");
+	if (func == 0)
+		abort_game("Main game script doesn't have void main()!");
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
 }
 
 void rScript::ExecuteLevelScript(char * name)
@@ -133,7 +197,11 @@ void rScript::ExecuteLevelScript(char * name)
 #endif
 }
 
-SCR_FUNC(Print)
+void rScript::EntInteract(rEntity * parent)
+{
+}
+
+void SCR_Print(string &txt)
 {
 #ifdef __USE_LUA
 	int args = lua_gettop(state);
@@ -145,6 +213,7 @@ SCR_FUNC(Print)
 	lua_pop(state, 1);
 	return 0;
 #endif
+#ifdef __USE_SQUIRREL
 	rpge_printf("SCR_Print was called\n");
 	SQInteger nargs = sq_gettop(v); //number of arguments
 	for (SQInteger n = 1; n <= nargs; n++)
@@ -155,4 +224,5 @@ SCR_FUNC(Print)
 	}
 	rpge_printf("\n");
 	return 0;
+#endif
 }

@@ -37,8 +37,8 @@ void init(void)
 	//abort_game(k);
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
-	for (int i = 0; i < 15; i++)
-		rpge_printf("\n");
+	//for (int i = 0; i < 15; i++)
+//		rpge_printf("\n");
 	//al_open_native_text_log("Log", ALLEGRO_TEXTLOG_MONOSPACE | ALLEGRO_TEXTLOG_NO_CLOSE);
 	rpge_printf(
 		"%s\n%s\n%s\n",
