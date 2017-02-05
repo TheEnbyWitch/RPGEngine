@@ -28,6 +28,7 @@ public:
 	int lastResult;
 	bool hasCompileErrors = false;
 
+	void LoadAssets();
 	void ExecuteScript();
 	void ExecuteLevelScript(char * name);
 	void EntInteract(rEntity * parent);
@@ -45,3 +46,8 @@ void SQCompilerError(HSQUIRRELVM v, const SQChar * desc, const SQChar * source, 
 #endif
 //SCR_FUNC(Print);
 void SCR_Print(string &txt);
+void SCR_Ping();
+
+void SCR_LoadMenu(string & txt);
+
+void SCR_LoadMap(string & txt);

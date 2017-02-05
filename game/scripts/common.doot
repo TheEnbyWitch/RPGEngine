@@ -1,0 +1,4 @@
+void IHaveNoIdea()
+{
+	print("IHaveNoIdea() from common.doot was called :D");
+}

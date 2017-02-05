@@ -5,13 +5,18 @@
 
 #pragma once
 #pragma warning( disable : 4018)
-#undef _UNICODE
+#ifdef _UNICODE
+#undef _UNICODE // if it was defined, undefine, it breaks stuff
+#endif
 
 #define _CRT_SECURE_NO_WARNINGS
-#define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
-#define maxMenuIndex 128
-#define MAX_LINES_SHOWN 20
-#define __USE_ANGELSCRIPT
+#define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__) // macro for getting only the filename
+
+#define maxMenuIndex 128		// max menu choices
+#define MAX_LINES_SHOWN 20		// max lines to show in console
+#define BITMAP_VERBOSE			// game will spit out a critical error if a bitmap is not found (only for GetBitmap())
+
+#define __USE_ANGELSCRIPT		// uses angelscript
 
 #include "targetver.h"
 #include "Branding.h"
@@ -49,14 +54,11 @@
 #include <allegro5\keyboard.h>
 
 #include <allegro5\allegro_native_dialog.h>
-//#include "json.hpp"
-//using json = nlohmann::json;
 
 extern ALLEGRO_EVENT_QUEUE* aEventQueue;
 extern ALLEGRO_TIMER* aTimer;
 extern ALLEGRO_DISPLAY* aDisplay;
 extern ALLEGRO_FONT *font;
-//extern ALLEGRO_TEXTLOG *txtLog;
 
 extern std::ifstream gameConfig;
 
@@ -105,7 +107,3 @@ extern rWorld gWorld;
 extern rPlayer player;
 
 void initialize_assets();
-
-
-
-// TODO: reference additional headers your program requires here

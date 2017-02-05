@@ -55,7 +55,7 @@ void ASMessageCallback(const asSMessageInfo *msg, void *param)
 
 int ASIncludeCallback(const char *include, const char *from, CScriptBuilder *builder, void *userParam)
 {
-	rpge_printf("[AS] %s> Including %s\n", from, include);
+	rpge_printf("[AS] %s : Including %s\n", from, include);
 	return builder->AddSectionFromMemory((char *)include, ReadScript((char *)include));
 }
 
@@ -80,26 +80,7 @@ rScript::rScript()
 	SQRegisterFunc(squirrelVM, SCR_Print, "print_kek");
 #endif
 #ifdef __USE_ANGELSCRIPT
-	asEngine = asCreateScriptEngine();
-	int r = asEngine->SetMessageCallback(asFUNCTION(ASMessageCallback), this, asCALL_CDECL);
 	
-	RegisterScriptArray(asEngine, true);
-	RegisterStdString(asEngine);
-	//RegisterScriptMath(asEngine);
-	r = asScriptBuilder.StartNewModule(asEngine, 0);
-	asScriptBuilder.SetIncludeCallback(&ASIncludeCallback, nullptr);
-#ifdef _DEBUG
-	asScriptBuilder.DefineWord("DEBUG");
-#endif
-	r = asEngine->RegisterGlobalFunction("void print(string &in)", asFUNCTION(SCR_Print), asCALL_CDECL);
-	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
-
-	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
-
-	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 #endif
 }
 
@@ -166,22 +147,73 @@ void rScript::ExecuteScript()
 	lua_call(luaState, 0, 0);
 	lua_pop(luaState, 1);
 #endif
+	rpge_printf("Initializing AngelScript");
+	asEngine = asCreateScriptEngine();
+	int r = asEngine->SetMessageCallback(asFUNCTION(ASMessageCallback), this, asCALL_CDECL);
+
+	RegisterScriptArray(asEngine, true);
+	RegisterStdString(asEngine);
+	//RegisterScriptMath(asEngine);
+	r = asScriptBuilder.StartNewModule(asEngine, 0);
+	asScriptBuilder.SetIncludeCallback(&ASIncludeCallback, nullptr);
+#ifdef _DEBUG
+	asScriptBuilder.DefineWord("DEBUG");
+#endif
+
+	r = asEngine->RegisterGlobalFunction("void print(string &in)", asFUNCTION(SCR_Print), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void ping()", asFUNCTION(SCR_Ping), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void LoadMenu(string &in)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void LoadMap(string &in)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
+
+	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
+
+	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
+
+	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
 	if (hasCompileErrors)
 		abort_game("AngelScript encountered errors when compiling. Check log for more info.");
+
 	scriptContext = asEngine->CreateContext();
 	if (scriptContext == 0)
 		abort_game("Failed to create context!");
-	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl("void main()");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl("void init()");
+	if (func == 0)
+		abort_game("Main game script doesn't have void init()!");
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
+	
+	//scriptContext->Release();
+
+	scriptContext = asEngine->CreateContext();
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	func = asEngine->GetModule(0)->GetFunctionByDecl("void main()");
 	if (func == 0)
 		abort_game("Main game script doesn't have void main()!");
 	scriptContext->Prepare(func);
 	scriptContext->Execute();
+	//scriptContext->Release();
 }
 
 void rScript::ExecuteLevelScript(char * name)
 {
+	rpge_printf("Executing %s_init\n", name);
+	scriptContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s_init()", name);
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	if (func == 0)
+		abort_game("Couldn't find init function for level!");
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
+	//scriptContext->Release();
 #ifdef __USE_LUA
 	//char path[256];
 	//sprintf(path, "maps/%s.lua", name);
@@ -225,4 +257,20 @@ void SCR_Print(string &txt)
 	rpge_printf("\n");
 	return 0;
 #endif
+	rpge_printf("%s\n", txt.c_str());
+}
+
+void SCR_Ping()
+{
+	rpge_printf("[AS] Ping!\n");
+}
+
+void SCR_LoadMenu(string &txt)
+{
+	Menus.push_back(rMenu::ReadMenu((char *)txt.c_str()));
+}
+
+void SCR_LoadMap(string &txt)
+{
+	gWorld.LoadMap((char *)txt.c_str());
 }

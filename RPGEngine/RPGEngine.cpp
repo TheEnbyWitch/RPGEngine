@@ -138,8 +138,7 @@ void shutdown(void)
 
 void initialize_assets()
 {
-	Menus.push_back(rMenu::ReadMenu("main"));
-	gWorld.LoadMap("untitled");
+	
 }
 
 bool showCon = false;

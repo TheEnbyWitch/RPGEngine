@@ -1,0 +1,7 @@
+#include "scripts/common.doot"
+
+void untitled_init()
+{
+	print("[AS]:untitled.doot Initializing level");
+	IHaveNoIdea();
+}

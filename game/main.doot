@@ -1,4 +1,15 @@
+#include "scripts/common.doot"
+
 void main()
 {
-	print("AS: Initializing game");
+	print("[AS]:main.doot Initializing game");
+	IHaveNoIdea();
+}
+
+void testfunc1()
+{
+}
+
+void testfunc2()
+{
 }
