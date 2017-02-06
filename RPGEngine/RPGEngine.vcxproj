@@ -213,6 +213,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AngelScript\add_on\scriptarray\scriptarray.h" />
