@@ -6,6 +6,9 @@ public:
 	rTile(int x, int y, int layer, char * name);
 	~rTile();
 
+	int pX;
+	int pY;
+
 	int tileID;
 	int columns;
 

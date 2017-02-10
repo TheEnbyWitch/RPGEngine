@@ -34,6 +34,7 @@ void rMap::ProcessMap()
 			}
 			tile.tileID = map->layers[i]->data[o]-firstGid;
 			tile.PositionX = (o % map->layers[i]->width-1)*32;
+			tile.pX = (o % map->layers[i]->width - 1);
 			int Yofs = 0;
 			int oo = o;
 			while (oo > map->layers[i]->width)
@@ -42,6 +43,7 @@ void rMap::ProcessMap()
 				Yofs++;
 			}
 			tile.PositionY = Yofs * 32;
+			tile.pY = Yofs;
 			for (int p = 0; p < map->tilesets.size(); p++)
 			{
 				if (map->tilesets[p]->firstGid == firstGid)
@@ -60,4 +62,23 @@ void rMap::ProcessMap()
 	gScript.ExecuteLevelScript(name);
 	rpge_printf("Map %s has been fully processed and is ready to use in game!\n", name);
 	wasProcessed = true;
+}
+
+void rMap::Optimize()
+{
+	rTile **** _tiles = new rTile ***[maxLayers];
+	for (int o = 0; o < maxLayers; o++)
+	{
+		_tiles[o] = new rTile **[__height];
+		for (int i = 0; i < __height; i++)
+		{
+			_tiles[o][i] = new rTile *[__width];
+		}
+	}
+	for (int i = 0; i < tiles.size(); i++)
+	{
+		_tiles[tiles[i].Layer][tiles[i].pY][tiles[i].pX] = &tiles[i];
+	}
+	int chunkCount = (((__height / 32) + 1)*((__width / 32) + 1));
+
 }
