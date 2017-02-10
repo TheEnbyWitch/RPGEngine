@@ -257,10 +257,11 @@ void game_loop(void)
 			for (int i = 0; i < Menus.size(); i++)
 			{
 				rMenu * menu = &Menus[i];
-				if (!strcmp(menu->name, activeMenu))
+				if(menu->isActive)
+					menu->Key(event.keyboard.keycode);
+				if (strcmp(menu->name, activeMenu) == 0)
 				{
 					menu->isActive = true;
-					menu->Key(event.keyboard.keycode);
 				}
 				else
 				{

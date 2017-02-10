@@ -31,7 +31,7 @@
 			256,
 			16
 		],
-		"text": "OPTIONS",
+		"text": "somethin else",
 		"type": 2,
 		"color": [
 			0,
@@ -45,8 +45,8 @@
 			255,
 			255
 		],
-		"onClick": "openmenu",
-		"onClickArgs": "options",
+		"onClick": "",
+		"onClickArgs": "",
 		"index": 1
 	}, {
 		"rect": [
@@ -55,7 +55,7 @@
 			256,
 			16
 		],
-		"text": "QUIT",
+		"text": "BACK",
 		"type": 2,
 		"color": [
 			255,
@@ -69,8 +69,8 @@
 			255,
 			255
 		],
-		"onClick": "quitgame",
-		"onClickArgs": "",
+		"onClick": "openmenu",
+		"onClickArgs": "main",
 		"index": 2
 	}]
 }
