@@ -51,3 +51,5 @@ void SCR_Ping();
 void SCR_LoadMenu(string & txt);
 
 void SCR_LoadMap(string & txt);
+
+void SCR_OpenMenu(string & txt);

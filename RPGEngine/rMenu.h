@@ -11,7 +11,7 @@ TYPEDEF_MENU_ACTION_FUNC(MenuAction_t);
 MENU_ACTION_FUNC(M_OpenMenu);
 MENU_ACTION_FUNC(M_QuitGame);
 MENU_ACTION_FUNC(M_StartGame);
-
+MENU_ACTION_FUNC(M_ExecScript);
 
 typedef struct rMenuActionFunc_s {
 	char * name;
@@ -21,7 +21,8 @@ typedef struct rMenuActionFunc_s {
 static rMenuActionFunc_t menuActionFuncs[]{
 {"openmenu", &M_OpenMenu },
 {"quitgame", &M_QuitGame },
-{"startgame", &M_StartGame }	
+{"startgame", &M_StartGame },
+{"execscript", &M_ExecScript }
 };
 #endif
 #ifdef _RPG_COMPILER
@@ -118,7 +119,7 @@ typedef struct rMenuVars_s {
 } rMenuVars_t;
 #ifndef _RPG_COMPILER
 extern std::vector<class rMenu> Menus;
-extern char * activeMenu;
+extern char activeMenu[32];
 #endif
 
 class rMenu

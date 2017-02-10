@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 std::vector<class rMenu> Menus;
-char * activeMenu = "main";
+char activeMenu[32]{ 'n','u','l','l'};
 namespace rColor
 {
 	ALLEGRO_COLOR toAllegro(rColor_t clr)
@@ -119,7 +119,7 @@ void rMenu::ExecuteAction(char * func, char * arg)
 
 MENU_ACTION_FUNC(M_OpenMenu)
 {
-	activeMenu = argument;
+	strcpy(activeMenu, argument);
 }
 
 MENU_ACTION_FUNC(M_QuitGame)
@@ -130,4 +130,9 @@ MENU_ACTION_FUNC(M_QuitGame)
 MENU_ACTION_FUNC(M_StartGame)
 {
 	gameState = GAME_STATE_INGAME;
+}
+
+MENU_ACTION_FUNC(M_ExecScript)
+{
+	abort_game("M_ExecScript is not implemented yet!");
 }

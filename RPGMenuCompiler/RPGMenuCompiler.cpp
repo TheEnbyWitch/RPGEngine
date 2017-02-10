@@ -7,7 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <Windows.h>
-#include "../RPGEngine/Menu.h"
+#include "../RPGEngine/rMenu.h"
 #include "../RPGEngine/json.hpp"
 
 using namespace std;

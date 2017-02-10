@@ -147,7 +147,7 @@ void rScript::ExecuteScript()
 	lua_call(luaState, 0, 0);
 	lua_pop(luaState, 1);
 #endif
-	rpge_printf("Initializing AngelScript");
+	rpge_printf("Initializing AngelScript\n");
 	asEngine = asCreateScriptEngine();
 	int r = asEngine->SetMessageCallback(asFUNCTION(ASMessageCallback), this, asCALL_CDECL);
 
@@ -164,6 +164,8 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void ping()", asFUNCTION(SCR_Ping), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMenu(string &in)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string &in)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void OpenMenu(string &in)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
+
 
 	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
@@ -273,4 +275,9 @@ void SCR_LoadMenu(string &txt)
 void SCR_LoadMap(string &txt)
 {
 	gWorld.LoadMap((char *)txt.c_str());
+}
+
+void SCR_OpenMenu(string &txt)
+{
+	strcpy(activeMenu, txt.c_str());
 }
