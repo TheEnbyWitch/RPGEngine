@@ -45,6 +45,11 @@ void rTile::Draw()
 	al_draw_tinted_scaled_bitmap(cachedBitmap, gWorld.GetColorTint(), cachedRegion.sourceX, cachedRegion.sourceY, cachedRegion.sourceW, cachedRegion.sourceH, cachedRegion.destinationX, cachedRegion.destinationY, cachedRegion.destinationW, cachedRegion.destinationH, NULL);
 }
 
+void rTile::DrawToBitmap(int ofsX, int ofsY)
+{
+	al_draw_tinted_scaled_bitmap(cachedBitmap, al_map_rgb(255,255,255), cachedRegion.sourceX, cachedRegion.sourceY, cachedRegion.sourceW, cachedRegion.sourceH, cachedRegion.destinationX+ofsX, cachedRegion.destinationY+ofsY, cachedRegion.destinationW, cachedRegion.destinationH, NULL);
+}
+
 void rTile::Cache()
 {
 	if (!cachedBitmap)

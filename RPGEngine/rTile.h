@@ -18,6 +18,7 @@ public:
 	rScaledRegion_t GetScaledRegionForTile();
 
 	void Draw();
+	void DrawToBitmap(int ofsX, int ofsY);
 	void Cache();
 };
 

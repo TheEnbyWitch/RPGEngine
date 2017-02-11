@@ -281,3 +281,8 @@ void SCR_OpenMenu(string &txt)
 {
 	strcpy(activeMenu, txt.c_str());
 }
+
+void SCR_OptimizeMap(string &txt)
+{
+	rpge_printf("Optimizing map %s", (char *)txt.c_str());
+}

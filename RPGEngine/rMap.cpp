@@ -69,16 +69,85 @@ void rMap::Optimize()
 	rTile **** _tiles = new rTile ***[maxLayers];
 	for (int o = 0; o < maxLayers; o++)
 	{
-		_tiles[o] = new rTile **[__height];
-		for (int i = 0; i < __height; i++)
+		_tiles[o] = new rTile **[map->height + 1];
+		for (int i = 0; i < map->height + 1; i++)
 		{
-			_tiles[o][i] = new rTile *[__width];
+			_tiles[o][i] = new rTile *[map->width + 1];
+			for (int p = 0; p < map->width + 1; p++)
+			{
+				_tiles[o][i][p] = NULL;
+			}
 		}
 	}
 	for (int i = 0; i < tiles.size(); i++)
 	{
+		//tiles[i].Cache();
 		_tiles[tiles[i].Layer][tiles[i].pY][tiles[i].pX] = &tiles[i];
 	}
-	int chunkCount = (((__height / 32) + 1)*((__width / 32) + 1));
+	int chunkColumns = (map->width / 32) + 1;
+	int chunkRows = (map->height / 32) + 1;
+	if (chunkColumns*chunkRows*maxLayers >= 64)
+	{
+		abort_game("Map too big for optimization!");
+	}
+	int chunks = 0;
+	for (int u = 0; u < maxLayers; u++)
+	{
+		for (int i = 0; i < chunkColumns*chunkRows; i++)
+		{
+			int ofsX = i % chunkRows;
+			int ofsY = i / chunkRows;
+			ALLEGRO_BITMAP * targetbitmap = al_create_bitmap(32 * 32, 32 * 32);
+			ALLEGRO_BITMAP * original = al_get_target_bitmap();
+			rMapChunk chnk;
+			al_set_target_bitmap(targetbitmap);
+			//for (int o = 0; o < maxLayers; o++)
+			//{
+				for (int p = 0; p < (map->height); p++)
+				{
+					for (int a = 0; a < (map->width); a++)
+					{
+						if (_tiles[u][p][a] != NULL)
+							_tiles[u][p][a]->DrawToBitmap(ofsX * -32, ofsY * -32);
+					}
+				}
+
+			//}
+			al_set_target_bitmap(original);
+			chnk.posX = ofsX;
+			chnk.posY = ofsY;
+			chnk.layer = u;
+			chnk.resultBitmap = targetbitmap;
+			cachedChunks[chunks] = chnk;
+			chunks++;
+		}
+	}
+	cachedChunkSize = chunks;
+	isOptimized = true;
+}
+
+void rMap::Draw(int layer)
+{
+	if (wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
+	if (isOptimized)
+	{
+		for (int i = 0; i < cachedChunkSize; i++)
+		{
+			if(cachedChunks[i].layer == layer)
+				al_draw_tinted_bitmap(cachedChunks[i].resultBitmap, gWorld.GetColorTint(), cachedChunks[i].posX * 32 * 32, cachedChunks[i].posY * 32 * 32, NULL);
+		}
+	}
+	else {
+		int tileSize = tiles.size();
+		for (int o = 0; o < tileSize; o++)
+		{
+			if (tiles[o].Layer == layer) tiles[o].Draw();
+		}
+		int entSize = entities.size();
+		for (int o = 0; o < entSize; o++)
+		{
+			if (entities[o].Layer == layer) entities[o].Draw();
+		}
+	}
 
 }

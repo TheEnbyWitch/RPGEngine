@@ -31,20 +31,10 @@ void rWorld::Draw()
 		}
 	}
 	if (loadedMap == NULL) abort_game("Tried to draw NULL map!");
-	if (loadedMap->wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
 	al_hold_bitmap_drawing(true);
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
-		int tileSize = loadedMap->tiles.size();
-		for (int o = 0; o < tileSize; o++)
-		{
-			if(loadedMap->tiles[o].Layer == i) loadedMap->tiles[o].Draw();
-		}
-		int entSize = loadedMap->entities.size();
-		for (int o = 0; o < entSize; o++)
-		{
-			if (loadedMap->entities[o].Layer == i) loadedMap->entities[o].Draw();
-		}
+		loadedMap->Draw(i);
 		if (i == 1) player.Draw();
 	}
 	al_hold_bitmap_drawing(false);
@@ -62,6 +52,7 @@ void rWorld::LoadMap(char * name)
 	rpge_printf("Loaded map %s\n", path);
 	loadedMaps.push_back(result);
 	loadedMaps[loadedMaps.size() - 1].ProcessMap();
+	loadedMaps[loadedMaps.size() - 1].Optimize();
 }
 
 double GetMod(double v, double mod)
