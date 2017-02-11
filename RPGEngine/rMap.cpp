@@ -14,7 +14,7 @@ rMap::~rMap()
 // CALL THIS AFTER TMX Map was loaded!
 void rMap::ProcessMap()
 {
-	rpge_printf("Processing map %s\n", name);
+	rpge_printf("[rMap] Processing map %s\n", name);
 	int layers = map->layers.size();
 	
 	for (int i = 0; i < layers; i++)
@@ -60,7 +60,7 @@ void rMap::ProcessMap()
 		}
 	}
 	gScript.ExecuteLevelScript(name);
-	rpge_printf("Map %s has been fully processed and is ready to use in game!\n", name);
+	rpge_printf("[rMap] Map %s has been fully processed and is ready to use in game!\n", name);
 	wasProcessed = true;
 }
 
@@ -91,6 +91,7 @@ void rMap::Optimize()
 		abort_game("Map too big for optimization!");
 	}
 	int chunks = 0;
+	int bitmapsWereMade = 0;
 	for (int u = 0; u < maxLayers; u++)
 	{
 		for (int i = 0; i < chunkColumns*chunkRows; i++)
@@ -98,6 +99,7 @@ void rMap::Optimize()
 			int ofsX = i % chunkRows;
 			int ofsY = i / chunkRows;
 			ALLEGRO_BITMAP * targetbitmap = al_create_bitmap(32 * 32, 32 * 32);
+			bitmapsWereMade++;
 			ALLEGRO_BITMAP * original = al_get_target_bitmap();
 			rMapChunk chnk;
 			al_set_target_bitmap(targetbitmap);
@@ -123,6 +125,7 @@ void rMap::Optimize()
 		}
 	}
 	cachedChunkSize = chunks;
+	rpge_printf("[rMap] %s was optimized with %d bitmaps\n", name, bitmapsWereMade);
 	isOptimized = true;
 }
 

@@ -27,6 +27,10 @@
 #include <fstream>
 #include <unordered_map>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include <physfs.h>
 #include "tmx\NLTmxMap.h"
 #ifdef __USE_LUA

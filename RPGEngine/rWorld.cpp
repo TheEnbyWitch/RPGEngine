@@ -49,7 +49,7 @@ void rWorld::LoadMap(char * name)
 	rMap result;
 	result.map = NLLoadTmxMap(ReadMap(path));
 	memcpy(result.name, name, 16);
-	rpge_printf("Loaded map %s\n", path);
+	rpge_printf("[rWorld] Loaded map %s\n", path);
 	loadedMaps.push_back(result);
 	loadedMaps[loadedMaps.size() - 1].ProcessMap();
 	loadedMaps[loadedMaps.size() - 1].Optimize();

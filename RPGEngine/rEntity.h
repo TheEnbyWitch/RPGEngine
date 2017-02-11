@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
+#define WS if(!wasCreated) abort_game("Tried to do an action on an uncreated entity");
+
 typedef enum {
 	ENTITY_ACTOR,
 	ENTITY_OBJECT,
@@ -40,6 +42,9 @@ public:
 	int Release();
 
 	asILockableSharedBool * GetWeakRefFlag();
+
+	bool wasCreated = false;
+	void Create();
 
 	int* GetScreenPos();
 	int* GetSourcePos();

@@ -32,7 +32,7 @@ ALLEGRO_BITMAP * rBitmap::GetBitmap(char * fname, bool getEmissive, bool dontAdd
 			return ReturnValidImage(entries[i].bitmap);
 		}
 	}
-	rpge_printf("Loading bitmap %s\n", name);
+	rpge_printf("[rBitmap] Loading bitmap %s\n", name);
 
 	rBitmapEntry_t entry;
 	memcpy(entry.name, name, 256);

@@ -1,6 +1,8 @@
 #include "rMenu.h"
 #include "stdafx.h"
 
+#define MENU_VERBOSE if(cvarBool(menu_verbose))
+
 std::vector<class rMenu> Menus;
 char activeMenu[32]{ 'n','u','l','l'};
 namespace rColor
@@ -86,20 +88,20 @@ rMenu rMenu::ReadMenu(char * name)
 	ALLEGRO_FILE * menufile;
 	char * filename = new char[256];
 	sprintf(filename, "menu/%s.rmenu", name);
-	rpge_printf("Opening menu: %s\n", filename);
+	MENU_VERBOSE rpge_printf("[rMenu] Opening menu: %s\n", filename);
 	menufile = al_fopen(filename, "rb");
 	char magic[6];
 	al_fread(menufile, magic, 6);
-	rpge_printf("menu magic: %s\n", magic);
+	MENU_VERBOSE rpge_printf("[rMenu] menu magic: %s\n", magic);
 	al_fread(menufile, result.name, sizeof(result.name));
 	int itemCount;
 	al_fread(menufile, &itemCount, sizeof(int));
-	rpge_printf("item count: %d\n", itemCount);
+	MENU_VERBOSE rpge_printf("[rMenu] item count: %d\n", itemCount);
 	for (int i = 0; i < itemCount; i++)
 	{
 		rMenuItem_t item;
 		al_fread(menufile, &item, sizeof(rMenuItem_t));
-		rpge_printf("Processing item with text %s\n", item.text);
+		MENU_VERBOSE rpge_printf("[rMenu] Processing item with text %s\n", item.text);
 		result.items.push_back(item);
 	}
 	al_fclose(menufile);
@@ -119,16 +121,19 @@ void rMenu::ExecuteAction(char * func, char * arg)
 
 MENU_ACTION_FUNC(M_OpenMenu)
 {
+	rpge_printf("[rMenu] M_OpenMenu() - Opening menu %s\n", argument);
 	strcpy(activeMenu, argument);
 }
 
 MENU_ACTION_FUNC(M_QuitGame)
 {
+	rpge_printf("[rMenu] M_QuitGame() - Quitting game\n");
 	exit(0);
 }
 
 MENU_ACTION_FUNC(M_StartGame)
 {
+	rpge_printf("[rMenu] M_StartGame() - Starting game\n");
 	gameState = GAME_STATE_INGAME;
 }
 

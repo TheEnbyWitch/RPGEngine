@@ -33,40 +33,46 @@ int __height = 540;
 
 void init(void)
 {
-	//char * k = new char[500];
-	//abort_game(k);
-	if (!al_init())
-		abort_game("Failed to initialize allegro");
-	//for (int i = 0; i < 15; i++)
-//		rpge_printf("\n");
-	//al_open_native_text_log("Log", ALLEGRO_TEXTLOG_MONOSPACE | ALLEGRO_TEXTLOG_NO_CLOSE);
 	rpge_printf(
-		"%s\n%s\n%s\n",
+		"== init() ==\n%s\n%s\n%s\n",
 		"*********************",
 		"* INITIALIZING RPGe *",
 		"*********************"
 	);
+
+	rpge_printf("Initializing Allegro %s\n", ALLEGRO_VERSION_STR);
+
+	if (!al_init())
+		abort_game("Failed to initialize allegro");
+
 	rpge_printf("Initializing PhysicsFS\n");
 	PHYSFS_init(NULL);
 	PHYSFS_mount("_build", NULL, 0);
 	PHYSFS_mount("_resources", NULL, 1);
 	PHYSFS_mount("_audio", "sound/", 1);
 
+
+	rpge_printf("Initializing keyboard\n");
 	if (!al_install_keyboard())
 		abort_game("Failed to install keyboard");
 
+	rpge_printf("Initializing mouse\n");
 	if (!al_install_mouse())
 		abort_game("Failed to install mouse");
 
+	rpge_printf("Initializing image addon\n");
 	if (!al_init_image_addon())
-		abort_game("How come the image addon isn't loading dude");
+		abort_game("Failed to initialize image addon");
 
+	rpge_printf("Preparing the PhysFS file interface for use with Allegro\n");
 	al_set_physfs_file_interface();
 
+	rpge_printf("Creating timer\n");
 	aTimer = al_create_timer(1.0 / 60);
 	if (!aTimer)
 		abort_game("Failed to create timer");
 
+	rpge_printf("Creating display\n");
 	al_set_new_display_flags(ALLEGRO_WINDOWED);
 	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
 	//al_set_new_display_flags(ALLEGRO_OPENGL);
@@ -82,17 +88,21 @@ void init(void)
 	if (!aDisplay)
 		abort_game("Failed to create display");
 
+	rpge_printf("Creating the event queue\n");
 	aEventQueue = al_create_event_queue();
 	if (!aEventQueue)
 		abort_game("Failed to create event queue");
 
-	al_init_font_addon(); // initialize the font addon
-	al_init_ttf_addon();// initialize the ttf (True Type Font) addon
+	rpge_printf("Initializing font addon\n");
+	al_init_font_addon();
+	rpge_printf("Initializing TTF addon\n");
+	al_init_ttf_addon();
 
 	font = al_load_ttf_font("lucon.ttf", 12, 0);
 	if (!font)
 		abort_game("Font not found");
 
+	rpge_printf("Registering event sources\n");
 	al_register_event_source(aEventQueue, al_get_keyboard_event_source());
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
 	al_register_event_source(aEventQueue, al_get_display_event_source(aDisplay));
@@ -102,14 +112,13 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
+	player.Create();
 	player.SetImage("Actor");
 
 	initialize_assets();
 
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
-
-	
 
 #ifdef USE_INTRO
 	std::ifstream gmIntro("gameintro");
@@ -118,6 +127,7 @@ void init(void)
 	rpge_printf("%s\n", "Using game intro");
 	gmIntro >> gameIntroJSON;
 #endif
+	rpge_printf("== init() finished ==\n");
 }
 
 void shutdown(void)
@@ -157,12 +167,18 @@ void game_loop(void)
 
 	if (!bInitialized)
 	{
-		al_set_window_title(aDisplay, "RPGEngine - NO GAME");
-		rpge_printf("RPGEngine couldn't initialize game");
+#ifdef _WIN32
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] NO GAME (%s)", (_DEBUG ? "dev" : "ship"))));
+#endif
+		al_set_window_title(aDisplay, va("[RPGEngine] NO GAME (%s)", (_DEBUG ? "dev" : "ship")));
+		abort_game("RPGEngine couldn't initialize game");
 	} 
 	else
 	{
-		al_set_window_title(aDisplay, gameInfo.name);
+#ifdef _WIN32
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gameInfo.name, (_DEBUG ? "dev" : "ship"))));
+#endif
+		al_set_window_title(aDisplay, va("[RPGEngine] %s (%s)",gameInfo.name, (_DEBUG ? "dev" : "ship")));
 	}
 
 	while (1) {
@@ -273,10 +289,11 @@ void game_loop(void)
 			}
 			else {
 				// NEEDS A REWRITE DAMN IT
-				char input = (char)event.keyboard.keycode+ 'a' - 1 + (event.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
+				//char input = (char)event.keyboard.keycode+ 'a' - 1 + (event.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
+				char input = GetCharFromKeycode(event.keyboard.keycode, event.keyboard.modifiers);
 				if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
 					if(consoleInput.length() > 0) consoleInput.erase(consoleInput.length() - 1);
-				if(input >= 32)
+				if(input > 0)
 					consoleInput += input;
 			}
 		}

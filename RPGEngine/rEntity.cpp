@@ -6,9 +6,7 @@ std::vector<rEntity *> entityList;
 
 rEntity::rEntity()
 {
-	entityList.push_back(this);
-	sprintf(uniqueID, "ENT%06d\0", entID);
-	entID++;
+	
 }
 
 
@@ -42,8 +40,18 @@ asILockableSharedBool *rEntity::GetWeakRefFlag()
 	return weakRefFlag;
 }
 
+void rEntity::Create()
+{
+	entityList.push_back(this);
+	sprintf(uniqueID, "ENT%06d\0", entID);
+	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
+	entID++;
+	wasCreated = true;
+}
+
 int * rEntity::GetScreenPos()
 {
+	WS
 	int *pos = new int[2];
 	pos[0] = PositionX;
 	pos[1] = PositionY;
@@ -52,6 +60,7 @@ int * rEntity::GetScreenPos()
 
 int * rEntity::GetSourcePos()
 {
+	WS
 	int *spos = new int[2];
 	spos[1] = 32 * Direction;
 	spos[0] = 32 * (int)(animationFrame/6);
@@ -60,6 +69,7 @@ int * rEntity::GetSourcePos()
 
 rScaledRegion_t rEntity::GetScaledRegion()
 {
+	WS
 	rScaledRegion_t result;
 	int *pos = GetScreenPos();
 	int *spos = GetSourcePos();
@@ -76,12 +86,14 @@ rScaledRegion_t rEntity::GetScaledRegion()
 
 void rEntity::SetImage(char * path)
 {
+	WS
 	strcpy(pathToImage, path);
 	isImageSet = true;
 }
 
 void rEntity::Draw()
 {
+	WS
 	if (isImageSet)
 	{
 		ALLEGRO_BITMAP * bm = gBitmap.GetBitmap(pathToImage);
@@ -95,6 +107,7 @@ void rEntity::Draw()
 
 void rEntity::Frame()
 {
+	WS
 	if (Direction > 3)
 		Direction = ENT_DIRECTION_DOWN;
 	if (Direction < 0)
@@ -122,6 +135,7 @@ void rEntity::Frame()
 
 bool rEntity::Move(int x, int y)
 {
+	WS
 	if (!isMoving)
 	{
 		if (y > 0) Direction = ENT_DIRECTION_DOWN;

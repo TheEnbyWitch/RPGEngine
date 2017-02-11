@@ -1,5 +1,5 @@
 #pragma once
-class rTile : public rEntity
+class rTile
 {
 public:
 	rTile();
@@ -9,11 +9,18 @@ public:
 	int pX;
 	int pY;
 
+	char pathToImage[256];
+	int Layer = 1;
+	int Level = 1;
+	int PositionX = 0;
+	int PositionY = 0;
+
 	int tileID;
 	int columns;
 
 	bool isRegionCached = false;
 	rScaledRegion_t cachedRegion;
+	ALLEGRO_BITMAP * cachedBitmap;
 
 	rScaledRegion_t GetScaledRegionForTile();
 

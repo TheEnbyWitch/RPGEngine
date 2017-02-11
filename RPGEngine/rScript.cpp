@@ -45,7 +45,7 @@ void ASMessageCallback(const asSMessageInfo *msg, void *param)
 		type = "WARN";
 	else if (msg->type == asMSGTYPE_INFORMATION)
 		type = "INFO";
-	rpge_printf("[AS] %s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
+	rpge_printf("[Angel] %s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
 
 	if (msg->type == asMSGTYPE_ERROR)
 	{
@@ -55,7 +55,7 @@ void ASMessageCallback(const asSMessageInfo *msg, void *param)
 
 int ASIncludeCallback(const char *include, const char *from, CScriptBuilder *builder, void *userParam)
 {
-	rpge_printf("[AS] %s : Including %s\n", from, include);
+	rpge_printf("[Angel] %s : Including %s\n", from, include);
 	return builder->AddSectionFromMemory((char *)include, ReadScript((char *)include));
 }
 
@@ -204,7 +204,7 @@ void rScript::ExecuteScript()
 
 void rScript::ExecuteLevelScript(char * name)
 {
-	rpge_printf("Executing %s_init\n", name);
+	rpge_printf("[rScript] Executing %s_init\n", name);
 	scriptContext = asEngine->CreateContext();
 	char str[64];
 	sprintf(str, "void %s_init()", name);
@@ -259,7 +259,7 @@ void SCR_Print(string &txt)
 	rpge_printf("\n");
 	return 0;
 #endif
-	rpge_printf("%s\n", txt.c_str());
+	rpge_printf("[DOOT] %s\n", txt.c_str());
 }
 
 void SCR_Ping()
@@ -269,20 +269,23 @@ void SCR_Ping()
 
 void SCR_LoadMenu(string &txt)
 {
+	rpge_printf("[rScript] SCR_LoadMenu() - Loading menu %s\n", (char *)txt.c_str());
 	Menus.push_back(rMenu::ReadMenu((char *)txt.c_str()));
 }
 
 void SCR_LoadMap(string &txt)
 {
+	rpge_printf("[rScript] SCR_LoadMap() - Loading map %s\n", (char *)txt.c_str());
 	gWorld.LoadMap((char *)txt.c_str());
 }
 
 void SCR_OpenMenu(string &txt)
 {
+	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", (char *)txt.c_str());
 	strcpy(activeMenu, txt.c_str());
 }
 
 void SCR_OptimizeMap(string &txt)
 {
-	rpge_printf("Optimizing map %s", (char *)txt.c_str());
+	rpge_printf("[rScript] SCR_OptimizeMap() - Optimizing map %s", (char *)txt.c_str());
 }

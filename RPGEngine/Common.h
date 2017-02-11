@@ -1,5 +1,7 @@
 #pragma once
 
+#define cvarBool(name) 0
+
 typedef struct rRect_s {
 	int X;
 	int Y;
@@ -27,3 +29,5 @@ void abort_game_ex(const char* message, const char* header);
 void rpge_printf(const char* message, ...);
 
 char * va(const char * t, ...);
+
+char GetCharFromKeycode(int keycode, int modifiers);
