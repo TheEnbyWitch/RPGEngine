@@ -13,3 +13,7 @@ The engine is licensed under MIT with some exceptions:
 
 * AngelScript and it's components - zlib license
 * everything else is licensed under MIT
+
+## Donations
+The engine will always be free and open to everyone, but donations are greatly appreciated.
+Donate [here](https://paypal.me/PolishAnomaly)
