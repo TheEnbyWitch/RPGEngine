@@ -16,4 +16,5 @@ The engine is licensed under MIT with some exceptions:
 
 ## Donations
 The engine will always be free and open to everyone, but donations are greatly appreciated.
-Donate [here](https://paypal.me/PolishAnomaly)
+
+You can donate [here](https://paypal.me/PolishAnomaly) (PayPal)
