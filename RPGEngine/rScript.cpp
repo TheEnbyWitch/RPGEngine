@@ -184,6 +184,7 @@ void rScript::ExecuteScript()
 	if (scriptContext == 0)
 		abort_game("Failed to create context!");
 	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl("void init()");
+	
 	if (func == 0)
 		abort_game("Main game script doesn't have void init()!");
 	scriptContext->Prepare(func);
@@ -215,7 +216,7 @@ void rScript::ExecuteLevelScript(char * name)
 		abort_game("Couldn't find init function for level!");
 	scriptContext->Prepare(func);
 	scriptContext->Execute();
-	//scriptContext->Release();
+
 #ifdef __USE_LUA
 	//char path[256];
 	//sprintf(path, "maps/%s.lua", name);
@@ -233,6 +234,7 @@ void rScript::ExecuteLevelScript(char * name)
 
 void rScript::EntInteract(rEntity * parent)
 {
+
 }
 
 void SCR_Print(string &txt)
