@@ -165,7 +165,7 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void LoadMenu(string &in)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string &in)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void OpenMenu(string &in)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
-
+	r = asEngine->RegisterGlobalFunction("void OptimizeMap(string &in)", asFUNCTION(SCR_OptimizeMap), asCALL_CDECL);
 
 	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
