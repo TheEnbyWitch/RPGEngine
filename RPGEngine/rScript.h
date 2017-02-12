@@ -33,6 +33,8 @@ public:
 	void ExecuteLevelScript(char * name);
 	void EntInteract(rEntity * parent);
 
+	void ExecuteFunction(char *decl);
+
 };
 void ASMessageCallback(const asSMessageInfo * msg, void * param);
 int ASIncludeCallback(const char * include, const char * from, CScriptBuilder * builder, void * userParam);
