@@ -24,7 +24,11 @@ void rPlayer::Frame()
 
 bool rPlayer::Move(int x, int y)
 {
-	targetCameraOffsetX += x * 32;
-	targetCameraOffsetY += y * 32;
-	return rEntity::Move(x,y);
+	if (rEntity::Move(x, y))
+	{
+		targetCameraOffsetX += x * 32;
+		targetCameraOffsetY += y * 32;
+		return true;
+	}
+	return false;
 }
