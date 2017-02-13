@@ -30,6 +30,7 @@ bool bUseIntro = false;
 
 int __width = 960;
 int __height = 540;
+bool isShiftPressed = false;
 
 void init(void)
 {
@@ -242,7 +243,14 @@ void game_loop(void)
 				}
 			}
 		}
+		else if (event.type == ALLEGRO_EVENT_KEY_UP)
+		{
+			if (event.keyboard.keycode == ALLEGRO_KEY_LSHIFT || event.keyboard.keycode == ALLEGRO_KEY_RSHIFT)
+				isShiftPressed = false;
+		}
 		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_LSHIFT || event.keyboard.keycode == ALLEGRO_KEY_RSHIFT)
+				isShiftPressed = true; 
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
 				
 			}
@@ -290,7 +298,7 @@ void game_loop(void)
 			else {
 				// NEEDS A REWRITE DAMN IT
 				//char input = (char)event.keyboard.keycode+ 'a' - 1 + (event.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
-				char input = GetCharFromKeycode(event.keyboard.keycode, event.keyboard.modifiers);
+				char input = GetCharFromKeycode(event.keyboard.keycode, (isShiftPressed ? ALLEGRO_KEYMOD_SHIFT : 0 ));
 				if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
 					if(consoleInput.length() > 0) consoleInput.erase(consoleInput.length() - 1);
 				if(input > 0)

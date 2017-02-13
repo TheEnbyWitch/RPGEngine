@@ -43,7 +43,7 @@ char * va(const char * t, ...)
 
 // MACRO FOR CHARACTER KEYS WITH MODIFIERS
 #define KCC(in) if(keycode == ALLEGRO_KEY_##in) \
-return (#in[0])-(modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
+return (#in[0])-((modifiers & ALLEGRO_KEYMOD_SHIFT || modifiers & ALLEGRO_KEYMOD_CAPSLOCK) ? 0 : 'A'-'a');
 
 char GetCharFromKeycode(int keycode, int modifiers)
 {
