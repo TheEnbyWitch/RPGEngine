@@ -259,16 +259,6 @@ void game_loop(void)
 				showCon = !showCon;
 				consoleInput.clear();
 			}
-				/*
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-				player.Direction = ENT_DIRECTION_DOWN;
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-				player.Direction = ENT_DIRECTION_UP;
-			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
-				player.Direction = ENT_DIRECTION_LEFT;
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-				player.Direction = ENT_DIRECTION_RIGHT;
-				*/
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
 				lineOffset++;

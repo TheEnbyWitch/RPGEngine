@@ -138,10 +138,10 @@ bool rEntity::Move(int x, int y)
 	WS
 	if (!isMoving)
 	{
-		if (y > 0) Direction = ENT_DIRECTION_DOWN;
-		if (y < 0) Direction = ENT_DIRECTION_UP;
-		if (x > 0) Direction = ENT_DIRECTION_RIGHT;
-		if (x < 0) Direction = ENT_DIRECTION_LEFT;
+		if (y > 0) ChangeDirection(ENT_DIRECTION_DOWN);
+		if (y < 0) ChangeDirection(ENT_DIRECTION_UP);
+		if (x > 0) ChangeDirection(ENT_DIRECTION_RIGHT);
+		if (x < 0) ChangeDirection(ENT_DIRECTION_LEFT);
 		TargetX = PositionX + x*32;
 		TargetY = PositionY + y*32;
 		isMoving = true;
