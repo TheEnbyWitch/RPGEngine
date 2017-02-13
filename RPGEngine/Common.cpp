@@ -26,7 +26,7 @@ void rpge_printf(const char * message, ...)
 
 char * va(const char * t, ...)
 {
-	char result[1024];
+	char *result = new char[1024];
 	va_list args;
 	va_start(args, t);
 	vsprintf(result, t, args);

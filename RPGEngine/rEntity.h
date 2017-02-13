@@ -13,7 +13,8 @@ typedef enum {
 	ENT_DIRECTION_DOWN,
 	ENT_DIRECTION_LEFT,
 	ENT_DIRECTION_RIGHT,
-	ENT_DIRECTION_UP
+	ENT_DIRECTION_UP,
+	ENT_DIRECTION_MAX
 } rEntityDirection;
 
 class rEntity
@@ -52,8 +53,10 @@ public:
 	void SetImage(char * path);
 	void Draw();
 	void Frame();
+
 	bool Move(int x, int y);
 	void Interact();
+	void ChangeDirection(int targetDirection);
 
 private:
 	int TargetX = 0;

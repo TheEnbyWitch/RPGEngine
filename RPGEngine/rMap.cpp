@@ -84,6 +84,8 @@ void rMap::Optimize()
 		//tiles[i].Cache();
 		_tiles[tiles[i].Layer][tiles[i].pY][tiles[i].pX] = &tiles[i];
 	}
+	tilePointers = _tiles;
+	/*
 	int chunkColumns = (map->width / 32) + 1;
 	int chunkRows = (map->height / 32) + 1;
 	if (chunkColumns*chunkRows*maxLayers >= 64)
@@ -125,7 +127,8 @@ void rMap::Optimize()
 		}
 	}
 	cachedChunkSize = chunks;
-	rpge_printf("[rMap] %s was optimized with %d bitmaps\n", name, bitmapsWereMade);
+	*/
+	rpge_printf("[rMap] %s was optimized", name);// with %d bitmaps\n", name, bitmapsWereMade);
 	isOptimized = true;
 }
 
@@ -134,10 +137,22 @@ void rMap::Draw(int layer)
 	if (wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
 	if (isOptimized)
 	{
+		/*
 		for (int i = 0; i < cachedChunkSize; i++)
 		{
 			if(cachedChunks[i].layer == layer)
 				al_draw_tinted_bitmap(cachedChunks[i].resultBitmap, gWorld.GetColorTint(), cachedChunks[i].posX * 32 * 32, cachedChunks[i].posY * 32 * 32, NULL);
+		}
+		*/
+		for (int i = 0; i < 980 / 32; i++)
+		{
+			for (int o = 0; o < 560 / 32; o++)
+			{
+				if (tilePointers[layer][o][i] != NULL)
+				{
+					tilePointers[layer][o][i]->Draw();
+				}
+			}
 		}
 	}
 	else {

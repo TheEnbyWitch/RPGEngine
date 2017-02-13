@@ -21,7 +21,10 @@ public:
 	int maxLayers = 0;
 	char name[16];
 	NLTmxMap *map;
+
 	std::vector<rTile> tiles;
+	rTile **** tilePointers; // [layer][y][x]
+
 	std::vector<rEntity> entities;
 
 	rMapChunk cachedChunks[64];

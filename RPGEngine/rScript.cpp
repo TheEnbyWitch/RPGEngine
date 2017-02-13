@@ -172,7 +172,9 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
 
+	r = asEngine->RegisterObjectMethod("rEntity", "void Create()", asMETHOD(rEntity, Create), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntity, ChangeDirection), asCALL_THISCALL);
 
 	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));

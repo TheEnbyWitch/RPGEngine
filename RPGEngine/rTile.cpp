@@ -41,7 +41,7 @@ rScaledRegion_t rTile::GetScaledRegionForTile()
 
 void rTile::Draw()
 {
-	if (cachedRegion.destinationX > 960 || cachedRegion.destinationY > 540) return;
+	//if (cachedRegion.destinationX > 960 || cachedRegion.destinationY > 540) return;
 	al_draw_tinted_scaled_bitmap(cachedBitmap, gWorld.GetColorTint(), cachedRegion.sourceX, cachedRegion.sourceY, cachedRegion.sourceW, cachedRegion.sourceH, cachedRegion.destinationX, cachedRegion.destinationY, cachedRegion.destinationW, cachedRegion.destinationH, NULL);
 }
 

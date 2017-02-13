@@ -155,6 +155,14 @@ void rEntity::Interact()
 	gScript.EntInteract(this);
 }
 
+void rEntity::ChangeDirection(int targetDirection)
+{
+	if (targetDirection >= 0 && targetDirection < ENT_DIRECTION_MAX)
+	{
+		Direction = (rEntityDirection)targetDirection;
+	}
+}
+
 rEntity *GetEntityById(string id)
 {
 	for (int i = 0; i < entityList.size(); i++)
