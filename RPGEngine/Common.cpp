@@ -26,13 +26,14 @@ void rpge_printf(const char * message, ...)
 
 char * va(const char * t, ...)
 {
-	char *result = new char[1024];
+	char result[1024];
 	va_list args;
 	va_start(args, t);
 	vsprintf(result, t, args);
 	va_end(args);
 	return result;
 }
+
 // MACRO FOR ANY KEY WITHOUT MODIFIERS
 #define KC(in, out) if(keycode == ALLEGRO_KEY_##in) return out;
 
