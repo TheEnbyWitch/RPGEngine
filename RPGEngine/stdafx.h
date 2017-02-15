@@ -76,6 +76,8 @@ extern float menuIndexSelectFrac[maxMenuIndex];
 extern int __width;
 extern int __height;
 
+extern double deltaTime;
+
 extern bool showCon;
 
 typedef enum {
@@ -94,6 +96,7 @@ typedef struct gameInfo_s {
 extern gameInfo_t gameInfo;
 
 #include "Common.h"
+#include "rMath.h"
 #include "rUI.h"
 #include "rEntity.h"
 #include "rTile.h"

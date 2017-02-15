@@ -137,16 +137,9 @@ void rMap::Draw(int layer)
 	if (wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
 	if (isOptimized)
 	{
-		/*
-		for (int i = 0; i < cachedChunkSize; i++)
+		for (int i = max(0,(player.cameraOffset.X) / 32); i < ((980 + player.cameraOffset.X) / 32); i++)
 		{
-			if(cachedChunks[i].layer == layer)
-				al_draw_tinted_bitmap(cachedChunks[i].resultBitmap, gWorld.GetColorTint(), cachedChunks[i].posX * 32 * 32, cachedChunks[i].posY * 32 * 32, NULL);
-		}
-		*/
-		for (int i = 0; i < 980 / 32; i++)
-		{
-			for (int o = 0; o < 560 / 32; o++)
+			for (int o = max(0, (player.cameraOffset.Y) / 32); o < ((560 + player.cameraOffset.Y) / 32); o++)
 			{
 				if (tilePointers[layer][o][i] != NULL)
 				{

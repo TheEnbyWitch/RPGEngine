@@ -160,6 +160,7 @@ double prevTimestamp = 0;
 double curTimestamp = 0;
 uint32_t lineOffset = 0;
 int menuIndex = 0;
+double deltaTime = 0.0;
 float menuIndexSelectFrac[maxMenuIndex];
 void game_loop(void)
 {
@@ -359,7 +360,8 @@ void game_loop(void)
 				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
 				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
-			gUI.DrawFPS(curTimestamp - prevTimestamp);
+			deltaTime = curTimestamp - prevTimestamp;
+			gUI.DrawFPS(deltaTime);
 			prevTimestamp = curTimestamp;
 			al_flip_display();
 		}

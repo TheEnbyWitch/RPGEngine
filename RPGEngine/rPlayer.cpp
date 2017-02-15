@@ -17,7 +17,7 @@ void rPlayer::Frame()
 {
 	// ((currenttick / endtick) X current_value / end_result
 	// Thanks portie
-
+	rMath::SpringDamp(&cameraOffset, destinationCameraOffset, 1.75f);
 
 	rEntity::Frame();
 }
@@ -26,8 +26,8 @@ bool rPlayer::Move(int x, int y)
 {
 	if (rEntity::Move(x, y))
 	{
-		targetCameraOffsetX += x * 32;
-		targetCameraOffsetY += y * 32;
+		destinationCameraOffset.X += x * 32;
+		destinationCameraOffset.Y += y * 32;
 		return true;
 	}
 	return false;

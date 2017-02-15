@@ -32,8 +32,8 @@ rScaledRegion_t rTile::GetScaledRegionForTile()
 	sc.sourceY = Yofs * 32;
 	sc.sourceW = 32;
 	sc.sourceH = 32;
-	sc.destinationX = PositionX;
-	sc.destinationY = PositionY;
+	sc.destinationX = PositionX - player.cameraOffset.X;
+	sc.destinationY = PositionY - player.cameraOffset.Y;
 	sc.destinationW = 32;
 	sc.destinationH = 32;
 	return sc;
@@ -41,7 +41,7 @@ rScaledRegion_t rTile::GetScaledRegionForTile()
 
 void rTile::Draw()
 {
-	//if (cachedRegion.destinationX > 960 || cachedRegion.destinationY > 540) return;
+	cachedRegion = GetScaledRegionForTile();
 	al_draw_tinted_scaled_bitmap(cachedBitmap, gWorld.GetColorTint(), cachedRegion.sourceX, cachedRegion.sourceY, cachedRegion.sourceW, cachedRegion.sourceH, cachedRegion.destinationX, cachedRegion.destinationY, cachedRegion.destinationW, cachedRegion.destinationH, NULL);
 }
 
