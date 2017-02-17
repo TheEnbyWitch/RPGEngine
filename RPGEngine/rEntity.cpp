@@ -73,8 +73,8 @@ rScaledRegion_t rEntity::GetScaledRegion()
 	rScaledRegion_t result;
 	int *pos = GetScreenPos();
 	int *spos = GetSourcePos();
-	result.destinationX = pos[0];// -spos[0];
-	result.destinationY = pos[1];// -spos[1];
+	result.destinationX = pos[0] - player.cameraOffset.X;// -spos[0];
+	result.destinationY = pos[1] - player.cameraOffset.Y;// -spos[1];
 	result.destinationW = 32;
 	result.destinationH = 32;
 	result.sourceX = spos[0];

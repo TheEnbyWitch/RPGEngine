@@ -15,9 +15,7 @@ public:
 
 	bool Move(int x, int y);
 public:
-	float cameraOffsetX = 0;
-	float cameraOffsetY = 0;
-	float targetCameraOffsetX = 0;
-	float targetCameraOffsetY = 0;
+	rVector2 cameraOffset = rVector2((960.0 / -2.0)+16.0, (540.0 / -2.0)+16.0);
+	rVector2 destinationCameraOffset = rVector2((960.0 / -2.0)+16.0, (540.0 / -2.0)+16.0);
 };
 
