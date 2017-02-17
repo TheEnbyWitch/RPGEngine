@@ -195,6 +195,7 @@ void game_loop(void)
 			redraw = true;
 			if (bInitialized)
 			{
+				frames++;
 				if (gameState == GAME_STATE_ENGINE_INTRO)
 				{
 					if (frames > 3 * 60)
@@ -206,7 +207,7 @@ void game_loop(void)
 #endif
 						frames = 0;
 					}
-					frames++;
+					
 				}
 				else if (gameState == GAME_STATE_INTRO)
 				{
@@ -357,7 +358,7 @@ void game_loop(void)
 				}
 				
 				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
-				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
+				gUI.DrawColoredWindowWithText(va("%s%s%s", ENGINE_STR, consoleInput.c_str(), ( frames % 40 > 20 ? "_" : "")), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
 			gUI.DrawFPS(curTimestamp - prevTimestamp);
 			prevTimestamp = curTimestamp;
