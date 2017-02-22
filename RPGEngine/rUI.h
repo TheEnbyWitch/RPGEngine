@@ -18,6 +18,6 @@ public:
 	void DrawWindowWithText(const char * txt, int x, int y, int width, int height, int align = ALLEGRO_ALIGN_LEFT);
 	void DrawColoredWindowWithText(const char* txt, int x, int y, int width, int height, ALLEGRO_COLOR color, int align = ALLEGRO_ALIGN_LEFT);
 	void DrawColoredWindowWithColoredText(const char * txt, int x, int y, int width, int height, ALLEGRO_COLOR color, ALLEGRO_COLOR textclr, int align);
-	void DrawFPS(double dt);
+	void DrawDebugInfo(double dt);
 };
 

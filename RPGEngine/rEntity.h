@@ -37,6 +37,7 @@ public:
 	bool isImageSet = false;
 	char pathToImage[256];
 	char pathToEmmisiveLayer[256] = "null";
+	char currentLevel[32];
 	rEntityClass classn;
 
 	int AddRef();

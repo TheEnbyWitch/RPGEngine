@@ -20,6 +20,8 @@ public:
 	void Draw();
 	void LoadMap(char* name);
 	ALLEGRO_COLOR GetColorTint();
+
+	char currentLevel[32];
 	
 	std::vector<rMap> loadedMaps;
 

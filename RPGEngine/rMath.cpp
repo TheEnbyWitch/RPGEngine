@@ -9,6 +9,8 @@ void rMath::SpringDamp(rVector2 *src, rVector2 dest, float punch_damping, float 
 		rVector2 temp;
 		temp.X = (src->X - dest.X)*(deltaTime)*punch_damping;
 		temp.Y = (src->Y - dest.Y)*(deltaTime)*punch_damping;
+		//temp.X = Clamp(temp.X, -2, 2);
+		//temp.Y = Clamp(temp.Y, -2, 2);
 		src->X -= temp.X;
 		src->Y -= temp.Y;
 	}
@@ -17,6 +19,11 @@ void rMath::SpringDamp(rVector2 *src, rVector2 dest, float punch_damping, float 
 		src->X = dest.X;
 		src->Y = dest.Y;
 	}
+}
+
+float rMath::Clamp(float in, float l, float h)
+{
+	return max(min(in, h),l);
 }
 
 rVector2::rVector2(float x, float y)

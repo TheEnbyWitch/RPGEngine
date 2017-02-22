@@ -361,7 +361,7 @@ void game_loop(void)
 				gUI.DrawColoredWindowWithText(consoleInput.c_str(), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
 			}
 			deltaTime = curTimestamp - prevTimestamp;
-			gUI.DrawFPS(deltaTime);
+			gUI.DrawDebugInfo(deltaTime);
 			prevTimestamp = curTimestamp;
 			al_flip_display();
 		}

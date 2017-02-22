@@ -24,7 +24,7 @@ void rWorld::Draw()
 	rMap *loadedMap = NULL;
 	for (int i = 0; i < loadedMaps.size(); i++)
 	{
-		if (loadedMaps[i].isActive)
+		if (loadedMaps[i].isActive && strcmp(player.currentLevel, loadedMaps[i].name))
 		{
 			loadedMap = &loadedMaps[i];
 			break;
@@ -35,10 +35,10 @@ void rWorld::Draw()
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
 		loadedMap->Draw(i);
-		if (i == 1) player.Draw();
+		if (i == player.Layer) player.Draw();
 	}
 	al_hold_bitmap_drawing(false);
-	if(loadedMap->maxLayers <= 1)
+	if(loadedMap->maxLayers <= player.Layer)
 		player.Draw();
 }
 

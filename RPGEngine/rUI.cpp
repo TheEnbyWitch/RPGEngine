@@ -115,8 +115,9 @@ int getavgfps()
 	return (int)a;
 }
 
-void rUI::DrawFPS(double dt)
+void rUI::DrawDebugInfo(double dt)
 {
+	//fps
 	updatefps((int)(1 / dt));
 	char f[256];
 	strcpy(f, va("%d FPS", getavgfps()));
@@ -128,6 +129,11 @@ void rUI::DrawFPS(double dt)
 	{
 		DrawColoredWindowWithText(f, __width - (12 + al_get_text_width(font, f)), 6, al_get_text_width(font, f) + 6, 14, al_map_rgb(255, 0, 0), ALLEGRO_ALIGN_RIGHT);
 	}
-	//delete[] f;
+	// time of day
+	char tod[256];
+	strcpy(tod, va("TOD: %d:%02d", (int)(gWorld.timeOfDay * 24), (int)(gWorld.timeOfDay * 1440) % 60));
+	DrawColoredWindowWithText(tod, __width - (12 + al_get_text_width(font, tod)), 26, al_get_text_width(font, tod) + 6, 14, gWorld.GetColorTint(), ALLEGRO_ALIGN_RIGHT);
+	// player pos
+	// TODO
 }
 
