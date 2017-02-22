@@ -15,8 +15,15 @@
 #define maxMenuIndex 128		// max menu choices
 #define MAX_LINES_SHOWN 20		// max lines to show in console
 #define BITMAP_VERBOSE			// game will spit out a critical error if a bitmap is not found (only for GetBitmap())
+#ifdef _DEBUG
+#define CONFIG_STR				"DEV"
+#else
+#define CONFIG_STR				"SHIP"
+#endif
+#define ENGINE_STR				"0.0.0: RPGE_"CONFIG_STR"> "
 
 #define __USE_ANGELSCRIPT		// uses angelscript
+
 
 #include "targetver.h"
 #include "Branding.h"

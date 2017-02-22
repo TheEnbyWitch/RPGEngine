@@ -128,7 +128,7 @@ void rMap::Optimize()
 	}
 	cachedChunkSize = chunks;
 	*/
-	rpge_printf("[rMap] %s was optimized", name);// with %d bitmaps\n", name, bitmapsWereMade);
+	rpge_printf("[rMap] %s was optimized\n", name);// with %d bitmaps\n", name, bitmapsWereMade);
 	isOptimized = true;
 }
 
