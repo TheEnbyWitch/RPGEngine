@@ -40,45 +40,45 @@ asILockableSharedBool *rEntity::GetWeakRefFlag()
 	return weakRefFlag;
 }
 
-void rEntity::Create()
+void rEntity::Activate(bool addToCollection)
 {
-	entityList.push_back(this);
+	if(addToCollection) entityList.push_back(this);
 	sprintf(uniqueID, "ENT%06d\0", entID);
 	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
 	entID++;
 	wasCreated = true;
 }
 
-int * rEntity::GetScreenPos()
+rVector2 rEntity::GetScreenPos()
 {
 	WS
-	int *pos = new int[2];
-	pos[0] = PositionX;
-	pos[1] = PositionY;
+	rVector2 pos;
+	pos.X = PositionX;
+	pos.Y = PositionY;
 	return pos;
 }
 
-int * rEntity::GetSourcePos()
+rVector2 rEntity::GetSourcePos()
 {
 	WS
-	int *spos = new int[2];
-	spos[1] = 32 * Direction;
-	spos[0] = 32 * (int)(animationFrame/6);
-	return spos;
+	rVector2 r;
+	r.Y = 32 * Direction;
+	r.X = 32 * (int)(animationFrame/6);
+	return r;
 }
 
 rScaledRegion_t rEntity::GetScaledRegion()
 {
 	WS
 	rScaledRegion_t result;
-	int *pos = GetScreenPos();
-	int *spos = GetSourcePos();
-	result.destinationX = pos[0] - player.cameraOffset.X;// -spos[0];
-	result.destinationY = pos[1] - player.cameraOffset.Y;// -spos[1];
+	rVector2 pos = GetScreenPos();
+	rVector2 spos = GetSourcePos();
+	result.destinationX = pos.X - player.cameraOffset.X;// -spos[0];
+	result.destinationY = pos.Y - player.cameraOffset.Y;// -spos[1];
 	result.destinationW = 32;
 	result.destinationH = 32;
-	result.sourceX = spos[0];
-	result.sourceY = spos[1];
+	result.sourceX = spos.X;
+	result.sourceY = spos.Y;
 	result.sourceW = 32;
 	result.sourceH = 32;
 	return result;
@@ -97,17 +97,20 @@ void rEntity::Draw()
 	if (isImageSet)
 	{
 		ALLEGRO_BITMAP * bm = gBitmap.GetBitmap(pathToImage);
-		ALLEGRO_BITMAP * embm = gBitmap.GetBitmap(pathToImage, true);
+		ALLEGRO_BITMAP * embm = NULL;
+		if (useEmissive) embm = gBitmap.GetBitmap(pathToImage, true);
 		ALLEGRO_COLOR tint = gWorld.GetColorTint();
 		rScaledRegion_t r = GetScaledRegion();
 		al_draw_tinted_scaled_bitmap(bm, tint, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
-		if (embm != NULL) al_draw_scaled_bitmap(embm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
+		if (embm != NULL && useEmissive) al_draw_scaled_bitmap(embm, r.sourceX, r.sourceY, r.sourceW, r.sourceH, r.destinationX, r.destinationY, r.destinationW, r.destinationH, NULL);
 	}
 }
 
 void rEntity::Frame()
 {
 	WS
+	if(entFrameCallback != NULL) entFrameCallback(this);
+	
 	if (Direction > 3)
 		Direction = ENT_DIRECTION_DOWN;
 	if (Direction < 0)
@@ -131,6 +134,11 @@ void rEntity::Frame()
 
 	if (PositionX == TargetX && PositionY == TargetY)
 		isMoving = false;
+}
+
+void rEntity::SetFrameCallback(entCallback_t & func)
+{
+	entFrameCallback = func;
 }
 
 bool rEntity::Move(int x, int y)
@@ -161,6 +169,12 @@ void rEntity::ChangeDirection(int targetDirection)
 	{
 		Direction = (rEntityDirection)targetDirection;
 	}
+}
+
+rEntity * rEntity::SpawnEntity()
+{
+	if (entityList.size() > 1023) abort_game("G_Spawn: too many entities");
+	return new rEntity;
 }
 
 rEntity *GetEntityById(string id)

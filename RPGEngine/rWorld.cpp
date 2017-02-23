@@ -13,8 +13,13 @@ rWorld::~rWorld()
 
 void rWorld::Frame()
 {
-	timeOfDay += 0.00005;
+	timeOfDay += 1.0/(1440.0 * 60.0);
 	if (timeOfDay > 1) timeOfDay -= 1;
+
+	for (int o = 0; o < entityList.size(); o++)
+	{
+		if (entityList[o] != NULL) entityList[o]->Frame();
+	}
 	currentTOD = ProcessTOD();
 }
 
@@ -35,6 +40,10 @@ void rWorld::Draw()
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
 		loadedMap->Draw(i);
+		for (int o = 0; o < entityList.size(); o++)
+		{
+			if(entityList[o] != NULL) entityList[o]->Draw();
+		}
 		if (i == player.Layer) player.Draw();
 	}
 	al_hold_bitmap_drawing(false);

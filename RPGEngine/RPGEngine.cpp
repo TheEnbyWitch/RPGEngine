@@ -113,8 +113,9 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
-	player.Create();
+	player.Activate(false);
 	player.SetImage("Actor");
+	player.useEmissive = true;
 
 	initialize_assets();
 
@@ -149,7 +150,7 @@ void shutdown(void)
 
 void initialize_assets()
 {
-	
+
 }
 
 bool showCon = false;
@@ -162,6 +163,12 @@ uint32_t lineOffset = 0;
 int menuIndex = 0;
 double deltaTime = 0.0;
 float menuIndexSelectFrac[maxMenuIndex];
+
+void EntFrameCallback(rEntity * self)
+{
+	self->Move(1, 0);
+}
+
 void game_loop(void)
 {
 	bool redraw = true;
@@ -220,6 +227,14 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
+					if (frames % 60 == 0)
+					{
+						rEntity *t = rEntity::SpawnEntity();
+						t->Activate();
+						t->SetImage("Actor");
+						t->useEmissive = true;
+						t->SetFrameCallback(EntFrameCallback);
+					}
 					gWorld.Frame();
 					ALLEGRO_KEYBOARD_STATE state;
 					al_get_keyboard_state(&state);

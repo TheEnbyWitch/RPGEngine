@@ -121,7 +121,7 @@ void rUI::DrawDebugInfo(double dt)
 	updatefps((int)(1 / dt));
 	char f[256];
 	strcpy(f, va("%d FPS", getavgfps()));
-	if (dt < (1.0f / 30.0f))
+	if (getavgfps() > 30)
 	{
 		DrawColoredWindowWithText(f, __width - (12+al_get_text_width(font, f)), 6, al_get_text_width(font, f)+6, 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
 	}
@@ -134,6 +134,9 @@ void rUI::DrawDebugInfo(double dt)
 	strcpy(tod, va("TOD: %d:%02d", (int)(gWorld.timeOfDay * 24), (int)(gWorld.timeOfDay * 1440) % 60));
 	DrawColoredWindowWithText(tod, __width - (12 + al_get_text_width(font, tod)), 26, al_get_text_width(font, tod) + 6, 14, gWorld.GetColorTint(), ALLEGRO_ALIGN_RIGHT);
 	// player pos
+	char plrpos[256];
+	strcpy(plrpos, va("Player Pos X: %d | Y: %d", player.PositionX/32, player.PositionY/32));
+	DrawColoredWindowWithText(plrpos, __width - (12 + al_get_text_width(font, plrpos)), 46, al_get_text_width(font, plrpos) + 6, 14, al_map_rgb(128,255,0), ALLEGRO_ALIGN_RIGHT);
 	// TODO
 }
 

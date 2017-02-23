@@ -24,7 +24,7 @@ public:
 	~rEntity();
 
 	ALLEGRO_BITMAP* cachedBitmap;
-
+	typedef void entCallback_t(rEntity * self);
 	char uniqueID[10];
 	int Layer = 1;
 	int Level = 1;
@@ -32,11 +32,13 @@ public:
 	int PositionY = 0;
 	int Speed = 2;
 	rEntityDirection Direction = ENT_DIRECTION_DOWN;
+	entCallback_t * entFrameCallback;
 	int animationFrame = 0;
 	bool isMoving = false;
 	bool isImageSet = false;
+	bool useEmissive = false;
 	char pathToImage[256];
-	char pathToEmmisiveLayer[256] = "null";
+	//char pathToEmmisiveLayer[256] = "null";
 	char currentLevel[32];
 	rEntityClass classn;
 
@@ -46,18 +48,23 @@ public:
 	asILockableSharedBool * GetWeakRefFlag();
 
 	bool wasCreated = false;
-	void Create();
+	void Activate(bool addToCollection = true);
 
-	int* GetScreenPos();
-	int* GetSourcePos();
+	rVector2 GetScreenPos();
+	rVector2 GetSourcePos();
 	rScaledRegion_t GetScaledRegion();
 	void SetImage(char * path);
 	void Draw();
 	void Frame();
 
+	void SetFrameCallback(entCallback_t &func);
+
 	bool Move(int x, int y);
 	void Interact();
 	void ChangeDirection(int targetDirection);
+
+	// static
+	static rEntity *SpawnEntity();
 
 private:
 	int TargetX = 0;
@@ -67,6 +74,7 @@ protected:
 	int refCount;
 	asILockableSharedBool *weakRefFlag;
 };
+
 
 rEntity *GetEntityById(string id);
 extern std::vector<rEntity *> entityList;
