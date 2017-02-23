@@ -49,6 +49,7 @@ public:
 
 	bool wasCreated = false;
 	void Activate(bool addToCollection = true);
+	void Activate(int x, int y, char* level, bool addToCollection = true);
 
 	rVector2 GetScreenPos();
 	rVector2 GetSourcePos();

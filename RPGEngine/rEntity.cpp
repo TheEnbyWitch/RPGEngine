@@ -47,6 +47,21 @@ void rEntity::Activate(bool addToCollection)
 	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
 	entID++;
 	wasCreated = true;
+	PositionX = 0;
+	PositionY = 0;
+	strcpy(currentLevel, player.currentLevel);
+}
+
+void rEntity::Activate(int x, int y, char* level, bool addToCollection)
+{
+	if (addToCollection) entityList.push_back(this);
+	sprintf(uniqueID, "ENT%06d\0", entID);
+	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
+	entID++;
+	wasCreated = true;
+	PositionX = x;
+	PositionY = y;
+	strcpy(currentLevel, level);
 }
 
 rVector2 rEntity::GetScreenPos()
