@@ -1,3 +1,9 @@
+// common defines
+const int ENT_DIRECTION_DOWN = 0;
+const int ENT_DIRECTION_LEFT = 1;
+const int ENT_DIRECTION_RIGHT = 2;
+const int ENT_DIRECTION_UP = 3;
+
 void IHaveNoIdea()
 {
 	print("IHaveNoIdea() from common.doot was called :D");

@@ -1,9 +1,18 @@
 #include "scripts/common.doot"
+#include "maps/untitled.doot"
+
+void init()
+{
+	LoadMenu("main");
+	LoadMenu("options");
+	LoadMap("untitled");
+}
 
 void main()
 {
-	print("[AS]:main.doot Initializing game");
+	print("AS: Initializing game");
 	IHaveNoIdea();
+	OpenMenu("main");
 }
 
 void testfunc1()

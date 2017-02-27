@@ -47,7 +47,7 @@ return (#in[0])-((modifiers & ALLEGRO_KEYMOD_SHIFT || modifiers & ALLEGRO_KEYMOD
 
 char GetCharFromKeycode(int keycode, int modifiers)
 {
-	if (modifiers != 0) rpge_printf("modifiers: %d\n", modifiers);
+	//if (modifiers != 0) rpge_printf("modifiers: %d\n", modifiers);
 	KCC(A);
 	KCC(B);
 	KCC(C);

@@ -40,6 +40,11 @@ asILockableSharedBool *rEntity::GetWeakRefFlag()
 	return weakRefFlag;
 }
 
+void rEntity::Activate()
+{
+	Activate(true);
+}
+
 void rEntity::Activate(bool addToCollection)
 {
 	if(addToCollection) entityList.push_back(this);

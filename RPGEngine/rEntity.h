@@ -48,7 +48,8 @@ public:
 	asILockableSharedBool * GetWeakRefFlag();
 
 	bool wasCreated = false;
-	void Activate(bool addToCollection = true);
+	void Activate();
+	void Activate(bool addToCollection);
 	void Activate(int x, int y, char* level, bool addToCollection = true);
 
 	rVector2 GetScreenPos();
