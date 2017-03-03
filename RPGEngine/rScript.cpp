@@ -165,7 +165,6 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void LoadMenu(string &in)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string &in)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void OpenMenu(string &in)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void OptimizeMap(string &in)", asFUNCTION(SCR_OptimizeMap), asCALL_CDECL);
 
 	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
@@ -236,7 +235,20 @@ void rScript::ExecuteLevelScript(char * name)
 
 void rScript::EntInteract(rEntity * parent)
 {
-
+	//parent->uniqueID
+	char scriptEntID[16];
+	strcpy(scriptEntID, parent->uniqueID);
+	rpge_printf("[rScript] Executing %s_interact\n", scriptEntID);
+	scriptContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s_interact()", scriptEntID);
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	if (func == 0)
+		rpge_printf("[rScript] Couldn't find interact function for %s!", scriptEntID);
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
 }
 
 void SCR_Print(string &txt)
@@ -287,9 +299,4 @@ void SCR_OpenMenu(string &txt)
 {
 	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", (char *)txt.c_str());
 	strcpy(activeMenu, txt.c_str());
-}
-
-void SCR_OptimizeMap(string &txt)
-{
-	rpge_printf("[rScript] SCR_OptimizeMap() - Optimizing map %s", (char *)txt.c_str());
 }

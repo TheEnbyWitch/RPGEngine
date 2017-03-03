@@ -197,6 +197,27 @@ rEntity * rEntity::SpawnEntity()
 	return new rEntity;
 }
 
+rVector2 rEntity::GetVectorForDirection(rEntityDirection dir)
+{
+	if (dir == ENT_DIRECTION_DOWN)
+	{
+		return rVector2(0, 1);
+	}
+	if (dir == ENT_DIRECTION_UP)
+	{
+		return rVector2(0, -1);
+	}
+	if (dir == ENT_DIRECTION_LEFT)
+	{
+		return rVector2(-1, 0);
+	}
+	if (dir == ENT_DIRECTION_RIGHT)
+	{
+		return rVector2(1, 0);
+	}
+	return rVector2(0,1); // return default if for some retarded reason a different ENT_DIRECTION was passed which should be impossible
+}
+
 rEntity *GetEntityById(string id)
 {
 	for (int i = 0; i < entityList.size(); i++)

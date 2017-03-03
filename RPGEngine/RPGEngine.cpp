@@ -301,6 +301,17 @@ void game_loop(void)
 			}
 			if (!showCon)
 			{
+				if ((event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_SPACE) && gameState == GAME_STATE_INGAME)
+				{
+					rVector2 dir = rEntity::GetVectorForDirection(player.Direction);
+					for (auto ent : entityList)
+					{
+						if (player.PositionX + (dir.X * 32) == ent->PositionX && player.PositionY + (dir.Y * 32) == ent->PositionY)
+						{
+							ent->Interact();
+						}
+					}
+				}
 			}
 			else {
 				// NEEDS A REWRITE DAMN IT
@@ -310,6 +321,17 @@ void game_loop(void)
 					if(consoleInput.length() > 0) consoleInput.erase(consoleInput.length() - 1);
 				if(input > 0)
 					consoleInput += input;
+				if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+				{
+					if (strcmp(consoleInput.c_str(), "spawn_ent") == 0)
+					{
+						rEntity *t = rEntity::SpawnEntity();
+						t->Activate();
+						t->SetImage("Actor");
+						t->useEmissive = true;
+					}
+					consoleInput.clear();
+				}
 			}
 		}
 

@@ -13,7 +13,7 @@ rWorld::~rWorld()
 
 void rWorld::Frame()
 {
-	timeOfDay += 1.0/(1440.0 * 60.0);
+	timeOfDay += 1.0 / (1440.0*10.0);//1.0/(1440.0 * 60.0);
 	if (timeOfDay > 1) timeOfDay -= 1;
 
 	for (int o = 0; o < entityList.size(); o++)
@@ -35,7 +35,7 @@ void rWorld::Draw()
 			break;
 		}
 	}
-	if (loadedMap == NULL) abort_game("Tried to draw NULL map!");
+	if (loadedMap == NULL) return;//abort_game("Tried to draw NULL map!");
 	al_hold_bitmap_drawing(true);
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
@@ -62,6 +62,7 @@ void rWorld::LoadMap(char * name)
 	loadedMaps.push_back(result);
 	loadedMaps[loadedMaps.size() - 1].ProcessMap();
 	loadedMaps[loadedMaps.size() - 1].Optimize();
+	loadedMaps[loadedMaps.size() - 1].isActive = true;
 }
 
 double GetMod(double v, double mod)
