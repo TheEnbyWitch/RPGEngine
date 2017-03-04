@@ -43,6 +43,9 @@
     <Filter Include="Source Files\AngelScript\add_on\scriptweakref">
       <UniqueIdentifier>{b7be84bb-918a-4623-8221-db0bfa71e96f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AngelScript\add_on\scripthandle">
+      <UniqueIdentifier>{c0b48849-3207-40a9-b16a-a408d19086e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="AngelScript\add_on\weakref\weakref.h">
       <Filter>Source Files\AngelScript\add_on\scriptweakref</Filter>
+    </ClInclude>
+    <ClInclude Include="AngelScript\add_on\scripthandle\scripthandle.h">
+      <Filter>Source Files\AngelScript\add_on\scripthandle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -584,6 +590,9 @@
     </ClCompile>
     <ClCompile Include="AngelScript\add_on\weakref\weakref.cpp">
       <Filter>Source Files\AngelScript\add_on\scriptweakref</Filter>
+    </ClCompile>
+    <ClCompile Include="AngelScript\add_on\scripthandle\scripthandle.cpp">
+      <Filter>Source Files\AngelScript\add_on\scripthandle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

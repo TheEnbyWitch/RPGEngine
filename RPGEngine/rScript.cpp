@@ -59,6 +59,27 @@ int ASIncludeCallback(const char *include, const char *from, CScriptBuilder *bui
 	return builder->AddSectionFromMemory((char *)include, ReadScript((char *)include));
 }
 
+char* ASStringFactory(unsigned int byteLength, const char *s)
+{
+	static int index = 0;
+	static char string[10][4096];	// just in case
+	char *result;
+	result = string[index];
+	index = (index + 1) & 9;
+	strcpy(result, s);
+	return result;
+}
+
+void ConstructEnt(void*memory)
+{
+	new(memory) rEntity();
+}
+
+void DestructEnt(void*memory)
+{
+	((rEntity*)memory)->~rEntity();
+}
+
 #endif
 
 rScript::rScript()
@@ -152,30 +173,39 @@ void rScript::ExecuteScript()
 	int r = asEngine->SetMessageCallback(asFUNCTION(ASMessageCallback), this, asCALL_CDECL);
 
 	RegisterScriptArray(asEngine, true);
-	RegisterStdString(asEngine);
+	//RegisterStdString(asEngine);
 	//RegisterScriptMath(asEngine);
+	RegisterScriptHandle(asEngine);
+	RegisterScriptWeakRef(asEngine);
+	r = asEngine->RegisterObjectType("string", sizeof(char*), asOBJ_VALUE | asOBJ_POD | asGetTypeTraits<char*>());
+	r = asEngine->RegisterStringFactory("string", asFUNCTION(ASStringFactory), asCALL_CDECL);
 	r = asScriptBuilder.StartNewModule(asEngine, 0);
 	asScriptBuilder.SetIncludeCallback(&ASIncludeCallback, nullptr);
 #ifdef _DEBUG
 	asScriptBuilder.DefineWord("DEBUG");
 #endif
 
-	r = asEngine->RegisterGlobalFunction("void print(string &in)", asFUNCTION(SCR_Print), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void print(string txt)", asFUNCTION(SCR_Print), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void ping()", asFUNCTION(SCR_Ping), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void LoadMenu(string &in)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void LoadMap(string &in)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void OpenMenu(string &in)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void LoadMenu(string txt)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
-	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
+	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntity), asOBJ_VALUE);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);
+	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
+	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
+	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
 
-	r = asEngine->RegisterObjectMethod("rEntity", "void Activate()", asMETHOD(rEntity, Activate), asCALL_THISCALL);
+	//r = asEngine->RegisterObjectMethod("rEntity", "void Activate()", asMETHOD(rEntity, Activate), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void Activate(string id)", asMETHOD(rEntity, ActivateC), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntity, ChangeDirection), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntity, SetImage), asCALL_THISCALL);
 
-	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
+	//r = asEngine->RegisterGlobalFunction("rEntity SpawnEntity()", asFUNCTION(rEntity::SpawnEntity), asCALL_CDECL);
+	//r = asEngine->RegisterGlobalFunction("rEntity GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
 	if (hasCompileErrors)
@@ -246,12 +276,15 @@ void rScript::EntInteract(rEntity * parent)
 		abort_game("Failed to create context!");
 	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl(str);
 	if (func == 0)
-		rpge_printf("[rScript] Couldn't find interact function for %s!", scriptEntID);
+	{
+		rpge_printf("[rScript] Couldn't find interact function for %s!\n", scriptEntID);
+		return;
+	}
 	scriptContext->Prepare(func);
 	scriptContext->Execute();
 }
 
-void SCR_Print(string &txt)
+void SCR_Print(char *txt)
 {
 #ifdef __USE_LUA
 	int args = lua_gettop(state);
@@ -275,7 +308,7 @@ void SCR_Print(string &txt)
 	rpge_printf("\n");
 	return 0;
 #endif
-	rpge_printf("[DOOT] %s\n", txt.c_str());
+	rpge_printf("[DOOT] %s\n", txt);
 }
 
 void SCR_Ping()
@@ -283,20 +316,20 @@ void SCR_Ping()
 	rpge_printf("[AS] Ping!\n");
 }
 
-void SCR_LoadMenu(string &txt)
+void SCR_LoadMenu(char* txt)
 {
-	rpge_printf("[rScript] SCR_LoadMenu() - Loading menu %s\n", (char *)txt.c_str());
-	Menus.push_back(rMenu::ReadMenu((char *)txt.c_str()));
+	rpge_printf("[rScript] SCR_LoadMenu() - Loading menu %s\n", txt);
+	Menus.push_back(rMenu::ReadMenu(txt));
 }
 
-void SCR_LoadMap(string &txt)
+void SCR_LoadMap(char* txt)
 {
-	rpge_printf("[rScript] SCR_LoadMap() - Loading map %s\n", (char *)txt.c_str());
-	gWorld.LoadMap((char *)txt.c_str());
+	rpge_printf("[rScript] SCR_LoadMap() - Loading map %s\n", txt);
+	gWorld.LoadMap(txt);
 }
 
-void SCR_OpenMenu(string &txt)
+void SCR_OpenMenu(char* txt)
 {
-	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", (char *)txt.c_str());
-	strcpy(activeMenu, txt.c_str());
+	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", txt);
+	strcpy(activeMenu, txt);
 }

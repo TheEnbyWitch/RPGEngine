@@ -113,7 +113,7 @@ void init(void)
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
-	player.Activate(false);
+	player.Activate("player", false);
 	player.SetImage("Actor");
 	player.useEmissive = true;
 
@@ -288,7 +288,7 @@ void game_loop(void)
 			for (int i = 0; i < Menus.size(); i++)
 			{
 				rMenu * menu = &Menus[i];
-				if(menu->isActive)
+				if(menu->isActive && gameState == GAME_STATE_MENU)
 					menu->Key(event.keyboard.keycode);
 				if (strcmp(menu->name, activeMenu) == 0)
 				{
@@ -323,7 +323,7 @@ void game_loop(void)
 					consoleInput += input;
 				if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
 				{
-					if (strcmp(consoleInput.c_str(), "spawn_ent") == 0)
+					if (strcmp(consoleInput.c_str(), "spawnent") == 0)
 					{
 						rEntity *t = rEntity::SpawnEntity();
 						t->Activate();
