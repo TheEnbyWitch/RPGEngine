@@ -50,6 +50,8 @@ public:
 	bool wasCreated = false;
 	void Activate();
 	void Activate(bool addToCollection);
+	void ActivateC(char* id);
+	void Activate(char* id, bool addToCollection);
 	void Activate(int x, int y, char* level, bool addToCollection = true);
 	void Destroy();
 
@@ -68,6 +70,8 @@ public:
 
 	// static
 	static rEntity *SpawnEntity();
+	static rEntity &SpawnEntityR();
+	static rVector2 GetVectorForDirection(rEntityDirection dir);
 
 private:
 	int TargetX = 0;

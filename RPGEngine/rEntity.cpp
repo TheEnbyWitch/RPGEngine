@@ -6,7 +6,7 @@ rEntityTable entityList;
 
 rEntity::rEntity()
 {
-	
+	entFrameCallback = NULL;
 }
 
 
@@ -49,6 +49,30 @@ void rEntity::Activate(bool addToCollection)
 {
 	if(addToCollection) entityList.push_back(this);
 	sprintf(uniqueID, "ENT%06d\0", entID);
+	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
+	entID++;
+	wasCreated = true;
+	PositionX = 0;
+	PositionY = 0;
+	strcpy(currentLevel, player.currentLevel);
+}
+
+void rEntity::Activate(char* id, bool addToCollection)
+{
+	if (addToCollection) entityList.push_back(this);
+	sprintf(uniqueID, "%s", id);
+	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
+	entID++;
+	wasCreated = true;
+	PositionX = 0;
+	PositionY = 0;
+	strcpy(currentLevel, player.currentLevel);
+}
+
+void rEntity::ActivateC(char* id)
+{
+	if (true) entityList.push_back(this);
+	sprintf(uniqueID, "%s", id);
 	rpge_printf("[rEntity] Entity with ID %s was created\n", uniqueID);
 	entID++;
 	wasCreated = true;
@@ -200,6 +224,33 @@ rEntity * rEntity::SpawnEntity()
 {
 	if (entityList.GetEntCount() > 1023) abort_game("Too many entities");
 	return new rEntity;
+}
+
+rEntity &rEntity::SpawnEntityR()
+{
+	if (entityList.size() > 1023) abort_game("G_Spawn: too many entities");
+	return rEntity();
+}
+
+rVector2 rEntity::GetVectorForDirection(rEntityDirection dir)
+{
+	if (dir == ENT_DIRECTION_DOWN)
+	{
+		return rVector2(0, 1);
+	}
+	if (dir == ENT_DIRECTION_UP)
+	{
+		return rVector2(0, -1);
+	}
+	if (dir == ENT_DIRECTION_LEFT)
+	{
+		return rVector2(-1, 0);
+	}
+	if (dir == ENT_DIRECTION_RIGHT)
+	{
+		return rVector2(1, 0);
+	}
+	return rVector2(0,1); // return default if for some retarded reason a different ENT_DIRECTION was passed which should be impossible
 }
 
 rEntity *GetEntityById(string id)

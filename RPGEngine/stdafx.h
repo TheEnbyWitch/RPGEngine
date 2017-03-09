@@ -54,6 +54,7 @@
 #include "AngelScript\add_on\scriptbuilder\scriptbuilder.h"
 #include "AngelScript\add_on\scriptstdstring\scriptstdstring.h"
 #include "AngelScript\add_on\scriptmath\scriptmath.h"
+#include "AngelScript\add_on\scripthandle\scripthandle.h"
 #include "AngelScript\add_on\weakref\weakref.h"
 #endif
 

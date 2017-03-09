@@ -47,16 +47,13 @@ void SQErrorFunc(HSQUIRRELVM v, const SQChar * s, ...);
 void SQCompilerError(HSQUIRRELVM v, const SQChar * desc, const SQChar * source, SQInteger line, SQInteger column);
 #endif
 //SCR_FUNC(Print);
-void SCR_Print(string &txt);
+void SCR_Print(char *txt);
 void SCR_Ping();
 
-void SCR_LoadMenu(string & txt);
+void SCR_LoadMenu(char *txt);
 
-void SCR_LoadMap(string & txt);
+void SCR_LoadMap(char *txt);
 
-void SCR_OpenMenu(string & txt);
+void SCR_OpenMenu(char *txt);
 
-void SCR_OptimizeMap(string & txt);
-
-// Function wrappers
-rEntity * Wrapper_SpawnEntity();
+void SCR_OptimizeMap(char *txt);
