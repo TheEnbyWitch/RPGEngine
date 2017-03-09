@@ -173,10 +173,13 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
 
 	r = asEngine->RegisterObjectMethod("rEntity", "void Activate()", asMETHOD(rEntity, Activate), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void Destroy()", asMETHOD(rEntity, Destroy), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntity, ChangeDirection), asCALL_THISCALL);
 
 	r = asEngine->RegisterGlobalFunction("rEntity &GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void RemoveEntity(rEntity &ent)", asFUNCTION(RemoveEntity), asCALL_CDECL);
+
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
 	if (hasCompileErrors)
@@ -292,4 +295,9 @@ void SCR_OpenMenu(string &txt)
 void SCR_OptimizeMap(string &txt)
 {
 	rpge_printf("[rScript] SCR_OptimizeMap() - Optimizing map %s", (char *)txt.c_str());
+}
+
+rEntity * Wrapper_SpawnEntity()
+{
+	return nullptr;
 }

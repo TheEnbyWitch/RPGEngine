@@ -57,3 +57,6 @@ void SCR_LoadMap(string & txt);
 void SCR_OpenMenu(string & txt);
 
 void SCR_OptimizeMap(string & txt);
+
+// Function wrappers
+rEntity * Wrapper_SpawnEntity();

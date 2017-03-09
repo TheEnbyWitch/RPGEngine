@@ -2,7 +2,7 @@
 #include "rEntity.h"
 
 unsigned int entID = 0;
-std::vector<rEntity *> entityList;
+rEntityTable entityList;
 
 rEntity::rEntity()
 {
@@ -67,6 +67,11 @@ void rEntity::Activate(int x, int y, char* level, bool addToCollection)
 	PositionX = x;
 	PositionY = y;
 	strcpy(currentLevel, level);
+}
+
+void rEntity::Destroy()
+{
+	delete this;
 }
 
 rVector2 rEntity::GetScreenPos()
@@ -193,7 +198,7 @@ void rEntity::ChangeDirection(int targetDirection)
 
 rEntity * rEntity::SpawnEntity()
 {
-	if (entityList.size() > 1023) abort_game("G_Spawn: too many entities");
+	if (entityList.GetEntCount() > 1023) abort_game("Too many entities");
 	return new rEntity;
 }
 
@@ -204,4 +209,31 @@ rEntity *GetEntityById(string id)
 		if (strcmp(entityList[i]->uniqueID, id.c_str()) == 0) return entityList[i];
 	}
 	return NULL;
+}
+
+void RemoveEntity(rEntity * ent)
+{
+	entityList.RemoveEntity(ent);
+}
+
+int rEntityTable::GetEntCount()
+{
+	int res = 0;
+	for (int i = 0; i < this->size(); i++)
+	{
+		if ((*this)[i] != NULL) res++;
+	}
+	return res;
+}
+
+void rEntityTable::RemoveEntity(rEntity * ent)
+{
+	for (int i = 0; i < this->size(); i++)
+	{
+		if ((*this)[i] == ent)
+		{
+			ent->Destroy();
+			erase(begin() + i);
+		}
+	}
 }
