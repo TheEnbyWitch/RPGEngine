@@ -72,12 +72,12 @@ char* ASStringFactory(unsigned int byteLength, const char *s)
 
 void ConstructEnt(void*memory)
 {
-	new(memory) rEntity();
+	new(memory) rEntityScriptWrapper();
 }
 
 void DestructEnt(void*memory)
 {
-	((rEntity*)memory)->~rEntity();
+	((rEntityScriptWrapper*)memory)->~rEntityScriptWrapper();
 }
 
 #endif
@@ -191,21 +191,19 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
-	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntity), asOBJ_VALUE);
+	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntityScriptWrapper), asOBJ_VALUE);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
 
-	//r = asEngine->RegisterObjectMethod("rEntity", "void Activate()", asMETHOD(rEntity, Activate), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void Activate(string id)", asMETHOD(rEntity, ActivateC), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntity, ChangeDirection), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntity, SetImage), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void GetEnt(string id)", asMETHOD(rEntityScriptWrapper, GetEnt), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void Spawn(string id)", asMETHOD(rEntityScriptWrapper, Spawn), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool HasAnAssignedEnt()", asMETHOD(rEntityScriptWrapper, HasAnAssignedEnt), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntityScriptWrapper, Move), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntityScriptWrapper, ChangeDirection), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntityScriptWrapper, SetImage), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "int GetIntValue(string key)", asMETHOD(rEntityScriptWrapper, GetIntValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool GetBoolValue(string key)", asMETHOD(rEntityScriptWrapper, GetBoolValue), asCALL_THISCALL);
 
-	//r = asEngine->RegisterGlobalFunction("rEntity SpawnEntity()", asFUNCTION(rEntity::SpawnEntity), asCALL_CDECL);
-	//r = asEngine->RegisterGlobalFunction("rEntity GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
 	if (hasCompileErrors)

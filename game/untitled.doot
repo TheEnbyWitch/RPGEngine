@@ -1,7 +1,16 @@
 #include "scripts/common.doot"
 
+rEntity ent;
+
 void untitled_init()
 {
 	print("[AS]:untitled.doot Initializing level");
+	ent.Activate("catEnt");
+	ent.SetImage("Actor");
 	IHaveNoIdea();
+}
+
+void catEnt_interact()
+{
+	print("Meow!");
 }

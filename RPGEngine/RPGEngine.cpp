@@ -227,7 +227,7 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
-					if (frames % 60 == 0)
+					if (0)//(frames % 60 == 0)
 					{
 						rEntity *t = rEntity::SpawnEntity();
 						t->Activate();

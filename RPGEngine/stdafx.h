@@ -107,6 +107,7 @@ extern gameInfo_t gameInfo;
 #include "rMath.h"
 #include "rUI.h"
 #include "rEntity.h"
+#include "rEntityScriptWrapper.h"
 #include "rTile.h"
 #include "rMap.h"
 #include "rMenu.h"

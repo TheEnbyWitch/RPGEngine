@@ -221,12 +221,6 @@ rEntity * rEntity::SpawnEntity()
 	return new rEntity;
 }
 
-rEntity &rEntity::SpawnEntityR()
-{
-	if (entityList.size() > 1023) abort_game("G_Spawn: too many entities");
-	return rEntity();
-}
-
 rVector2 rEntity::GetVectorForDirection(rEntityDirection dir)
 {
 	if (dir == ENT_DIRECTION_DOWN)

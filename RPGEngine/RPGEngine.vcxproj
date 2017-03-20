@@ -506,6 +506,7 @@
     <ClInclude Include="RapidXML\rapidxml_utils.hpp" />
     <ClInclude Include="rBitmap.h" />
     <ClInclude Include="rEntity.h" />
+    <ClInclude Include="rEntityScriptWrapper.h" />
     <ClInclude Include="rMap.h" />
     <ClInclude Include="rMath.h" />
     <ClInclude Include="rMenu.h" />
@@ -1285,6 +1286,7 @@
     </ClCompile>
     <ClCompile Include="rBitmap.cpp" />
     <ClCompile Include="rEntity.cpp" />
+    <ClCompile Include="rEntityScriptWrapper.cpp" />
     <ClCompile Include="rMap.cpp" />
     <ClCompile Include="rMath.cpp" />
     <ClCompile Include="rMenu.cpp" />

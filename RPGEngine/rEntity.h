@@ -69,7 +69,6 @@ public:
 
 	// static
 	static rEntity *SpawnEntity();
-	static rEntity &SpawnEntityR();
 	static rVector2 GetVectorForDirection(rEntityDirection dir);
 
 private:
