@@ -32,6 +32,7 @@ public:
 	void ExecuteScript();
 	void ExecuteLevelScript(char * name);
 	void EntInteract(rEntity * parent);
+	void EntThink(rEntity * parent);
 
 	void ExecuteFunction(char *decl);
 

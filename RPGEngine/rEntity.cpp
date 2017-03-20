@@ -7,6 +7,8 @@ rEntityTable entityList;
 rEntity::rEntity()
 {
 	entFrameCallback = NULL;
+	thinkContext = NULL;
+	thinkFunc = NULL;
 }
 
 
@@ -159,6 +161,8 @@ void rEntity::Frame()
 {
 	WS
 	if(entFrameCallback != NULL) entFrameCallback(this);
+
+	gScript.EntThink(this);
 	
 	if (Direction > 3)
 		Direction = ENT_DIRECTION_DOWN;

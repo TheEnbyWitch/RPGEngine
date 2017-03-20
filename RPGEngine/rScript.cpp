@@ -203,6 +203,8 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntityScriptWrapper, SetImage), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "int GetIntValue(string key)", asMETHOD(rEntityScriptWrapper, GetIntValue), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "bool GetBoolValue(string key)", asMETHOD(rEntityScriptWrapper, GetBoolValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void GetIntValue(string key, int value)", asMETHOD(rEntityScriptWrapper, SetIntValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void SetBoolValue(string key, bool value)", asMETHOD(rEntityScriptWrapper, SetBoolValue), asCALL_THISCALL);
 
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
@@ -280,6 +282,36 @@ void rScript::EntInteract(rEntity * parent)
 	}
 	scriptContext->Prepare(func);
 	scriptContext->Execute();
+}
+
+void rScript::EntThink(rEntity * parent)
+{
+	if (!parent->hasThinkFunc) return;
+	//parent->uniqueID
+	char scriptEntID[16];
+	strcpy(scriptEntID, parent->uniqueID);
+	//rpge_printf("[rScript] Executing %s_think\n", scriptEntID);
+	if (parent->thinkContext == 0)
+		parent->thinkContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s_think()", scriptEntID);
+	if (parent->thinkContext == 0)
+		abort_game("Failed to create context!");
+	if (parent->thinkFunc == 0)
+	{
+		parent->thinkFunc = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	}
+	if (parent->thinkFunc == 0)
+	{
+		parent->hasThinkFunc = false;
+		rpge_printf("[rScript] Couldn't find think function for %s!\n", scriptEntID);
+		return;
+	}
+	if (parent->thinkFunc != 0)
+	{
+		parent->thinkContext->Prepare(parent->thinkFunc);
+		parent->thinkContext->Execute();
+	}
 }
 
 void SCR_Print(char *txt)

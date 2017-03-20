@@ -76,14 +76,14 @@ int rEntityScriptWrapper::GetIntValue(char * key)
 	GetValue("layer", target->Layer);
 	GetValue("level", target->Level);
 	GetValue("speed", target->Speed);
-	rpge_printf("[rEntity] Failed to get a value for (int)%s", key);
+	rpge_printf("[rEntity] Failed to get a value for (int)%s\n", key);
 	return 0;
 }
 
 bool rEntityScriptWrapper::GetBoolValue(char * key)
 {
 	GetValue("useEmissive", target->useEmissive);
-	rpge_printf("[rEntity] Failed to get a value for (bool)%s", key);
+	rpge_printf("[rEntity] Failed to get a value for (bool)%s\n", key);
 	return false;
 }
 #define SetValueTo(str, val) if(strcmp(key, str) == 0) { val = value; return;	}
@@ -93,11 +93,11 @@ void rEntityScriptWrapper::SetIntValue(char * key, int value)
 	SetValueTo("layer", target->Layer);
 	SetValueTo("level", target->Level);
 	SetValueTo("speed", target->Speed);
-	rpge_printf("[rEntity] Failed to set a value of \"%d\" for (int)%s", value, key);
+	rpge_printf("[rEntity] Failed to set a value of \"%d\" for (int)%s\n", value, key);
 }
 
 void rEntityScriptWrapper::SetBoolValue(char * key, bool value)
 {
 	SetValueTo("useEmissive", target->useEmissive);
-	rpge_printf("[rEntity] Failed to set a value of \"%s\" for (int)%s", (value ? "true" : "false"), key);
+	rpge_printf("[rEntity] Failed to set a value of \"%s\" for (int)%s\n", (value ? "true" : "false"), key);
 }

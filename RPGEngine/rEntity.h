@@ -71,6 +71,11 @@ public:
 	// static
 	static rEntity *SpawnEntity();
 	static rVector2 GetVectorForDirection(rEntityDirection dir);
+	
+	// script
+	bool hasThinkFunc = true;
+	asIScriptContext *thinkContext = 0;
+	asIScriptFunction *thinkFunc = 0;
 
 private:
 	int TargetX = 0;
