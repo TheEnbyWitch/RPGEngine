@@ -53,6 +53,7 @@ public:
 	void ActivateC(char* id);
 	void Activate(char* id, bool addToCollection);
 	void Activate(int x, int y, char* level, bool addToCollection = true);
+	void Destroy();
 
 	rVector2 GetScreenPos();
 	rVector2 GetSourcePos();
@@ -80,6 +81,17 @@ protected:
 	asILockableSharedBool *weakRefFlag;
 };
 
-
 rEntity *GetEntityById(string id);
-extern std::vector<rEntity *> entityList;
+
+typedef std::vector<rEntity *> rEntityVector;
+
+class rEntityTable : public rEntityVector
+{
+public:
+	int GetEntCount();
+	void RemoveEntity(rEntity * ent);
+};
+
+void RemoveEntity(rEntity * ent);
+
+extern rEntityTable entityList;

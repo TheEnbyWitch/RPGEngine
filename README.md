@@ -4,7 +4,7 @@ A WIP game engine based on Allegro 5
 * a menu system
 * custom version of [Tiled](http://www.mapeditor.org/) (soon™)
 * TMX tile map reader (XML format only)
-* scripting in AngelScript
+* scripting in AngelScript (with entities!)
 * a developer console (which doesn't even work well right now)
 * um, that's about it for now... I guess
 
