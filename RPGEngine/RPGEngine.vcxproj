@@ -505,6 +505,7 @@
     <ClInclude Include="RapidXML\rapidxml_print.hpp" />
     <ClInclude Include="RapidXML\rapidxml_utils.hpp" />
     <ClInclude Include="rBitmap.h" />
+    <ClInclude Include="rData.h" />
     <ClInclude Include="rEntity.h" />
     <ClInclude Include="rEntityScriptWrapper.h" />
     <ClInclude Include="rMap.h" />
@@ -1285,6 +1286,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseConsole|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="rBitmap.cpp" />
+    <ClCompile Include="rData.cpp" />
     <ClCompile Include="rEntity.cpp" />
     <ClCompile Include="rEntityScriptWrapper.cpp" />
     <ClCompile Include="rMap.cpp" />

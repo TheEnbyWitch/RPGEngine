@@ -139,5 +139,6 @@ MENU_ACTION_FUNC(M_StartGame)
 
 MENU_ACTION_FUNC(M_ExecScript)
 {
-	abort_game("M_ExecScript is not implemented yet!");
+	rpge_printf("[rMenu] M_ExecScript() - Executing script function %s()\n", argument);
+	gScript.ExecuteFunction(argument);
 }

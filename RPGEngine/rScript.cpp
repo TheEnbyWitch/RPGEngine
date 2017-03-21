@@ -263,6 +263,24 @@ void rScript::ExecuteLevelScript(char * name)
 #endif
 }
 
+void rScript::ExecuteFunction(char * decl)
+{
+	rpge_printf("[rScript] Executing %s\n", decl);
+	scriptContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s()", decl);
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	if (func == 0)
+	{
+		rpge_printf("[rScript] Couldn't find function declaraction for void %s()!\n", decl);
+		return;
+	}
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
+}
+
 void rScript::EntInteract(rEntity * parent)
 {
 	//parent->uniqueID
@@ -362,4 +380,10 @@ void SCR_OpenMenu(char* txt)
 {
 	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", txt);
 	strcpy(activeMenu, txt);
+}
+
+void SCR_Dialogue(char* txt)
+{
+	abort_game("SCR_Dialogue() is not implemented yet!");
+	//gScript.scriptContext->Suspend();
 }

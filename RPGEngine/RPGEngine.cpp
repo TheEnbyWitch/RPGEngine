@@ -22,6 +22,7 @@ rUI gUI;
 rScript gScript;
 rBitmap gBitmap;
 rWorld gWorld;
+rData gData;
 
 rPlayer player;
 
@@ -51,6 +52,18 @@ void init(void)
 	PHYSFS_mount("_build", NULL, 0);
 	PHYSFS_mount("_resources", NULL, 1);
 	PHYSFS_mount("_audio", "sound/", 1);
+	if (!PHYSFS_mount("playerdata", "playerdata/", 0))
+	{
+		rpge_printf("playerdata not found, creating new...\n");
+		/*
+		ALLEGRO_FILE * sv = al_fopen("playerdata", "wb");
+		if (sv == 0) abort_game("Couldn't create playerdata!\n");
+		al_fwrite(sv, gData.rawData, 138); // Write ZIP header
+		al_fclose(sv);
+		*/
+		al_make_directory("playerdata");
+		rpge_printf("playerdata mount result: %d\n", PHYSFS_mount("playerdata", "playerdata/", 0));
+	}
 
 
 	rpge_printf("Initializing keyboard\n");
@@ -67,6 +80,11 @@ void init(void)
 
 	rpge_printf("Preparing the PhysFS file interface for use with Allegro\n");
 	al_set_physfs_file_interface();
+
+	PHYSFS_setWriteDir("playerdata/");
+
+	rpge_printf("Reading save data\n");
+	gData.Init("player");
 
 	rpge_printf("Creating timer\n");
 	aTimer = al_create_timer(1.0 / 60);

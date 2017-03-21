@@ -104,6 +104,7 @@ typedef struct gameInfo_s {
 extern gameInfo_t gameInfo;
 
 #include "Common.h"
+#include "rData.h"
 #include "rMath.h"
 #include "rUI.h"
 #include "rEntity.h"
@@ -120,6 +121,8 @@ extern rUI gUI;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
+extern rData gData;
+
 extern rPlayer player;
 
 void initialize_assets();

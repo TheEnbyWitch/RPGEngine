@@ -70,7 +70,8 @@ typedef enum {
 	ITEM_TYPE_TEXT,
 	ITEM_TYPE_BUTTON,
 	ITEM_TYPE_IMAGE,
-	ITEM_TYPE_LOADING_BAR
+	ITEM_TYPE_LOADING_BAR,
+	ITEM_TYPE_DIALOGUE_WINDOW
 } rMenuItemType;
 
 typedef struct rButtonAttr_s {

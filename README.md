@@ -8,6 +8,12 @@ A WIP game engine based on Allegro 5
 * a developer console (which doesn't even work well right now)
 * um, that's about it for now... I guess
 
+## Documentation
+Coming soon™
+
+## Scripting API
+Coming soon™
+
 ## Frequently Asked Questions
 None, ask me anything on Twitter (@MaciejRayMarcin)
 
