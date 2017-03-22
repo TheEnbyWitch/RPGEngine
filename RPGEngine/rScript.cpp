@@ -72,12 +72,12 @@ char* ASStringFactory(unsigned int byteLength, const char *s)
 
 void ConstructEnt(void*memory)
 {
-	new(memory) rEntity();
+	new(memory) rEntityScriptWrapper();
 }
 
 void DestructEnt(void*memory)
 {
-	((rEntity*)memory)->~rEntity();
+	((rEntityScriptWrapper*)memory)->~rEntityScriptWrapper();
 }
 
 #endif
@@ -191,23 +191,21 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
-	//r = asEngine->RegisterObjectType("rEntity", sizeof(rEntity), asOBJ_VALUE);
-	r = asEngine->RegisterObjectType("rEntity", 0, asOBJ_REF);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_FACTORY, "rEntity@ f()", asFUNCTION(rEntity::SpawnEntity()), asCALL_CDECL);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_ADDREF, "void f()", asMETHOD(rEntity, AddRef), asCALL_THISCALL);
-	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_RELEASE, "void f()", asMETHOD(rEntity, Release), asCALL_THISCALL);
-	//r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_GET_WEAKREF_FLAG, "int &f()", asMETHOD(rEntity, GetWeakRefFlag), asCALL_THISCALL);
+	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntityScriptWrapper), asOBJ_VALUE);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
+	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);
 
-	//r = asEngine->RegisterObjectMethod("rEntity", "void Activate()", asMETHOD(rEntity, Activate), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void Activate(string id)", asMETHOD(rEntity, ActivateC), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntity, Move), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntity, ChangeDirection), asCALL_THISCALL);
-	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntity, SetImage), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void GetEnt(string id)", asMETHOD(rEntityScriptWrapper, GetEnt), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void Spawn(string id)", asMETHOD(rEntityScriptWrapper, Spawn), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool HasAnAssignedEnt()", asMETHOD(rEntityScriptWrapper, HasAnAssignedEnt), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool Move(int x, int y)", asMETHOD(rEntityScriptWrapper, Move), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void ChangeDirection(int target)", asMETHOD(rEntityScriptWrapper, ChangeDirection), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void SetImage(string path)", asMETHOD(rEntityScriptWrapper, SetImage), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "int GetIntValue(string key)", asMETHOD(rEntityScriptWrapper, GetIntValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "bool GetBoolValue(string key)", asMETHOD(rEntityScriptWrapper, GetBoolValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void GetIntValue(string key, int value)", asMETHOD(rEntityScriptWrapper, SetIntValue), asCALL_THISCALL);
+	r = asEngine->RegisterObjectMethod("rEntity", "void SetBoolValue(string key, bool value)", asMETHOD(rEntityScriptWrapper, SetBoolValue), asCALL_THISCALL);
 
-	//r = asEngine->RegisterGlobalFunction("rEntity SpawnEntity()", asFUNCTION(rEntity::SpawnEntity), asCALL_CDECL);
-	//r = asEngine->RegisterGlobalFunction("rEntity GetEntityById(string id)", asFUNCTION(GetEntityById), asCALL_CDECL);
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();
 	if (hasCompileErrors)
@@ -265,6 +263,24 @@ void rScript::ExecuteLevelScript(char * name)
 #endif
 }
 
+void rScript::ExecuteFunction(char * decl)
+{
+	rpge_printf("[rScript] Executing %s\n", decl);
+	scriptContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s()", decl);
+	if (scriptContext == 0)
+		abort_game("Failed to create context!");
+	asIScriptFunction *func = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	if (func == 0)
+	{
+		rpge_printf("[rScript] Couldn't find function declaraction for void %s()!\n", decl);
+		return;
+	}
+	scriptContext->Prepare(func);
+	scriptContext->Execute();
+}
+
 void rScript::EntInteract(rEntity * parent)
 {
 	//parent->uniqueID
@@ -284,6 +300,36 @@ void rScript::EntInteract(rEntity * parent)
 	}
 	scriptContext->Prepare(func);
 	scriptContext->Execute();
+}
+
+void rScript::EntThink(rEntity * parent)
+{
+	if (!parent->hasThinkFunc) return;
+	//parent->uniqueID
+	char scriptEntID[16];
+	strcpy(scriptEntID, parent->uniqueID);
+	//rpge_printf("[rScript] Executing %s_think\n", scriptEntID);
+	if (parent->thinkContext == 0)
+		parent->thinkContext = asEngine->CreateContext();
+	char str[64];
+	sprintf(str, "void %s_think()", scriptEntID);
+	if (parent->thinkContext == 0)
+		abort_game("Failed to create context!");
+	if (parent->thinkFunc == 0)
+	{
+		parent->thinkFunc = asEngine->GetModule(0)->GetFunctionByDecl(str);
+	}
+	if (parent->thinkFunc == 0)
+	{
+		parent->hasThinkFunc = false;
+		rpge_printf("[rScript] Couldn't find think function for %s!\n", scriptEntID);
+		return;
+	}
+	if (parent->thinkFunc != 0)
+	{
+		parent->thinkContext->Prepare(parent->thinkFunc);
+		parent->thinkContext->Execute();
+	}
 }
 
 void SCR_Print(char *txt)
@@ -334,4 +380,10 @@ void SCR_OpenMenu(char* txt)
 {
 	rpge_printf("[rScript] SCR_OpenMenu() - Opening menu %s\n", txt);
 	strcpy(activeMenu, txt);
+}
+
+void SCR_Dialogue(char* txt)
+{
+	abort_game("SCR_Dialogue() is not implemented yet!");
+	//gScript.scriptContext->Suspend();
 }

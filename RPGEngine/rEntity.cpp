@@ -7,7 +7,8 @@ rEntityTable entityList;
 rEntity::rEntity()
 {
 	entFrameCallback = NULL;
-	refCount = 1;
+	thinkContext = NULL;
+	thinkFunc = NULL;
 }
 
 
@@ -160,6 +161,8 @@ void rEntity::Frame()
 {
 	WS
 	if(entFrameCallback != NULL) entFrameCallback(this);
+
+	gScript.EntThink(this);
 	
 	if (Direction > 3)
 		Direction = ENT_DIRECTION_DOWN;
@@ -225,12 +228,6 @@ rEntity * rEntity::SpawnEntity()
 {
 	if (entityList.GetEntCount() > 1023) abort_game("Too many entities");
 	return new rEntity;
-}
-
-rEntity &rEntity::SpawnEntityR()
-{
-	if (entityList.size() > 1023) abort_game("G_Spawn: too many entities");
-	return rEntity();
 }
 
 rVector2 rEntity::GetVectorForDirection(rEntityDirection dir)

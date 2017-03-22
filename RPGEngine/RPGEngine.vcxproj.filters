@@ -58,9 +58,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -318,6 +315,15 @@
     </ClInclude>
     <ClInclude Include="AngelScript\add_on\scripthandle\scripthandle.h">
       <Filter>Source Files\AngelScript\add_on\scripthandle</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rEntityScriptWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +599,12 @@
     </ClCompile>
     <ClCompile Include="AngelScript\add_on\scripthandle\scripthandle.cpp">
       <Filter>Source Files\AngelScript\add_on\scripthandle</Filter>
+    </ClCompile>
+    <ClCompile Include="rEntityScriptWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rData.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

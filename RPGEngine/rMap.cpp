@@ -81,10 +81,14 @@ void rMap::Optimize()
 	}
 	for (int i = 0; i < tiles.size(); i++)
 	{
-		//tiles[i].Cache();
+		tiles[i].Cache();
 		_tiles[tiles[i].Layer][tiles[i].pY][tiles[i].pX] = &tiles[i];
 	}
 	tilePointers = _tiles;
+	// below is the bitmap way
+	// Uses less CPU, but a heck lot of more memory
+	// Like damn
+	// I don't even want a game to use 800mb of RAM on a single map
 	/*
 	int chunkColumns = (map->width / 32) + 1;
 	int chunkRows = (map->height / 32) + 1;
@@ -137,9 +141,9 @@ void rMap::Draw(int layer)
 	if (wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
 	if (isOptimized)
 	{
-		for (int i = max(0,(player.cameraOffset.X) / 32); i < ((980 + player.cameraOffset.X) / 32); i++)
+		for (int i = __max(0,(player.cameraOffset.X) / 32); i < __min(((980 + player.cameraOffset.X) / 32), map->width); i++)
 		{
-			for (int o = max(0, (player.cameraOffset.Y) / 32); o < ((560 + player.cameraOffset.Y) / 32); o++)
+			for (int o = __max(0, (player.cameraOffset.Y) / 32); o < __min(((560 + player.cameraOffset.Y) / 32), map->height); o++)
 			{
 				if (tilePointers[layer][o][i] != NULL)
 				{

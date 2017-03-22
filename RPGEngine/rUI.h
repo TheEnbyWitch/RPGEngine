@@ -1,5 +1,8 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RUI
+#define __RPG_RUI
+
 #include "rMenu.h"
 class rUI
 {
@@ -21,3 +24,4 @@ public:
 	void DrawDebugInfo(double dt);
 };
 
+#endif

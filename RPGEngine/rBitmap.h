@@ -1,5 +1,8 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RBITMAP
+#define __RPG_RBITMAP
+
 typedef struct rBitmapEntry_s {
 	char name[256];
 	ALLEGRO_BITMAP * bitmap;
@@ -20,3 +23,4 @@ private:
 	ALLEGRO_BITMAP* ReturnValidImage(ALLEGRO_BITMAP* bm);
 };
 
+#endif

@@ -1,5 +1,7 @@
-#pragma once
-#include"stdafx.h"
+#include "stdafx.h"
+
+#ifndef __RPG_RMAP
+#define __RPG_RMAP
 
 struct rMapChunk
 {
@@ -35,3 +37,4 @@ public:
 	bool isOptimized = false;
 };
 
+#endif

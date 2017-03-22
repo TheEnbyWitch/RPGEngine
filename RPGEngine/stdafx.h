@@ -1,18 +1,20 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
+#ifndef __RPG_STDAFX
+#define __RPG_STDAFX
 
-#pragma once
+#ifdef _MSC_VER
 #pragma warning( disable : 4018)
+#endif
+
 #ifdef _UNICODE
 #undef _UNICODE // if it was defined, undefine, it breaks stuff
 #endif
 
 #define _CRT_SECURE_NO_WARNINGS
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__) // macro for getting only the filename
+#define NOMINMAX
 
 #define maxMenuIndex 128		// max menu choices
+
 #define MAX_LINES_SHOWN 20		// max lines to show in console
 //#define BITMAP_VERBOSE			// game will spit out a critical error if a bitmap is not found (only for GetBitmap())
 #ifdef _DEBUG
@@ -24,12 +26,12 @@
 
 #define __USE_ANGELSCRIPT		// uses angelscript
 
-
+#ifdef _WIN32
 #include "targetver.h"
+#endif
 #include "Branding.h"
 
 #include <stdio.h>
-#include <tchar.h>
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
@@ -40,6 +42,7 @@
 
 #include <physfs.h>
 #include "tmx\NLTmxMap.h"
+#include "json.hpp"
 #ifdef __USE_LUA
 #include "Lua\lua.hpp"
 #endif
@@ -104,9 +107,11 @@ typedef struct gameInfo_s {
 extern gameInfo_t gameInfo;
 
 #include "Common.h"
+#include "rData.h"
 #include "rMath.h"
 #include "rUI.h"
 #include "rEntity.h"
+#include "rEntityScriptWrapper.h"
 #include "rTile.h"
 #include "rMap.h"
 #include "rMenu.h"
@@ -119,6 +124,10 @@ extern rUI gUI;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
+extern rData gData;
+
 extern rPlayer player;
 
 void initialize_assets();
+
+#endif

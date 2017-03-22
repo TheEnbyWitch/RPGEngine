@@ -1,5 +1,6 @@
-#pragma once
 #include "stdafx.h"
+#ifndef __RPG_RWORLD
+#define __RPG_RWORLD
 #include "rEntity.h"
 class rWorld
 {
@@ -30,3 +31,4 @@ private:
 	ALLEGRO_COLOR ProcessTOD();
 };
 
+#endif

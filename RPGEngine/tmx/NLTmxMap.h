@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __TMX_PARSER
+#define __TMX_PARSER
 
 #include <string>
 #include <vector>
@@ -107,3 +108,4 @@ public:
 
 NLTmxMap* NLLoadTmxMap( char *xml );
 
+#endif

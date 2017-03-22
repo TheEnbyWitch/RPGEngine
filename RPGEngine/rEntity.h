@@ -1,5 +1,7 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RENTITY
+#define __RPG_RENTITY
 
 #define WS if(!wasCreated) abort_game("Tried to do an action on an uncreated entity");
 
@@ -70,8 +72,12 @@ public:
 
 	// static
 	static rEntity *SpawnEntity();
-	static rEntity &SpawnEntityR();
 	static rVector2 GetVectorForDirection(rEntityDirection dir);
+	
+	// script
+	bool hasThinkFunc = true;
+	asIScriptContext *thinkContext = 0;
+	asIScriptFunction *thinkFunc = 0;
 
 private:
 	int TargetX = 0;
@@ -96,3 +102,5 @@ public:
 void RemoveEntity(rEntity * ent);
 
 extern rEntityTable entityList;
+
+#endif

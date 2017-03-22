@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __RPG_RTILE
+#define __RPG_RTILE
+
 class rTile
 {
 public:
@@ -29,3 +31,4 @@ public:
 	void Cache();
 };
 
+#endif
