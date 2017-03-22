@@ -1,7 +1,9 @@
-#pragma once
 #ifndef _RPG_COMPILER
 #include "stdafx.h"
 #endif
+
+#ifndef __RPG_RMENU
+#define __RPG_RMENU
 
 #define MENU_ACTION_FUNC(name) void name(char * argument)
 #define TYPEDEF_MENU_ACTION_FUNC(name) typedef MENU_ACTION_FUNC(name)
@@ -141,3 +143,5 @@ public:
 	static rMenu ReadMenu(char * filename);
 	static void ExecuteAction(char * func, char * arg);
 };
+
+#endif

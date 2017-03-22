@@ -141,9 +141,9 @@ void rMap::Draw(int layer)
 	if (wasProcessed == false) abort_game("Tried to draw an unprocessed map!");
 	if (isOptimized)
 	{
-		for (int i = max(0,(player.cameraOffset.X) / 32); i < min(((980 + player.cameraOffset.X) / 32), map->width); i++)
+		for (int i = __max(0,(player.cameraOffset.X) / 32); i < __min(((980 + player.cameraOffset.X) / 32), map->width); i++)
 		{
-			for (int o = max(0, (player.cameraOffset.Y) / 32); o < min(((560 + player.cameraOffset.Y) / 32), map->height); o++)
+			for (int o = __max(0, (player.cameraOffset.Y) / 32); o < __min(((560 + player.cameraOffset.Y) / 32), map->height); o++)
 			{
 				if (tilePointers[layer][o][i] != NULL)
 				{

@@ -1,5 +1,7 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RMATH
+#define __RPG_RMATH
 
 class rVector2
 {
@@ -22,3 +24,4 @@ public:
 	static float Clamp(float in, float l, float h);
 };
 
+#endif

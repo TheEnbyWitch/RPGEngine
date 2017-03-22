@@ -1,5 +1,7 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RENTITY
+#define __RPG_RENTITY
 
 #define WS if(!wasCreated) abort_game("Tried to do an action on an uncreated entity");
 
@@ -100,3 +102,5 @@ public:
 void RemoveEntity(rEntity * ent);
 
 extern rEntityTable entityList;
+
+#endif

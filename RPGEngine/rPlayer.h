@@ -1,5 +1,7 @@
-#pragma once
 #include "stdafx.h"
+
+#ifndef __RPG_RPLAYER
+#define __RPG_RPLAYER
 
 class rPlayer : public rEntity
 {
@@ -19,3 +21,4 @@ public:
 	rVector2 destinationCameraOffset = rVector2((960.0 / -2.0)+16.0, (540.0 / -2.0)+16.0);
 };
 
+#endif

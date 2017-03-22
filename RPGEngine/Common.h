@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __RPG_COMMON
+#define __RPG_COMMON
 
 #define cvarBool(name) 0
 
@@ -33,3 +34,5 @@ char * va(const char * t, ...);
 char GetCharFromKeycode(int keycode, int modifiers);
 
 char AnimateChar(char keyframes[], int frames, int fps, int cycle);
+
+#endif

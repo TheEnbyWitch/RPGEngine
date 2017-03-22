@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __RPG_RENTITYSCRIPTWRAPPER
+#define __RPG_RENTITYSCRIPTWRAPPER
+
 class rEntityScriptWrapper
 {
 public:
@@ -24,3 +26,4 @@ private:
 	bool hasAssignedEnt = false;
 };
 
+#endif

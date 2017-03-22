@@ -1,12 +1,7 @@
-#pragma once
 #include "stdafx.h"
-#ifdef __USE_LUA
-#define SCR_FUNC(x) int SCR_##x(lua_State *state)
-#elif __USE_SQUIRREL
-#define SCR_FUNC(x) SQInteger SCR_##x(HSQUIRRELVM v)
-#else
-#define SCR_FUNC(x) void SCR_##x()
-#endif
+
+#ifndef __RPG_RSCRIPT
+#define __RPG_RSCRIPT
 
 class rScript
 {
@@ -58,3 +53,5 @@ void SCR_LoadMap(char *txt);
 void SCR_OpenMenu(char *txt);
 
 void SCR_OptimizeMap(char *txt);
+ 
+#endif
