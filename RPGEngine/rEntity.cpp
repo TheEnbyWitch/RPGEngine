@@ -7,6 +7,7 @@ rEntityTable entityList;
 rEntity::rEntity()
 {
 	entFrameCallback = NULL;
+	refCount = 1;
 }
 
 
