@@ -40,9 +40,7 @@
 #include <Windows.h>
 #endif
 
-#ifndef __ANDROID
 #include <physfs.h>
-#endif
 #include "tmx\NLTmxMap.h"
 #include "json.hpp"
 #ifdef __USE_LUA
@@ -67,9 +65,7 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
-#ifndef __ANDROID
 #include <allegro5\allegro_physfs.h>
-#endif
 #include <allegro5\keyboard.h>
 
 #include <allegro5\allegro_native_dialog.h>
