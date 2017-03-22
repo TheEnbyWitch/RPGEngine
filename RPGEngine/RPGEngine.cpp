@@ -47,6 +47,7 @@ void init(void)
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
 
+#ifndef __ANDROID
 	rpge_printf("Initializing PhysicsFS\n");
 	PHYSFS_init(NULL);
 	PHYSFS_mount("_build", NULL, 0);
@@ -64,6 +65,7 @@ void init(void)
 		al_make_directory("playerdata");
 		rpge_printf("playerdata mount result: %d\n", PHYSFS_mount("playerdata", "playerdata/", 0));
 	}
+#endif
 
 
 	rpge_printf("Initializing keyboard\n");
@@ -78,10 +80,12 @@ void init(void)
 	if (!al_init_image_addon())
 		abort_game("Failed to initialize image addon");
 
+#ifndef __ANDROID
 	rpge_printf("Preparing the PhysFS file interface for use with Allegro\n");
 	al_set_physfs_file_interface();
 
 	PHYSFS_setWriteDir("playerdata/");
+#endif
 
 	rpge_printf("Reading save data\n");
 	gData.Init("player");
