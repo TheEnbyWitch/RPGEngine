@@ -32,7 +32,6 @@
 #include "Branding.h"
 
 #include <stdio.h>
-#include <tchar.h>
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
