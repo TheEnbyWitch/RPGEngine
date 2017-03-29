@@ -161,3 +161,25 @@ NLTmxMap* NLLoadTmxMap( char *xml )
     
     return map;
 }
+
+std::vector<string> NLLoadTmxMapDeps(char *xml)
+{
+	xml_document<> doc;
+	doc.parse<0>(xml);
+
+	xml_node<> *mapnode = doc.first_node("map");
+
+	std::vector<string> r;
+	xml_node<> *tilesetnode = mapnode->first_node("tileset");
+
+	while (tilesetnode) {
+		r.push_back(tilesetnode->first_node("image")->first_attribute("source")->value());
+		tilesetnode = tilesetnode->next_sibling("tileset");
+	}
+
+	const char *separators = " \t,\n\r";
+
+	free((void*)xml);
+
+	return r;
+}

@@ -32,16 +32,20 @@ bool bUseIntro = false;
 int __width = 960;
 int __height = 540;
 bool isShiftPressed = false;
+char loadtxt[4][1024];
+
+long loadtime = 0;
 
 void init(void)
 {
+	memset(loadtxt, 0, sizeof(loadtxt));
 	rpge_printf(
 		"== init() ==\n%s\n%s\n%s\n",
 		"*********************",
 		"* INITIALIZING RPGe *",
 		"*********************"
 	);
-
+	loadtime = clock();
 	rpge_printf("Initializing Allegro %s\n", ALLEGRO_VERSION_STR);
 
 	if (!al_init())
@@ -64,6 +68,8 @@ void init(void)
 		al_make_directory("playerdata");
 		rpge_printf("playerdata mount result: %d\n", PHYSFS_mount("playerdata", "playerdata/", 0));
 	}
+	rpge_printf("Preparing the PhysFS file interface for use with Allegro\n");
+	al_set_physfs_file_interface();
 
 
 	rpge_printf("Initializing keyboard\n");
@@ -77,41 +83,6 @@ void init(void)
 	rpge_printf("Initializing image addon\n");
 	if (!al_init_image_addon())
 		abort_game("Failed to initialize image addon");
-
-	rpge_printf("Preparing the PhysFS file interface for use with Allegro\n");
-	al_set_physfs_file_interface();
-
-	PHYSFS_setWriteDir("playerdata/");
-
-	rpge_printf("Reading save data\n");
-	gData.Init("player");
-
-	rpge_printf("Creating timer\n");
-	aTimer = al_create_timer(1.0 / 60);
-	if (!aTimer)
-		abort_game("Failed to create timer");
-
-	rpge_printf("Creating display\n");
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
-	//al_set_new_display_flags(ALLEGRO_OPENGL);
-	aDisplay = al_create_display(__width, __height);
-	/*
-	rpge_printf("Display modes: \n");
-	for (int i = 0; i < al_get_num_display_modes(); i++)
-	{
-		ALLEGRO_DISPLAY_MODE   disp_data;
-		al_get_display_mode(i, &disp_data);
-		rpge_printf("%dx%d %dHz\n", disp_data.width, disp_data.height, disp_data.refresh_rate);
-	}*/
-	if (!aDisplay)
-		abort_game("Failed to create display");
-
-	rpge_printf("Creating the event queue\n");
-	aEventQueue = al_create_event_queue();
-	if (!aEventQueue)
-		abort_game("Failed to create event queue");
-
 	rpge_printf("Initializing font addon\n");
 	al_init_font_addon();
 	rpge_printf("Initializing TTF addon\n");
@@ -120,23 +91,62 @@ void init(void)
 	font = al_load_ttf_font("lucon.ttf", 12, 0);
 	if (!font)
 		abort_game("Font not found");
+	gameLogo = al_load_bitmap("gmLogo.bmp");
+	gUI.windowBG = al_load_bitmap("window_bg.tga");
 
+	PHYSFS_setWriteDir("playerdata/");
+
+	rpge_printf("Reading save data\n");
+	gData.Init("player");
+
+	rpge_printf("Creating display\n");
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
+	aDisplay = al_create_display(__width, __height);
+	if (!aDisplay)
+		abort_game("Failed to create display");
+
+	DrawLoadWindow("Creating timer...", 0, 17);
+	rpge_printf("Creating timer\n");
+	aTimer = al_create_timer(1.0 / 60);
+	if (!aTimer)
+		abort_game("Failed to create timer");
+
+	/*
+	rpge_printf("Display modes: \n");
+	for (int i = 0; i < al_get_num_display_modes(); i++)
+	{
+		ALLEGRO_DISPLAY_MODE   disp_data;
+		al_get_display_mode(i, &disp_data);
+		rpge_printf("%dx%d %dHz\n", disp_data.width, disp_data.height, disp_data.refresh_rate);
+	}*/
+	DrawLoadWindow("Creating the event queue...", 0, 18);
+	rpge_printf("Creating the event queue\n");
+	aEventQueue = al_create_event_queue();
+	if (!aEventQueue)
+		abort_game("Failed to create event queue");
+
+	DrawLoadWindow("Registering event sources...", 0, 19);
 	rpge_printf("Registering event sources\n");
 	al_register_event_source(aEventQueue, al_get_keyboard_event_source());
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
 	al_register_event_source(aEventQueue, al_get_display_event_source(aDisplay));
 
+	DrawLoadWindow("Loading game assets...", -1, 20);
 	gScript.ExecuteScript();
-	
-	gameLogo = al_load_bitmap("gmLogo.bmp");
-	gUI.windowBG = al_load_bitmap("window_bg.tga");
+	gLoadQueue.LoadQueuedAssets();
 
+	DrawLoadWindow("Preparing the player entity...", -1, 95);
 	player.Activate("player", false);
 	player.SetImage("Actor");
 	player.useEmissive = true;
 
 	initialize_assets();
 
+	loadtime = clock() - loadtime;
+
+	DrawLoadWindow(va("Game loaded in %.4f ms", (loadtime/1000.0f)), -1, 100);
+	al_rest(1);
 	gameInfo.name = GAME_NAME;
 	bInitialized = true;
 
@@ -422,6 +432,48 @@ void game_loop(void)
 			al_flip_display();
 		}
 	}
+}
+
+int loadprog = 0;
+
+void DrawLoadWindow(const char * text, int index, int prog)
+{
+	if (prog != -1) loadprog = prog;
+	if (index == -1)
+	{
+		memset(loadtxt, 0, sizeof(loadtxt));
+		index = 0;
+	}
+	strcpy(loadtxt[index], text);
+	//rpge_printf(va("%s\n", loadtxt[index]));
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	std::string resultConLog;
+	int llo = 0;
+	int currentLines = 0;
+	int lines = 0;
+	for (int i = 0; i < consoleLog.length(); i++)
+	{
+		if (consoleLog[i] == '\n')
+			lines++;
+	}
+	if (llo + MAX_LINES_SHOWN > lines) llo = lines - MAX_LINES_SHOWN;
+	for (int i = consoleLog.length() - 1; i >= 0; i--)
+	{
+		if (consoleLog[i] == '\n')
+		{
+			currentLines++;
+		}
+		if (currentLines > MAX_LINES_SHOWN + llo)
+			break;
+		if (currentLines < llo) continue;
+		resultConLog.insert(0, 1, consoleLog[i]);
+	}
+	al_draw_multiline_text(font, al_map_rgb(255, 255, 255), __width / 2, 160, __width, 13, ALLEGRO_ALIGN_CENTER, va("%s\n%s\n%s\n%s", loadtxt[0], loadtxt[1], loadtxt[2], loadtxt[3]));
+	gUI.DrawColoredWindow(6, __height - (13 + 6), __width - (6 * 2), 14, al_map_rgb(0, 128, 255));
+	gUI.DrawColoredWindowWithText(va("%d%%", loadprog), 6, __height - (13 + 6), (__width - (6 * 2)) * (loadprog/100.0f), 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
+	gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN + 1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) * 13, al_map_rgb(0, 128, 255));
+	al_flip_display();
+	rpge_printf("[RPGE] DrawLoadWindow called\n");
 }
 
 int main(int argc, char* argv[])

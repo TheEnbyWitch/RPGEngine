@@ -48,6 +48,8 @@ void SCR_Ping();
 
 void SCR_LoadMenu(char *txt);
 
+void SCR_LoadTexture(char *txt);
+
 void SCR_LoadMap(char *txt);
 
 void SCR_OpenMenu(char *txt);

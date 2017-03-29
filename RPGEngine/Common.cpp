@@ -27,10 +27,10 @@ void rpge_printf(const char * message, ...)
 char * va(const char * t, ...)
 {
 	static int index = 0;
-	static char string[4][1024];	// in case called by nested functions
+	static char string[16][16384];	// in case called by nested functions
 	char *result;
 	result = string[index];
-	index = (index + 1) & 3;
+	index = (index + 1) % 16;
 	va_list args;
 	va_start(args, t);
 	vsprintf(result, t, args);

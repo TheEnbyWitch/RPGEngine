@@ -84,6 +84,7 @@ void rMenu::Frame()
 
 rMenu rMenu::ReadMenu(char * name)
 {
+	DrawLoadWindow("Reading menu...", 1);
 	rMenu result;
 	ALLEGRO_FILE * menufile;
 	char * filename = new char[256];

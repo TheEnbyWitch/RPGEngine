@@ -51,18 +51,44 @@ void rWorld::Draw()
 		player.Draw();
 }
 
-void rWorld::LoadMap(char * name)
+std::vector<rLoadQueueEntry_t> rWorld::GetMapDependencies(const char * name)
 {
+	std::vector<rLoadQueueEntry_t> r;
+	char path[256];
+	sprintf(path, "maps/%s.tmx", name);
+	rMap result;
+	std::vector<string> fn = NLLoadTmxMapDeps(ReadMap(path));
+	for (auto t : fn)
+	{
+		rLoadQueueEntry_t rlqe;
+		strcpy(rlqe.name, va("maps/%s",t.c_str()));
+		rlqe.type = ASSET_TEXTURE;
+		r.push_back(rlqe);
+	}
+	return r;
+}
+
+void rWorld::LoadMap(const char * name)
+{
+	if (bInitialized)
+	{
+		abort_game("Tried to load a map mid-game. Please make sure the map is being loaded in init() function");
+	}
+	DrawLoadWindow(va("Reading map...", name), 1);
 	char path[256];
 	sprintf(path, "maps/%s.tmx", name);
 	rMap result;
 	result.map = NLLoadTmxMap(ReadMap(path));
 	memcpy(result.name, name, 16);
-	rpge_printf("[rWorld] Loaded map %s\n", path);
 	loadedMaps.push_back(result);
+	DrawLoadWindow(va("Processing...", result.name), 2);
 	loadedMaps[loadedMaps.size() - 1].ProcessMap();
+	DrawLoadWindow(va("Optimizing...", result.name), 2);
 	loadedMaps[loadedMaps.size() - 1].Optimize();
+	DrawLoadWindow(va("Executing init function...", result.name), 2);
+	gScript.ExecuteLevelScript(va("%s", result.name));
 	loadedMaps[loadedMaps.size() - 1].isActive = true;
+	rpge_printf("[rWorld] Loaded map %s\n", path);
 }
 
 double GetMod(double v, double mod)
@@ -105,7 +131,8 @@ char * rWorld::ReadMap(char * path)
 	al_fseek(map, 0, ALLEGRO_SEEK_END);
 	size = al_ftell(map);
 	al_fseek(map, 0, ALLEGRO_SEEK_SET);
-	char *script = (char *)malloc(size+1);
+	static char *script;//[1];
+	script = (char *)malloc(size + 1);
 	al_fread(map, script, size);
 	script[size] = '\0';
 	return script;

@@ -61,13 +61,15 @@ int ASIncludeCallback(const char *include, const char *from, CScriptBuilder *bui
 
 char* ASStringFactory(unsigned int byteLength, const char *s)
 {
+	/*
 	static int index = 0;
 	static char string[10][4096];	// just in case
 	char *result;
 	result = string[index];
 	index = (index + 1) & 9;
 	strcpy(result, s);
-	return result;
+	*/
+	return va("%s", s);
 }
 
 void ConstructEnt(void*memory)
@@ -188,6 +190,7 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterGlobalFunction("void print(string txt)", asFUNCTION(SCR_Print), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void ping()", asFUNCTION(SCR_Ping), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMenu(string txt)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
+	r = asEngine->RegisterGlobalFunction("void LoadTexture(string txt)", asFUNCTION(SCR_LoadTexture), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
 	r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
@@ -367,13 +370,25 @@ void SCR_Ping()
 void SCR_LoadMenu(char* txt)
 {
 	rpge_printf("[rScript] SCR_LoadMenu() - Loading menu %s\n", txt);
-	Menus.push_back(rMenu::ReadMenu(txt));
+	gLoadQueue.AddToQueue(txt, ASSET_MENU);
 }
+
+void SCR_LoadTexture(char* txt)
+{
+	rpge_printf("[rScript] SCR_LoadTexture() - Loading texture %s\n", txt);
+	gLoadQueue.AddToQueue(txt, ASSET_TEXTURE);
+}
+
 
 void SCR_LoadMap(char* txt)
 {
 	rpge_printf("[rScript] SCR_LoadMap() - Loading map %s\n", txt);
-	gWorld.LoadMap(txt);
+	auto l = gWorld.GetMapDependencies(txt);
+	for (auto t : l)
+	{
+		gLoadQueue.AddToQueue(t.name, t.type);
+	}
+	gLoadQueue.AddToQueue(txt, ASSET_MAP);
 }
 
 void SCR_OpenMenu(char* txt)

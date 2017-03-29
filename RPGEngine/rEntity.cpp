@@ -139,6 +139,8 @@ void rEntity::SetImage(char * path)
 {
 	WS
 	strcpy(pathToImage, path);
+	gBitmap.GetBitmap(pathToImage); // precache the images
+	gBitmap.GetBitmap(pathToImage, true);
 	isImageSet = true;
 }
 

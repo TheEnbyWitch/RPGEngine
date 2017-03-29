@@ -107,5 +107,6 @@ public:
 
 
 NLTmxMap* NLLoadTmxMap( char *xml );
+std::vector<string> NLLoadTmxMapDeps(char *xml);
 
 #endif

@@ -19,7 +19,8 @@ public:
 	ALLEGRO_COLOR currentTOD;
 	void Frame();
 	void Draw();
-	void LoadMap(char* name);
+	std::vector<rLoadQueueEntry_t> rWorld::GetMapDependencies(const char* name);
+	void LoadMap(const char* name);
 	ALLEGRO_COLOR GetColorTint();
 
 	char currentLevel[32];

@@ -108,6 +108,7 @@ extern gameInfo_t gameInfo;
 
 #include "Common.h"
 #include "rData.h"
+#include "rLoadQueue.h"
 #include "rMath.h"
 #include "rUI.h"
 #include "rEntity.h"
@@ -125,9 +126,11 @@ extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
 extern rData gData;
+extern rLoadQueue gLoadQueue;
 
 extern rPlayer player;
 
 void initialize_assets();
+void DrawLoadWindow(const char * text, int index = 0, int prog = -1);
 
 #endif

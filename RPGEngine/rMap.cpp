@@ -59,7 +59,6 @@ void rMap::ProcessMap()
 			this->tiles.push_back(tile);
 		}
 	}
-	gScript.ExecuteLevelScript(name);
 	rpge_printf("[rMap] Map %s has been fully processed and is ready to use in game!\n", name);
 	wasProcessed = true;
 }
