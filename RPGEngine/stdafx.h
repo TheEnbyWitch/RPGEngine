@@ -95,7 +95,8 @@ typedef enum {
 	GAME_STATE_ENGINE_INTRO,
 	GAME_STATE_INTRO,
 	GAME_STATE_MENU,
-	GAME_STATE_INGAME
+	GAME_STATE_INGAME,
+	GAME_STATE_DIALOGUE
 } gameState_e;
 
 extern gameState_e gameState;
@@ -117,6 +118,7 @@ extern gameInfo_t gameInfo;
 #include "rMap.h"
 #include "rMenu.h"
 #include "rWorld.h"
+#include "rDialogue.h"
 #include "rPlayer.h"
 #include "rScript.h"
 #include "rBitmap.h"
@@ -127,6 +129,7 @@ extern rBitmap gBitmap;
 extern rWorld gWorld;
 extern rData gData;
 extern rLoadQueue gLoadQueue;
+extern rDialogue testDialogue;
 
 extern rPlayer player;
 

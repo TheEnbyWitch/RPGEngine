@@ -24,6 +24,8 @@ rBitmap gBitmap;
 rWorld gWorld;
 rData gData;
 
+rDialogue testDialogue;
+
 rPlayer player;
 
 bool bInitialized = false;
@@ -148,6 +150,8 @@ void init(void)
 	DrawLoadWindow(va("Game loaded in %.4f ms", (loadtime/1000.0f)), -1, 100);
 	al_rest(1);
 	gameInfo.name = GAME_NAME;
+	testDialogue.SetContent("This is a test dialogue! I might be working!");
+	testDialogue.SetSpeaker("A person");
 	bInitialized = true;
 
 #ifdef USE_INTRO
@@ -243,15 +247,19 @@ void game_loop(void)
 #endif
 						frames = 0;
 					}
-					
+
 				}
 				else if (gameState == GAME_STATE_INTRO)
 				{
-					
+
 				}
 				else if (gameState == GAME_STATE_MENU)
 				{
-					
+
+				}
+				else if (gameState == GAME_STATE_DIALOGUE)
+				{
+					testDialogue.Frame();
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
@@ -327,6 +335,15 @@ void game_loop(void)
 					menu->isActive = false;
 				}
 			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_Z)
+			{
+				testDialogue.active = true;
+				gameState = GAME_STATE_DIALOGUE;
+			}
+			if (gameState == GAME_STATE_DIALOGUE)
+			{
+				testDialogue.Key(event.keyboard.keycode);
+			}
 			if (!showCon)
 			{
 				if ((event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_SPACE) && gameState == GAME_STATE_INGAME)
@@ -378,9 +395,11 @@ void game_loop(void)
 			{
 				
 			}
-			if (gameState == GAME_STATE_INGAME)
+			if (gameState == GAME_STATE_INGAME || gameState == GAME_STATE_DIALOGUE)
 			{
 				gWorld.Draw();
+				if (gameState == GAME_STATE_DIALOGUE)
+					testDialogue.Draw();
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
@@ -470,7 +489,7 @@ void DrawLoadWindow(const char * text, int index, int prog)
 	}
 	al_draw_multiline_text(font, al_map_rgb(255, 255, 255), __width / 2, 160, __width, 13, ALLEGRO_ALIGN_CENTER, va("%s\n%s\n%s\n%s", loadtxt[0], loadtxt[1], loadtxt[2], loadtxt[3]));
 	gUI.DrawColoredWindow(6, __height - (13 + 6), __width - (6 * 2), 14, al_map_rgb(0, 128, 255));
-	gUI.DrawColoredWindowWithText(va("%d%%", loadprog), 6, __height - (13 + 6), (__width - (6 * 2)) * (loadprog/100.0f), 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
+	gUI.DrawColoredWindowWithText(va("%d%%", loadprog), 6, __height - (13 + 6), (__width - (6 * 2)) * (loadprog / 100.0f), 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
 	gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN + 1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) * 13, al_map_rgb(0, 128, 255));
 	al_flip_display();
 	rpge_printf("[RPGE] DrawLoadWindow called\n");
