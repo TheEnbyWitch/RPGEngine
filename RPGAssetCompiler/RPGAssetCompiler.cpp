@@ -29,9 +29,18 @@ void ProcessDialogue(char *file)
 				break;
 			}
 		}
+		char cmd[2048];
 		for (int i = begin; i < 2048; i++)
 		{
-			
+			if (buffer[i] == ' ' || buffer[i] == '	')
+			{
+				cmd[i - begin] = '\0';
+				begin = i;
+				break;
+			}
+			else {
+				cmd[i - begin] = buffer[i - begin];
+			}
 		}
 	}
 }
