@@ -335,6 +335,10 @@ void game_loop(void)
 					menu->isActive = false;
 				}
 			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+			{
+				gameState = GAME_STATE_MENU;
+			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_Z)
 			{
 				testDialogue.active = true;
@@ -492,7 +496,7 @@ void DrawLoadWindow(const char * text, int index, int prog)
 	gUI.DrawColoredWindowWithText(va("%d%%", loadprog), 6, __height - (13 + 6), (__width - (6 * 2)) * (loadprog / 100.0f), 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
 	gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN + 1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) * 13, al_map_rgb(0, 128, 255));
 	al_flip_display();
-	rpge_printf("[RPGE] DrawLoadWindow called\n");
+	//rpge_printf("[RPGE] DrawLoadWindow called\n");
 }
 
 int main(int argc, char* argv[])
