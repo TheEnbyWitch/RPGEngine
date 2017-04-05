@@ -13,14 +13,16 @@
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__) // macro for getting only the filename
 #define NOMINMAX
 
-#define maxMenuIndex 128		// max menu choices
+#define maxMenuIndex 8		// max menu choices
 
 #define MAX_LINES_SHOWN 20		// max lines to show in console
 //#define BITMAP_VERBOSE			// game will spit out a critical error if a bitmap is not found (only for GetBitmap())
 #ifdef _DEBUG
 #define CONFIG_STR				"DEV"
+#define IsDebug					true
 #else
 #define CONFIG_STR				"SHIP"
+#define IsDebug					false
 #endif
 #define ENGINE_STR				"0.0.0: RPGE_"CONFIG_STR"> "
 
@@ -120,6 +122,7 @@ extern gameInfo_t gameInfo;
 #include "rWorld.h"
 #include "rDialogue.h"
 #include "rPlayer.h"
+#include "rScriptEngineHelper.h"
 #include "rScript.h"
 #include "rBitmap.h"
 

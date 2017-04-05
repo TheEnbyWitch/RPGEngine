@@ -18,7 +18,7 @@ void rDialogue::Frame()
 
 void rDialogue::Draw()
 {
-	gUI.DrawColoredWindowWithText(speaker.c_str(), (__width / 2) - (al_get_text_width(font, speaker.c_str()) / 2) -1, __height - (13 * 6) - 16, al_get_text_width(font, speaker.c_str()) + 2, 13, al_map_rgb(255,255,0));
+	gUI.DrawColoredWindowWithText(speaker.c_str(), (__width / 2) - (al_get_text_width(font, speaker.c_str()) / 2) -5, __height - (13 * 6) - 16, al_get_text_width(font, speaker.c_str()) + 10, 13, al_map_rgb(255,255,0), ALLEGRO_ALIGN_CENTER);
 	gUI.DrawColoredWindowWithText((content).c_str(), 8, __height - (13 * 5) - 8, __width - (8 * 2), (13 * 5), al_map_rgb(255, 255, 255));
 }
 

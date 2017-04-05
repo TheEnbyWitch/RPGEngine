@@ -186,18 +186,24 @@ void rScript::ExecuteScript()
 #ifdef _DEBUG
 	asScriptBuilder.DefineWord("DEBUG");
 #endif
-
-	r = asEngine->RegisterGlobalFunction("void print(string txt)", asFUNCTION(SCR_Print), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void ping()", asFUNCTION(SCR_Ping), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void LoadMenu(string txt)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void LoadTexture(string txt)", asFUNCTION(SCR_LoadTexture), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
-	r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
+	helper.AssignEngine(asEngine);
+	helper.AddScriptFunction("void", "LoadMenu", ScrArgArray(1, ScrArg("string", "menuToLoad", "The menu file to load")), asFUNCTION(SCR_LoadMenu), asCALL_CDECL, "Loads the specified menufile", "LoadMenu(\"main\");");
+	//r = asEngine->RegisterGlobalFunction("void LoadMenu(string txt)", asFUNCTION(SCR_LoadMenu), asCALL_CDECL);
+	helper.AddScriptFunction("void", "print", ScrArgArray(1, ScrArg("string", "text", "The text to print")), asFUNCTION(SCR_Print), asCALL_CDECL, "Print a string to console", "print(\"Hello, world!\");");
+	//r = asEngine->RegisterGlobalFunction("void print(string txt)", asFUNCTION(SCR_Print), asCALL_CDECL);
+	helper.AddScriptFunction("void", "LoadTexture", ScrArgArray(1, ScrArg("string", "textureToLoad", "The texture to load")), asFUNCTION(SCR_LoadTexture), asCALL_CDECL, "Loads the specified texture. It's possible to load a texture at will ingame, but it can cause a freeze.", "LoadTexture(\"guy.tga\");");
+	//r = asEngine->RegisterGlobalFunction("void LoadTexture(string txt)", asFUNCTION(SCR_LoadTexture), asCALL_CDECL);
+	helper.AddScriptFunction("void", "LoadMap", ScrArgArray(1, ScrArg("string", "mapToLoad", "The map to load")), asFUNCTION(SCR_LoadMap), asCALL_CDECL, "Loads the specified map into memory. Call in init().", "LoadMap(\"e1m1\");");
+	//r = asEngine->RegisterGlobalFunction("void LoadMap(string txt)", asFUNCTION(SCR_LoadMap), asCALL_CDECL);
+	helper.AddScriptFunction("void", "OpenMenu", ScrArgArray(1, ScrArg("string", "menuToOpen", "The menu to open")), asFUNCTION(SCR_OpenMenu), asCALL_CDECL, "Opens a previously loaded menu.", "OpenMenu(\"main\");");
+	//r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
 	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntityScriptWrapper), asOBJ_VALUE);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);
 
+
+	// TODO: Object Methods in ScriptEngineHelper
 	r = asEngine->RegisterObjectMethod("rEntity", "void GetEnt(string id)", asMETHOD(rEntityScriptWrapper, GetEnt), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "void Spawn(string id)", asMETHOD(rEntityScriptWrapper, Spawn), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "bool HasAnAssignedEnt()", asMETHOD(rEntityScriptWrapper, HasAnAssignedEnt), asCALL_THISCALL);
@@ -208,6 +214,8 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectMethod("rEntity", "bool GetBoolValue(string key)", asMETHOD(rEntityScriptWrapper, GetBoolValue), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "void GetIntValue(string key, int value)", asMETHOD(rEntityScriptWrapper, SetIntValue), asCALL_THISCALL);
 	r = asEngine->RegisterObjectMethod("rEntity", "void SetBoolValue(string key, bool value)", asMETHOD(rEntityScriptWrapper, SetBoolValue), asCALL_THISCALL);
+
+	helper.WriteScriptDoc();
 
 	asScriptBuilder.AddSectionFromMemory("main.doot", ReadScript("main.doot"));
 	asScriptBuilder.BuildModule();

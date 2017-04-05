@@ -209,17 +209,17 @@ void game_loop(void)
 	if (!bInitialized)
 	{
 #ifdef _WIN32
-		SetConsoleTitle(TEXT(va("[RPGEngineConsole] NO GAME (%s)", (_DEBUG ? "dev" : "ship"))));
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] NO GAME (%s)", (IsDebug ? "dev" : "ship"))));
 #endif
-		al_set_window_title(aDisplay, va("[RPGEngine] NO GAME (%s)", (_DEBUG ? "dev" : "ship")));
+		al_set_window_title(aDisplay, va("[RPGEngine] NO GAME (%s)", (IsDebug ? "dev" : "ship")));
 		abort_game("RPGEngine couldn't initialize game");
 	} 
 	else
 	{
 #ifdef _WIN32
-		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gameInfo.name, (_DEBUG ? "dev" : "ship"))));
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gameInfo.name, (IsDebug ? "dev" : "ship"))));
 #endif
-		al_set_window_title(aDisplay, va("[RPGEngine] %s (%s)",gameInfo.name, (_DEBUG ? "dev" : "ship")));
+		al_set_window_title(aDisplay, va("[RPGEngine] %s (%s)",gameInfo.name, (IsDebug ? "dev" : "ship")));
 	}
 
 	while (1) {
@@ -399,11 +399,14 @@ void game_loop(void)
 			{
 				
 			}
-			if (gameState == GAME_STATE_INGAME || gameState == GAME_STATE_DIALOGUE)
+			if (gameState == GAME_STATE_INGAME)
 			{
 				gWorld.Draw();
-				if (gameState == GAME_STATE_DIALOGUE)
-					testDialogue.Draw();
+			}
+			if (gameState == GAME_STATE_DIALOGUE)
+			{
+				gWorld.Draw();
+				testDialogue.Draw();
 			}
 			if (gameState == GAME_STATE_MENU)
 			{
