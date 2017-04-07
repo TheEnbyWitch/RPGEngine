@@ -36,7 +36,7 @@ void rWorld::Draw()
 		}
 	}
 	if (loadedMap == NULL) return;//abort_game("Tried to draw NULL map!");
-	al_hold_bitmap_drawing(true);
+	//al_hold_bitmap_drawing(true);
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
 		loadedMap->Draw(i);
@@ -46,7 +46,7 @@ void rWorld::Draw()
 		}
 		if (i == player.Layer) player.Draw();
 	}
-	al_hold_bitmap_drawing(false);
+	//al_hold_bitmap_drawing(false);
 	if(loadedMap->maxLayers <= player.Layer)
 		player.Draw();
 }
