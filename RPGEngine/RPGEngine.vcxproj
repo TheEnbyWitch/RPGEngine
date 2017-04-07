@@ -514,6 +514,7 @@
     <ClInclude Include="rMath.h" />
     <ClInclude Include="rMenu.h" />
     <ClInclude Include="rPlayer.h" />
+    <ClInclude Include="rRenderer.h" />
     <ClInclude Include="rScript.h" />
     <ClInclude Include="rScriptEngineHelper.h" />
     <ClInclude Include="rTile.h" />
@@ -1306,6 +1307,7 @@
     <ClCompile Include="rMenu.cpp" />
     <ClCompile Include="RPGEngine.cpp" />
     <ClCompile Include="rPlayer.cpp" />
+    <ClCompile Include="rRenderer.cpp" />
     <ClCompile Include="rScript.cpp" />
     <ClCompile Include="rScriptEngineHelper.cpp" />
     <ClCompile Include="rTile.cpp" />

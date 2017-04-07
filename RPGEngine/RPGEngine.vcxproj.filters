@@ -334,6 +334,9 @@
     <ClInclude Include="rScriptEngineHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -622,6 +625,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rScriptEngineHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -102,10 +102,8 @@ void init(void)
 	gData.Init("player");
 
 	rpge_printf("Creating display\n");
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
-	aDisplay = al_create_display(__width, __height);
-	if (!aDisplay)
+	
+	if (!gRenderer.Start())
 		abort_game("Failed to create display");
 
 	DrawLoadWindow("Creating timer...", 0, 17);
@@ -132,7 +130,7 @@ void init(void)
 	rpge_printf("Registering event sources\n");
 	al_register_event_source(aEventQueue, al_get_keyboard_event_source());
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
-	al_register_event_source(aEventQueue, al_get_display_event_source(aDisplay));
+	al_register_event_source(aEventQueue, al_get_display_event_source(gRenderer.GetDisplayPtr()));
 
 	DrawLoadWindow("Loading game assets...", -1, 20);
 	gScript.ExecuteScript();
@@ -379,6 +377,10 @@ void game_loop(void)
 						t->SetImage("Actor");
 						t->useEmissive = true;
 					}
+					if (strcmp(consoleInput.c_str(), "vidrestart") == 0)
+					{
+						gRenderer.VideoRestart();
+					}
 					consoleInput.clear();
 				}
 			}
@@ -455,7 +457,7 @@ void game_loop(void)
 			deltaTime = curTimestamp - prevTimestamp;
 			gUI.DrawDebugInfo(deltaTime);
 			prevTimestamp = curTimestamp;
-			al_flip_display();
+			gRenderer.EndFrame();
 		}
 	}
 }
@@ -498,7 +500,7 @@ void DrawLoadWindow(const char * text, int index, int prog)
 	gUI.DrawColoredWindow(6, __height - (13 + 6), __width - (6 * 2), 14, al_map_rgb(0, 128, 255));
 	gUI.DrawColoredWindowWithText(va("%d%%", loadprog), 6, __height - (13 + 6), (__width - (6 * 2)) * (loadprog / 100.0f), 14, al_map_rgb(0, 255, 0), ALLEGRO_ALIGN_RIGHT);
 	gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN + 1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) * 13, al_map_rgb(0, 128, 255));
-	al_flip_display();
+	gRenderer.EndFrame();
 	//rpge_printf("[RPGE] DrawLoadWindow called\n");
 }
 

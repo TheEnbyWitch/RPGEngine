@@ -110,6 +110,7 @@ typedef struct gameInfo_s {
 extern gameInfo_t gameInfo;
 
 #include "Common.h"
+#include "rRenderer.h"
 #include "rData.h"
 #include "rLoadQueue.h"
 #include "rMath.h"
@@ -126,6 +127,7 @@ extern gameInfo_t gameInfo;
 #include "rScript.h"
 #include "rBitmap.h"
 
+extern rRenderer gRenderer;
 extern rUI gUI;
 extern rScript gScript;
 extern rBitmap gBitmap;
