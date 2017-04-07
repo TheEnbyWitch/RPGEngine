@@ -106,6 +106,9 @@ void init(void)
 	if (!gRenderer.Start())
 		abort_game("Failed to create display");
 
+	gameLogo = al_load_bitmap("gmLogo.bmp");
+	gUI.windowBG = al_load_bitmap("window_bg.tga");
+
 	DrawLoadWindow("Creating timer...", 0, 17);
 	rpge_printf("Creating timer\n");
 	aTimer = al_create_timer(1.0 / 60);
