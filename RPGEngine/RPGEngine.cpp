@@ -27,9 +27,12 @@ rData gData;
 rDialogue testDialogue;
 
 rPlayer player;
+ALLEGRO_MENU *menu;
+ALLEGRO_MENU *dbg_menu;
 
 bool bInitialized = false;
 bool bUseIntro = false;
+bool bUseAudio = true;
 
 int __width = 960;
 int __height = 540;
@@ -85,6 +88,13 @@ void init(void)
 	rpge_printf("Initializing image addon\n");
 	if (!al_init_image_addon())
 		abort_game("Failed to initialize image addon");
+
+	rpge_printf("Initializing audio addon\n");
+	if (!al_install_audio())
+		abort_game("Failed to initialize audio!");
+	if (!al_init_acodec_addon())
+		abort_game("Failed to initialize audio codecs!");
+
 	rpge_printf("Initializing font addon\n");
 	al_init_font_addon();
 	rpge_printf("Initializing TTF addon\n");
@@ -100,11 +110,13 @@ void init(void)
 
 	rpge_printf("Reading save data\n");
 	gData.Init("player");
+	gSound.Init();
 
 	rpge_printf("Creating display\n");
 	
 	if (!gRenderer.Start())
 		abort_game("Failed to create display");
+
 
 	gameLogo = al_load_bitmap("gmLogo.bmp");
 	gUI.windowBG = al_load_bitmap("window_bg.tga");
@@ -135,6 +147,29 @@ void init(void)
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
 	al_register_event_source(aEventQueue, al_get_display_event_source(gRenderer.GetDisplayPtr()));
 
+	ALLEGRO_MENU_INFO menu_info[] = {
+		ALLEGRO_START_OF_MENU("&Debug", 1),
+		ALLEGRO_START_OF_MENU("&Show", 2),
+		{ "FPS", 3, 0, NULL },
+		{ "TOD Debug", 4, 0, NULL },
+		{ "Player Pos", 5, 0, NULL },
+		ALLEGRO_END_OF_MENU,
+		ALLEGRO_MENU_SEPARATOR,
+		{ "E&xit", 6, 0, NULL },
+		ALLEGRO_END_OF_MENU,
+		ALLEGRO_START_OF_MENU("&Help", 7),
+		{ "&About", 8, 0, NULL },
+		ALLEGRO_END_OF_MENU,
+		ALLEGRO_END_OF_MENU
+	};
+
+	menu = al_build_menu(menu_info);
+	if (IsDebug)
+	{
+		//al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
+
+		al_register_event_source(aEventQueue, al_get_default_menu_event_source());
+	}
 	DrawLoadWindow("Loading game assets...", -1, 20);
 	gScript.ExecuteScript();
 	gLoadQueue.LoadQueuedAssets();
@@ -187,6 +222,14 @@ void initialize_assets()
 }
 
 bool showCon = false;
+
+bool showDbgMenu = false;
+bool showDbgInfo = IsDebug;
+
+bool showFPS = true;
+bool showTOD = true;
+bool showPlayerPos = true;
+
 int frames = 0;
 int gf = 0;
 std::string drawBitmap;
@@ -226,6 +269,18 @@ void game_loop(void)
 	while (1) {
 		ALLEGRO_EVENT event;
 		al_wait_for_event(aEventQueue, &event);
+
+		if (event.type == ALLEGRO_EVENT_MENU_CLICK) {
+#define MN_ACTN_T(id, var) if(event.user.data1 == id) var = !var;
+#define MN_ACTN(id, action) if(event.user.data1 == id) action
+			
+			MN_ACTN_T(3, showFPS);
+			MN_ACTN_T(4, showTOD);
+			MN_ACTN_T(5, showPlayerPos);
+
+			MN_ACTN(6, exit(1));
+			MN_ACTN(8, al_show_native_message_box(al_get_current_display(), "About", ENGINE_STR, "Made by Ray1235", NULL, NULL));
+		}
 		
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -316,6 +371,12 @@ void game_loop(void)
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
 				lineOffset++;
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_HOME && IsDebug)
+			{
+				showDbgMenu = !showDbgMenu;
+				if(showDbgMenu) al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
+				else al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
 			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGDN)
@@ -431,34 +492,9 @@ void game_loop(void)
 				}
 			}
 
-			if (showCon)
-			{
-				std::string resultConLog;
-				int currentLines = 0;
-				int lines = 0;
-				for (int i = 0; i < consoleLog.length(); i++)
-				{
-					if (consoleLog[i] == '\n')
-						lines++;
-				}
-				if (lineOffset+MAX_LINES_SHOWN > lines) lineOffset = lines-MAX_LINES_SHOWN;
-				for (int i = consoleLog.length() - 1; i >= 0; i--)
-				{
-					if (consoleLog[i] == '\n')
-					{
-						currentLines++;
-					}
-					if (currentLines > MAX_LINES_SHOWN+lineOffset)
-						break;
-					if (currentLines < lineOffset) continue;
-					resultConLog.insert(0, 1, consoleLog[i]);	
-				}
-				
-				gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, __height - (((MAX_LINES_SHOWN+1) * 13) + 6 + 14 + 6), __width - (6 * 2), (MAX_LINES_SHOWN + 1) *13, al_map_rgb(0, 128, 255));
-				gUI.DrawColoredWindowWithText(va("%s%s%s", ENGINE_STR, consoleInput.c_str(), ( frames % 40 > 20 ? "_" : "")), 6, __height - (13 + 6), __width-(6*2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
-			}
+			
 			deltaTime = curTimestamp - prevTimestamp;
-			gUI.DrawDebugInfo(deltaTime);
+			if(showDbgInfo) gUI.DrawDebugInfo(deltaTime);
 			prevTimestamp = curTimestamp;
 			gRenderer.EndFrame();
 		}
@@ -507,9 +543,16 @@ void DrawLoadWindow(const char * text, int index, int prog)
 	//rpge_printf("[RPGE] DrawLoadWindow called\n");
 }
 
-int main(int argc, char* argv[])
+int game_main(int argc, char* argv[])
 {
 	init();
 	game_loop();
 	shutdown();
+	return 0;
+}
+
+// Parappa The Wrappa
+int main(int argc, char* argv[])
+{
+	game_main(argc, argv);
 }

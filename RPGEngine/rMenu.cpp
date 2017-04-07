@@ -56,6 +56,7 @@ void rMenu::Key(int keycode)
 		}
 		if (keycode == ALLEGRO_KEY_ENTER)
 		{
+			gSound.PlaySample("ui/enter.wav");
 			for (int i = 0; i < this->items.size(); i++)
 			{
 				rMenuItem_t *item = &items[i];
@@ -136,6 +137,7 @@ MENU_ACTION_FUNC(M_StartGame)
 {
 	rpge_printf("[rMenu] M_StartGame() - Starting game\n");
 	gameState = GAME_STATE_INGAME;
+	gSound.PlayMusic();
 }
 
 MENU_ACTION_FUNC(M_ExecScript)

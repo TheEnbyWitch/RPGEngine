@@ -5,11 +5,11 @@ public:
 	rRenderer();
 	~rRenderer();
 
-	bool fullScreen = true;
+	bool fullScreen = false;
 	bool isDisplayActive = false;
 
-	int displayWidth = 1600;
-	int displayHeight = 900;
+	int displayWidth = 960;
+	int displayHeight = 540;
 
 	void SetDisplayRes(int w, int h);
 	ALLEGRO_DISPLAY * GetDisplayPtr();

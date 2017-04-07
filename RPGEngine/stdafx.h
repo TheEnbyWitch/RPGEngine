@@ -64,6 +64,8 @@
 #endif
 
 #include <allegro5\allegro.h>
+#include <allegro5\allegro_acodec.h>
+#include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
@@ -92,6 +94,13 @@ extern int __height;
 extern double deltaTime;
 
 extern bool showCon;
+extern bool showDbgMenu;
+extern bool showFPS;
+extern bool showTOD;
+extern bool showPlayerPos;
+
+extern uint32_t lineOffset;
+extern int frames;
 
 typedef enum {
 	GAME_STATE_ENGINE_INTRO,
@@ -112,6 +121,7 @@ extern gameInfo_t gameInfo;
 #include "Common.h"
 #include "rRenderer.h"
 #include "rData.h"
+#include "rSound.h"
 #include "rLoadQueue.h"
 #include "rMath.h"
 #include "rUI.h"
@@ -129,6 +139,7 @@ extern gameInfo_t gameInfo;
 
 extern rRenderer gRenderer;
 extern rUI gUI;
+extern rSound gSound;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
@@ -137,6 +148,9 @@ extern rLoadQueue gLoadQueue;
 extern rDialogue testDialogue;
 
 extern rPlayer player;
+
+extern ALLEGRO_MENU *menu;
+extern ALLEGRO_MENU *dbg_menu;
 
 void initialize_assets();
 void DrawLoadWindow(const char * text, int index = 0, int prog = -1);

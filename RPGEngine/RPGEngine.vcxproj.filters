@@ -337,6 +337,15 @@
     <ClInclude Include="rRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rSound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rSoundInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rStreamInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -628,6 +637,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rSoundInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rStreamInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
