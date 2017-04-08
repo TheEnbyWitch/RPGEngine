@@ -31,21 +31,24 @@ int rRenderer::Start()
 	displayBitmap = al_get_target_bitmap();
 	renderBitmap = al_create_bitmap(__width, __height);
 	al_set_target_bitmap(renderBitmap);
+	al_register_event_source(aEventQueue, al_get_display_event_source(display));
+
 	isDisplayActive = true;
 	return (int)display;
 }
 
 void rRenderer::VideoRestart()
 {
-	rpge_printf("[rRenderer] VideoRestart doesn't work properly yet");
-	return;
+	rpge_printf("[rRenderer] VideoRestart doesn't work properly yet\n");
+	//return;
 
 	if (!isDisplayActive)
 	{
-		rpge_printf("[rRenderer] Display is not active, cannot restart video");
+		rpge_printf("[rRenderer] Display is not active, cannot restart video\n");
 		return;
 	}
 	al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
+	al_destroy_user_event_source(al_get_display_event_source(display));
 	al_set_target_bitmap(displayBitmap);
 	al_destroy_display(display);
 	//al_destroy_bitmap(displayBitmap);
@@ -73,7 +76,7 @@ void rRenderer::EndFrame()
 				lines++;
 		}
 		if (lineOffset + MAX_LINES_SHOWN > lines) lineOffset = lines - MAX_LINES_SHOWN;
-		for (int i = consoleLog.length() - 1; i >= 0; i--)
+		for (int i = consoleLog.length() - 2; i >= 0; i--)
 		{
 			if (consoleLog[i] == '\n')
 			{
@@ -90,4 +93,23 @@ void rRenderer::EndFrame()
 	}
 	al_set_target_bitmap(renderBitmap);
 	al_flip_display();
+	RefreshWindowTitle();
+}
+
+void rRenderer::RefreshWindowTitle()
+{
+	if (!bInitialized)
+	{
+#ifdef _WIN32
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] LOADING (%s)", (IsDebug ? "dev" : "ship"))));
+#endif
+		al_set_window_title(gRenderer.GetDisplayPtr(), va("[RPGEngine] LOADING (%s)", (IsDebug ? "dev" : "ship")));
+	}
+	else
+	{
+#ifdef _WIN32
+		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gGameInfo.gameName, (IsDebug ? "dev" : "ship"))));
+#endif
+		al_set_window_title(gRenderer.GetDisplayPtr(), va("[RPGEngine] %s (%s) | Map: %s | Menu: %s", gGameInfo.gameName, (IsDebug ? "dev" : "ship"), gWorld.currentLevel, activeMenu));
+	}
 }

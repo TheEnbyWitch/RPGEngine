@@ -112,13 +112,8 @@ typedef enum {
 
 extern gameState_e gameState;
 
-typedef struct gameInfo_s {
-	char *name;
-} gameInfo_t;
-
-extern gameInfo_t gameInfo;
-
 #include "Common.h"
+#include "rGameInfo.h"
 #include "rRenderer.h"
 #include "rData.h"
 #include "rSound.h"
@@ -137,6 +132,7 @@ extern gameInfo_t gameInfo;
 #include "rScript.h"
 #include "rBitmap.h"
 
+extern rGameInfo gGameInfo;
 extern rRenderer gRenderer;
 extern rUI gUI;
 extern rSound gSound;

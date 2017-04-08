@@ -12,7 +12,7 @@ public:
 
 	bool Init();
 	
-	void PlayMusic();
+	void PlayMusic(char * musName);
 
 	void PlaySample(char * sndName);
 

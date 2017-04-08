@@ -8,6 +8,7 @@ public:
 
 	void Init();
 	void Start();
+	void Stop();
 
 	void SetPlayMode(ALLEGRO_PLAYMODE playMode);
 	bool AttachToMixer(ALLEGRO_MIXER * mixer);

@@ -21,7 +21,7 @@ void ProcessDialogue(char *file)
 		int begin = 0;
 		for (int i = 0; i < 2048; i++)
 		{
-			if (buffer[i] == ' ' || buffer[i] == '	')
+			if (buffer[i] == ' ' || buffer[i] == '	' || buffer[i] == '\n' || buffer[i] == '\r')
 			{
 				begin++;
 			}
@@ -32,7 +32,7 @@ void ProcessDialogue(char *file)
 		char cmd[2048];
 		for (int i = begin; i < 2048; i++)
 		{
-			if (buffer[i] == ' ' || buffer[i] == '	')
+			if (buffer[i] == ' ' || buffer[i] == '	' || buffer[i] == '\n' || buffer[i] == '\r')
 			{
 				cmd[i - begin] = '\0';
 				begin = i;
@@ -42,6 +42,7 @@ void ProcessDialogue(char *file)
 				cmd[i - begin] = buffer[i - begin];
 			}
 		}
+		printf("%s\n", cmd);
 	}
 }
 
@@ -49,6 +50,7 @@ int main(int argc, char * argv[])
 {
 	for (int i = 1; i < argc; i++)
 	{
+		printf("%s", argv[i]);
 		ProcessExtension("rdlg", ProcessDialogue);
 	}
     return 0;

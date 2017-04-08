@@ -509,6 +509,7 @@
     <ClInclude Include="rDialogue.h" />
     <ClInclude Include="rEntity.h" />
     <ClInclude Include="rEntityScriptWrapper.h" />
+    <ClInclude Include="rGameInfo.h" />
     <ClInclude Include="rLoadQueue.h" />
     <ClInclude Include="rMap.h" />
     <ClInclude Include="rMath.h" />
@@ -1304,6 +1305,7 @@
     <ClCompile Include="rDialogue.cpp" />
     <ClCompile Include="rEntity.cpp" />
     <ClCompile Include="rEntityScriptWrapper.cpp" />
+    <ClCompile Include="rGameInfo.cpp" />
     <ClCompile Include="rLoadQueue.cpp" />
     <ClCompile Include="rMap.cpp" />
     <ClCompile Include="rMath.cpp" />

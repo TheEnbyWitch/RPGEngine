@@ -13,7 +13,6 @@ ALLEGRO_BITMAP* gameLogo;
 ALLEGRO_BITMAP* actor;
 
 std::ifstream gameConfig;
-gameInfo_t gameInfo;
 gameState_e gameState = GAME_STATE_ENGINE_INTRO;
 
 
@@ -53,8 +52,14 @@ void init(void)
 	loadtime = clock();
 	rpge_printf("Initializing Allegro %s\n", ALLEGRO_VERSION_STR);
 
+	
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
+
+	rpge_printf("Creating the event queue\n"); 
+	aEventQueue = al_create_event_queue();
+	if (!aEventQueue)
+		abort_game("Failed to create event queue");
 
 	rpge_printf("Initializing PhysicsFS\n");
 	PHYSFS_init(NULL);
@@ -135,35 +140,16 @@ void init(void)
 		al_get_display_mode(i, &disp_data);
 		rpge_printf("%dx%d %dHz\n", disp_data.width, disp_data.height, disp_data.refresh_rate);
 	}*/
-	DrawLoadWindow("Creating the event queue...", 0, 18);
-	rpge_printf("Creating the event queue\n");
-	aEventQueue = al_create_event_queue();
-	if (!aEventQueue)
-		abort_game("Failed to create event queue");
+
 
 	DrawLoadWindow("Registering event sources...", 0, 19);
 	rpge_printf("Registering event sources\n");
 	al_register_event_source(aEventQueue, al_get_keyboard_event_source());
 	al_register_event_source(aEventQueue, al_get_timer_event_source(aTimer));
-	al_register_event_source(aEventQueue, al_get_display_event_source(gRenderer.GetDisplayPtr()));
 
-	ALLEGRO_MENU_INFO menu_info[] = {
-		ALLEGRO_START_OF_MENU("&Debug", 1),
-		ALLEGRO_START_OF_MENU("&Show", 2),
-		{ "FPS", 3, 0, NULL },
-		{ "TOD Debug", 4, 0, NULL },
-		{ "Player Pos", 5, 0, NULL },
-		ALLEGRO_END_OF_MENU,
-		ALLEGRO_MENU_SEPARATOR,
-		{ "E&xit", 6, 0, NULL },
-		ALLEGRO_END_OF_MENU,
-		ALLEGRO_START_OF_MENU("&Help", 7),
-		{ "&About", 8, 0, NULL },
-		ALLEGRO_END_OF_MENU,
-		ALLEGRO_END_OF_MENU
-	};
+	gGameInfo.Init();
 
-	menu = al_build_menu(menu_info);
+	menu = al_build_menu(gGameInfo.GetMenuInfo());
 	if (IsDebug)
 	{
 		//al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
@@ -185,7 +171,6 @@ void init(void)
 
 	DrawLoadWindow(va("Game loaded in %.4f ms", (loadtime/1000.0f)), -1, 100);
 	al_rest(1);
-	gameInfo.name = GAME_NAME;
 	testDialogue.SetContent("This is a test dialogue! I might be working!");
 	testDialogue.SetSpeaker("A person");
 	bInitialized = true;
@@ -250,22 +235,6 @@ void game_loop(void)
 	bool redraw = true;
 	al_start_timer(aTimer);
 
-	if (!bInitialized)
-	{
-#ifdef _WIN32
-		SetConsoleTitle(TEXT(va("[RPGEngineConsole] NO GAME (%s)", (IsDebug ? "dev" : "ship"))));
-#endif
-		al_set_window_title(aDisplay, va("[RPGEngine] NO GAME (%s)", (IsDebug ? "dev" : "ship")));
-		abort_game("RPGEngine couldn't initialize game");
-	} 
-	else
-	{
-#ifdef _WIN32
-		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gameInfo.name, (IsDebug ? "dev" : "ship"))));
-#endif
-		al_set_window_title(aDisplay, va("[RPGEngine] %s (%s)",gameInfo.name, (IsDebug ? "dev" : "ship")));
-	}
-
 	while (1) {
 		ALLEGRO_EVENT event;
 		al_wait_for_event(aEventQueue, &event);
@@ -279,7 +248,7 @@ void game_loop(void)
 			MN_ACTN_T(5, showPlayerPos);
 
 			MN_ACTN(6, exit(1));
-			MN_ACTN(8, al_show_native_message_box(al_get_current_display(), "About", ENGINE_STR, "Made by Ray1235", NULL, NULL));
+			MN_ACTN(gGameInfo.aboutID, al_show_native_message_box(al_get_current_display(), "About", ENGINE_STR, "Made by Ray1235", NULL, NULL));
 		}
 		
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -524,7 +493,7 @@ void DrawLoadWindow(const char * text, int index, int prog)
 			lines++;
 	}
 	if (llo + MAX_LINES_SHOWN > lines) llo = lines - MAX_LINES_SHOWN;
-	for (int i = consoleLog.length() - 1; i >= 0; i--)
+	for (int i = consoleLog.length() - 2; i >= 0; i--)
 	{
 		if (consoleLog[i] == '\n')
 		{

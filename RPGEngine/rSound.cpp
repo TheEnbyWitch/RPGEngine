@@ -26,20 +26,21 @@ bool rSound::Init()
 	return true;
 }
 
-void rSound::PlayMusic()
+void rSound::PlayMusic(char * musName)
 {
 	SNDINIT;
 	for (auto si : streamInstances)
 	{
-		if (strcmp("test.flac", si->name) == 0)
+		if (strcmp(musName, si->name) == 0)
 		{
 			si->Start();
 			return;
 		}
 		else {
+			si->Stop();
 		}
 	}
-	rStreamInstance *t = new rStreamInstance("test.flac");
+	rStreamInstance *t = new rStreamInstance(musName);
 	t->Init();
 	t->AttachToMixer(mainMixer);
 	t->SetPlayMode(ALLEGRO_PLAYMODE_LOOP);

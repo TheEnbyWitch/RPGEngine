@@ -137,7 +137,7 @@ MENU_ACTION_FUNC(M_StartGame)
 {
 	rpge_printf("[rMenu] M_StartGame() - Starting game\n");
 	gameState = GAME_STATE_INGAME;
-	gSound.PlayMusic();
+	gSound.PlayMusic("test.flac");
 }
 
 MENU_ACTION_FUNC(M_ExecScript)

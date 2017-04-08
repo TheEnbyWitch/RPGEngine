@@ -18,6 +18,8 @@ public:
 	void VideoRestart();
 	void EndFrame();
 
+	void RefreshWindowTitle();
+
 private:
 	ALLEGRO_DISPLAY * display;
 	ALLEGRO_BITMAP * displayBitmap;

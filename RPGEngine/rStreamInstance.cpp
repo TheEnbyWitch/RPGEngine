@@ -18,7 +18,7 @@ rStreamInstance::~rStreamInstance()
 
 void rStreamInstance::Init()
 {
-	audioStream = al_load_audio_stream(name, 4, 2048);
+	audioStream = al_load_audio_stream(name, 8, 8192);
 	
 	al_set_audio_stream_playing(audioStream, false);
 	al_set_audio_stream_playmode(audioStream, ALLEGRO_PLAYMODE_LOOP);
@@ -27,6 +27,11 @@ void rStreamInstance::Init()
 void rStreamInstance::Start()
 {
 	al_set_audio_stream_playing(audioStream, true);
+}
+
+void rStreamInstance::Stop()
+{
+	al_set_audio_stream_playing(audioStream, false);
 }
 
 void rStreamInstance::SetPlayMode(ALLEGRO_PLAYMODE playMode)
