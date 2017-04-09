@@ -26,6 +26,15 @@ bool rSound::Init()
 	return true;
 }
 
+void rSound::Frame()
+{
+	SNDINIT;
+	for (auto si : streamInstances)
+	{
+		si->Frame();
+	}
+}
+
 void rSound::PlayMusic(char * musName)
 {
 	SNDINIT;

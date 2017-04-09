@@ -11,6 +11,8 @@ public:
 	bool Initialized = false;
 
 	bool Init();
+
+	void Frame();
 	
 	void PlayMusic(char * musName);
 

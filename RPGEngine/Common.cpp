@@ -3,6 +3,21 @@
 std::string consoleLog;
 std::string consoleInput;
 
+size_t find_ext_idx(const char* fileName)
+{
+	size_t len = strlen(fileName);
+	size_t idx = len - 1;
+	for (size_t i = 0; *(fileName + i); i++) {
+		if (*(fileName + i) == '.') {
+			idx = i;
+		}
+		else if (*(fileName + i) == '/' || *(fileName + i) == '\\') {
+			idx = len - 1;
+		}
+	}
+	return idx + 1;
+}
+
 void abort_game_ex(const char* message, const char* header = "The game was forced to abort")
 {
 	rpge_printf("%s \n", message);

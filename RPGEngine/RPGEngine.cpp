@@ -261,6 +261,7 @@ void game_loop(void)
 			if (bInitialized)
 			{
 				frames++;
+				gSound.Frame();
 				if (gameState == GAME_STATE_ENGINE_INTRO)
 				{
 					if (frames > 3 * 60)
