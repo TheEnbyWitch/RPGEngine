@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "rStreamInstance.h"
 
+#include "RapidXML\rapidxml.hpp"
+
 
 rStreamInstance::rStreamInstance()
 {
@@ -9,6 +11,7 @@ rStreamInstance::rStreamInstance()
 rStreamInstance::rStreamInstance(char * filename)
 {
 	strcpy(name, filename);
+	sprintf(xmlName, "%s.xml", filename);
 }
 
 
@@ -20,6 +23,21 @@ void rStreamInstance::Init()
 {
 	audioStream = al_load_audio_stream(name, 8, 8192);
 	
+	ALLEGRO_FILE * xml;
+	xml = al_fopen(xmlName, "rb");
+	if (xml)
+	{
+		char * buf = new char[al_fsize(xml) + 1];
+		al_fread(xml, buf, al_fsize(xml));
+		buf[al_fsize(xml)] = '\0';
+		al_fclose(xml);
+
+		rapidxml::xml_document<> x;
+		x.parse<0>(buf);
+		fadeInLength = atof(x.first_node("streamEntry")->first_attribute("fadeIn")->value());
+		fadeOutLength = atof(x.first_node("streamEntry")->first_attribute("fadeOut")->value());
+	}
+
 	al_set_audio_stream_playing(audioStream, false);
 	al_set_audio_stream_playmode(audioStream, ALLEGRO_PLAYMODE_LOOP);
 }
@@ -31,7 +49,10 @@ void rStreamInstance::Frame()
 	case STREAM_IDLE:
 		break;
 	case STREAM_FADING_IN:
-		currentGain = __min(1.0, currentGain + (1.0 / 60.0) * fadeInLength);
+		if (fadeInLength != 0.0)
+			currentGain = __min(1.0, currentGain + (1.0 / 60.0) / fadeInLength);
+		else
+			currentGain = 1.0;
 		al_set_audio_stream_gain(audioStream, currentGain);
 		if (currentGain >= 1.0)
 		{
@@ -39,7 +60,10 @@ void rStreamInstance::Frame()
 		}
 		break;
 	case STREAM_FADING_OUT:
-		currentGain = __max(0.0, currentGain - (1.0 / 60.0) * fadeInLength);
+		if (fadeOutLength != 0.0)
+			currentGain = __max(0.0, currentGain - (1.0 / 60.0) / fadeOutLength);
+		else
+			currentGain = 0.0;
 		al_set_audio_stream_gain(audioStream, currentGain);
 		if (currentGain <= 0.0)
 		{

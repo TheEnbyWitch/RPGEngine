@@ -4,7 +4,7 @@
 #include "rSound.h"
 
 rSound gSound;
-
+char currentMus[256];
 
 rSound::rSound()
 {
@@ -38,17 +38,20 @@ void rSound::Frame()
 void rSound::PlayMusic(char * musName)
 {
 	SNDINIT;
+	strcpy(currentMus, musName);
+	bool found = false;
 	for (auto si : streamInstances)
 	{
 		if (strcmp(musName, si->name) == 0)
 		{
 			si->Start();
-			return;
+			found = true;
 		}
 		else {
-			si->Stop();
+			si->FadeOut();
 		}
 	}
+	if (found) return;
 	rStreamInstance *t = new rStreamInstance(musName);
 	t->Init();
 	t->AttachToMixer(mainMixer);

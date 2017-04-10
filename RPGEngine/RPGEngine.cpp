@@ -236,6 +236,7 @@ void game_loop(void)
 {
 	bool redraw = true;
 	al_start_timer(aTimer);
+	gSound.PlayMusic("ilive.flac");
 
 	while (1) {
 		ALLEGRO_EVENT event;
@@ -375,6 +376,7 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			{
+				gSound.PlayMusic("ilive.flac");
 				gameState = GAME_STATE_MENU;
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_Z)

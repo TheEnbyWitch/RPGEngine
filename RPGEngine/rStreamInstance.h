@@ -29,6 +29,7 @@ public:
 	ALLEGRO_AUDIO_STREAM * GetStreamPtr();
 
 	char name[256];
+	char xmlName[256];
 	double fadeOutLength = 2;
 	double fadeInLength = 2;
 	double currentGain = 0.0;
