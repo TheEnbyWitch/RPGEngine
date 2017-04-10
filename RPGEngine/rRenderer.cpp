@@ -110,6 +110,6 @@ void rRenderer::RefreshWindowTitle()
 #ifdef _WIN32
 		SetConsoleTitle(TEXT(va("[RPGEngineConsole] %s (%s)", gGameInfo.gameName, (IsDebug ? "dev" : "ship"))));
 #endif
-		al_set_window_title(gRenderer.GetDisplayPtr(), va("[RPGEngine] %s (%s) | Map: %s | Menu: %s", gGameInfo.gameName, (IsDebug ? "dev" : "ship"), gWorld.currentLevel, activeMenu));
+		al_set_window_title(gRenderer.GetDisplayPtr(), va("[RPGEngine] %s (%s) | Map: %s | Menu: %s | Current music playing: %s", gGameInfo.gameName, (IsDebug ? "dev" : "ship"), gWorld.currentLevel, activeMenu, currentMus));
 	}
 }

@@ -147,6 +147,7 @@ extern rPlayer player;
 
 extern ALLEGRO_MENU *menu;
 extern ALLEGRO_MENU *dbg_menu;
+extern char currentMus[256];
 
 void initialize_assets();
 void DrawLoadWindow(const char * text, int index = 0, int prog = -1);

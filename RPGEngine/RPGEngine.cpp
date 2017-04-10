@@ -234,6 +234,7 @@ void game_loop(void)
 {
 	bool redraw = true;
 	al_start_timer(aTimer);
+	gSound.PlayMusic("ilive.flac");
 
 	while (1) {
 		ALLEGRO_EVENT event;
