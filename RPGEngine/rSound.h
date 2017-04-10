@@ -23,6 +23,7 @@ public:
 private:
 	ALLEGRO_VOICE * mainVoice;
 	ALLEGRO_MIXER * mainMixer;
+	ALLEGRO_MIXER * voxMixer;
 
 	std::vector<rSoundInstance *> soundInstances;
 	std::vector<rStreamInstance *> streamInstances;

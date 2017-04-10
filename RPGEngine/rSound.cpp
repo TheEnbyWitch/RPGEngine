@@ -20,6 +20,7 @@ bool rSound::Init()
 	mainVoice = al_create_voice(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
 	al_set_default_voice(mainVoice);
 	mainMixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
+	voxMixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
 	al_set_default_mixer(mainMixer);
 	al_attach_mixer_to_voice(mainMixer, mainVoice);
 	Initialized = true;

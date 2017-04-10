@@ -17,13 +17,12 @@ public:
 	ALLEGRO_MIXER * GetMixerPtr();
 	
 	float * GetVoiceIntensityPtr();
+	void UpdateVoice(int *buf, unsigned int samples, void *data);
 
 	char name[256];
 
 	float voiceIntensity = 0.0f;
 private:
-
-	void UpdateVoice(void *buf, unsigned int samples, void *data);
 
 	ALLEGRO_SAMPLE * sample;
 	ALLEGRO_SAMPLE_INSTANCE * sampleInstance;

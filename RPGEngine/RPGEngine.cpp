@@ -66,6 +66,7 @@ void init(void)
 	PHYSFS_mount("_build", NULL, 0);
 	PHYSFS_mount("_resources", NULL, 1);
 	PHYSFS_mount("_audio", "sound/", 1);
+	PHYSFS_mount("vox", "vox/", 1);
 	if (!PHYSFS_mount("playerdata", "playerdata/", 0))
 	{
 		rpge_printf("playerdata not found, creating new...\n");
@@ -236,7 +237,7 @@ void game_loop(void)
 {
 	bool redraw = true;
 	al_start_timer(aTimer);
-	gSound.PlayMusic("ilive.flac");
+	//gSound.PlayMusic("ilive.flac");
 
 	while (1) {
 		ALLEGRO_EVENT event;
@@ -343,7 +344,7 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_P)
 			{
-				stuff = gSound.PlayVoiceover("ui/enter.wav");
+				stuff = gSound.PlayVoiceover("vox/mop.wav");
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
@@ -376,7 +377,7 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			{
-				gSound.PlayMusic("ilive.flac");
+				//gSound.PlayMusic("ilive.flac");
 				gameState = GAME_STATE_MENU;
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_Z)
