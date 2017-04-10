@@ -36,7 +36,7 @@ void rWorld::Draw()
 		}
 	}
 	if (loadedMap == NULL) return;//abort_game("Tried to draw NULL map!");
-	al_hold_bitmap_drawing(true);
+	//al_hold_bitmap_drawing(true);
 	for (int i = 0; i < loadedMap->maxLayers; i++)
 	{
 		loadedMap->Draw(i);
@@ -46,7 +46,7 @@ void rWorld::Draw()
 		}
 		if (i == player.Layer) player.Draw();
 	}
-	al_hold_bitmap_drawing(false);
+	//al_hold_bitmap_drawing(false);
 	if(loadedMap->maxLayers <= player.Layer)
 		player.Draw();
 }
@@ -79,7 +79,8 @@ void rWorld::LoadMap(const char * name)
 	sprintf(path, "maps/%s.tmx", name);
 	rMap result;
 	result.map = NLLoadTmxMap(ReadMap(path));
-	memcpy(result.name, name, 16);
+	strcpy(result.name, name);
+	strcpy(this->currentLevel, name);
 	loadedMaps.push_back(result);
 	DrawLoadWindow(va("Processing...", result.name), 2);
 	loadedMaps[loadedMaps.size() - 1].ProcessMap();

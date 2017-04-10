@@ -50,7 +50,7 @@ void rMap::ProcessMap()
 				{
 					char path[256];
 					tile.columns = map->tilesets[p]->columns;
-					memcpy(path, map->tilesets[p]->filename.c_str(), 256);
+					strcpy(path, map->tilesets[p]->filename.c_str());
 					sprintf(tile.pathToImage, "maps/%s", path);
 					break;
 				}

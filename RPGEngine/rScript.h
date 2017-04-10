@@ -18,12 +18,12 @@ public:
 	asIScriptEngine *asEngine;
 	CScriptBuilder asScriptBuilder;
 	asIScriptContext * scriptContext;
+	rScriptEngineHelper helper;
 #endif
 	ALLEGRO_FILE * mainScript;
 	int lastResult;
 	bool hasCompileErrors = false;
 
-	void LoadAssets();
 	void ExecuteScript();
 	void ExecuteLevelScript(char * name);
 	void EntInteract(rEntity * parent);

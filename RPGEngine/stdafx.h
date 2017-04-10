@@ -13,14 +13,16 @@
 #define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__) // macro for getting only the filename
 #define NOMINMAX
 
-#define maxMenuIndex 128		// max menu choices
+#define maxMenuIndex 8		// max menu choices
 
 #define MAX_LINES_SHOWN 20		// max lines to show in console
 //#define BITMAP_VERBOSE			// game will spit out a critical error if a bitmap is not found (only for GetBitmap())
 #ifdef _DEBUG
 #define CONFIG_STR				"DEV"
+#define IsDebug					true
 #else
 #define CONFIG_STR				"SHIP"
+#define IsDebug					false
 #endif
 #define ENGINE_STR				"0.0.0: RPGE_"CONFIG_STR"> "
 
@@ -62,6 +64,8 @@
 #endif
 
 #include <allegro5\allegro.h>
+#include <allegro5\allegro_acodec.h>
+#include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
@@ -90,24 +94,29 @@ extern int __height;
 extern double deltaTime;
 
 extern bool showCon;
+extern bool showDbgMenu;
+extern bool showFPS;
+extern bool showTOD;
+extern bool showPlayerPos;
+
+extern uint32_t lineOffset;
+extern int frames;
 
 typedef enum {
 	GAME_STATE_ENGINE_INTRO,
 	GAME_STATE_INTRO,
 	GAME_STATE_MENU,
-	GAME_STATE_INGAME
+	GAME_STATE_INGAME,
+	GAME_STATE_DIALOGUE
 } gameState_e;
 
 extern gameState_e gameState;
 
-typedef struct gameInfo_s {
-	char *name;
-} gameInfo_t;
-
-extern gameInfo_t gameInfo;
-
 #include "Common.h"
+#include "rGameInfo.h"
+#include "rRenderer.h"
 #include "rData.h"
+#include "rSound.h"
 #include "rLoadQueue.h"
 #include "rMath.h"
 #include "rUI.h"
@@ -117,18 +126,27 @@ extern gameInfo_t gameInfo;
 #include "rMap.h"
 #include "rMenu.h"
 #include "rWorld.h"
+#include "rDialogue.h"
 #include "rPlayer.h"
+#include "rScriptEngineHelper.h"
 #include "rScript.h"
 #include "rBitmap.h"
 
+extern rGameInfo gGameInfo;
+extern rRenderer gRenderer;
 extern rUI gUI;
+extern rSound gSound;
 extern rScript gScript;
 extern rBitmap gBitmap;
 extern rWorld gWorld;
 extern rData gData;
 extern rLoadQueue gLoadQueue;
+extern rDialogue testDialogue;
 
 extern rPlayer player;
+
+extern ALLEGRO_MENU *menu;
+extern ALLEGRO_MENU *dbg_menu;
 
 void initialize_assets();
 void DrawLoadWindow(const char * text, int index = 0, int prog = -1);

@@ -1,0 +1,62 @@
+{
+    "LoadMap": {
+        "args": {
+            "mapToLoad": {
+                "desc": "The map to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadMap(string mapToLoad)",
+        "desc": "Loads the specified map into memory. Call in init().",
+        "example": "LoadMap(\"e1m1\");",
+        "returnType": "void"
+    },
+    "LoadMenu": {
+        "args": {
+            "menuToLoad": {
+                "desc": "The menu file to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadMenu(string menuToLoad)",
+        "desc": "Loads the specified menufile",
+        "example": "LoadMenu(\"main\");",
+        "returnType": "void"
+    },
+    "LoadTexture": {
+        "args": {
+            "textureToLoad": {
+                "desc": "The texture to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadTexture(string textureToLoad)",
+        "desc": "Loads the specified texture. It's possible to load a texture at will ingame, but it can cause a freeze.",
+        "example": "LoadTexture(\"guy.tga\");",
+        "returnType": "void"
+    },
+    "OpenMenu": {
+        "args": {
+            "menuToOpen": {
+                "desc": "The menu to open",
+                "type": "string"
+            }
+        },
+        "decl": "void OpenMenu(string menuToOpen)",
+        "desc": "Opens a previously loaded menu.",
+        "example": "OpenMenu(\"main\");",
+        "returnType": "void"
+    },
+    "print": {
+        "args": {
+            "text": {
+                "desc": "The text to print",
+                "type": "string"
+            }
+        },
+        "decl": "void print(string text)",
+        "desc": "Print a string to console",
+        "example": "print(\"Hello, world!\");",
+        "returnType": "void"
+    }
+}

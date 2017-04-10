@@ -3,6 +3,21 @@
 std::string consoleLog;
 std::string consoleInput;
 
+size_t find_ext_idx(const char* fileName)
+{
+	size_t len = strlen(fileName);
+	size_t idx = len - 1;
+	for (size_t i = 0; *(fileName + i); i++) {
+		if (*(fileName + i) == '.') {
+			idx = i;
+		}
+		else if (*(fileName + i) == '/' || *(fileName + i) == '\\') {
+			idx = len - 1;
+		}
+	}
+	return idx + 1;
+}
+
 void abort_game_ex(const char* message, const char* header = "The game was forced to abort")
 {
 	rpge_printf("%s \n", message);
@@ -27,10 +42,10 @@ void rpge_printf(const char * message, ...)
 char * va(const char * t, ...)
 {
 	static int index = 0;
-	static char string[16][16384];	// in case called by nested functions
+	static char string[4][1024];	// in case called by nested functions
 	char *result;
 	result = string[index];
-	index = (index + 1) % 16;
+	index = (index + 1) & 3;
 	va_list args;
 	va_start(args, t);
 	vsprintf(result, t, args);
