@@ -349,6 +349,9 @@
     <ClInclude Include="rGameInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rVoiceoverInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -652,6 +655,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rGameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rVoiceoverInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

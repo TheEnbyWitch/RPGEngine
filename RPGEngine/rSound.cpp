@@ -75,3 +75,26 @@ void rSound::PlaySample(char * sndName)
 	soundInstances.push_back(t);
 }
 
+float * rSound::PlayVoiceover(char * voxName, bool stopPrevious)
+{
+	SNDINIT_PTR;
+	for (auto si : voiceoverInstances)
+	{
+		if (strcmp(voxName, si->name) == 0)
+		{
+			si->Play();
+		}
+		else {
+			if (stopPrevious)
+				si->Stop();
+		}
+	}
+	rVoiceoverInstance *t = new rVoiceoverInstance(voxName);
+	t->Init();
+	t->AttachToMixer(mainMixer);
+	t->Play();
+	voiceoverInstances.push_back(t);
+
+	return t->GetVoiceIntensityPtr();
+}
+

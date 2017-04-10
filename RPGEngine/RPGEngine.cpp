@@ -225,6 +225,8 @@ int menuIndex = 0;
 double deltaTime = 0.0;
 float menuIndexSelectFrac[maxMenuIndex];
 
+float * stuff = 0;
+
 void EntFrameCallback(rEntity * self)
 {
 	self->Move(1, 0);
@@ -337,6 +339,10 @@ void game_loop(void)
 			{
 				showCon = !showCon;
 				consoleInput.clear();
+			}
+			if (event.keyboard.keycode == ALLEGRO_KEY_P)
+			{
+				stuff = gSound.PlayVoiceover("ui/enter.wav");
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
@@ -466,6 +472,7 @@ void game_loop(void)
 			deltaTime = curTimestamp - prevTimestamp;
 			if(showDbgInfo) gUI.DrawDebugInfo(deltaTime);
 			prevTimestamp = curTimestamp;
+			if (stuff != 0) gUI.DrawColoredWindowWithText(va("%f", *stuff), 50, 10, 60, 15, al_map_rgb(255,255,255));
 			gRenderer.EndFrame();
 		}
 	}
