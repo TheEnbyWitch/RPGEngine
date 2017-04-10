@@ -47,6 +47,54 @@
         "example": "OpenMenu(\"main\");",
         "returnType": "void"
     },
+    "RegisterSaveFieldFloatt": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "float"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldFloatt(string field, float defaultValue)",
+        "desc": "Registers a float save field",
+        "example": "RegisterSaveFieldFloat(\"aFloat\", 1.15);",
+        "returnType": "void"
+    },
+    "RegisterSaveFieldInt": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "int"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldInt(string field, int defaultValue)",
+        "desc": "Registers an int save field",
+        "example": "RegisterSaveFieldInt(\"aNumber\", 115);",
+        "returnType": "void"
+    },
+    "RegisterSaveFieldString": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "string"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldString(string field, string defaultValue)",
+        "desc": "Registers a string save field",
+        "example": "RegisterSaveFieldString(\"aString\", \"Hello, world!\");",
+        "returnType": "void"
+    },
     "print": {
         "args": {
             "text": {

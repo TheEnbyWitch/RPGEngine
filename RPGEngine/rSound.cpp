@@ -39,17 +39,19 @@ void rSound::PlayMusic(char * musName)
 {
 	SNDINIT;
 	strcpy(currentMus, musName);
+	bool found = false;
 	for (auto si : streamInstances)
 	{
 		if (strcmp(musName, si->name) == 0)
 		{
 			si->Start();
-			return;
+			found = true;
 		}
 		else {
 			si->FadeOut();
 		}
 	}
+	if (found) return;
 	rStreamInstance *t = new rStreamInstance(musName);
 	t->Init();
 	t->AttachToMixer(mainMixer);

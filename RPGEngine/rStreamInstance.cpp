@@ -61,7 +61,7 @@ void rStreamInstance::Frame()
 		break;
 	case STREAM_FADING_OUT:
 		if (fadeOutLength != 0.0)
-			currentGain = __max(0.0, currentGain - (1.0 / 60.0) / fadeInLength);
+			currentGain = __max(0.0, currentGain - (1.0 / 60.0) / fadeOutLength);
 		else
 			currentGain = 0.0;
 		al_set_audio_stream_gain(audioStream, currentGain);

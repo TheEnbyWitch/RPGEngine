@@ -198,6 +198,10 @@ void rScript::ExecuteScript()
 	helper.AddScriptFunction("void", "OpenMenu", ScrArgArray(1, ScrArg("string", "menuToOpen", "The menu to open")), asFUNCTION(SCR_OpenMenu), asCALL_CDECL, "Opens a previously loaded menu.", "OpenMenu(\"main\");");
 	//r = asEngine->RegisterGlobalFunction("void OpenMenu(string txt)", asFUNCTION(SCR_OpenMenu), asCALL_CDECL);
 
+	helper.AddScriptFunction("void", "RegisterSaveFieldInt", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("int", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers an int save field", "RegisterSaveFieldInt(\"aNumber\", 115);");
+	helper.AddScriptFunction("void", "RegisterSaveFieldFloatt", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("float", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers a float save field", "RegisterSaveFieldFloat(\"aFloat\", 1.15);");
+	helper.AddScriptFunction("void", "RegisterSaveFieldString", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("string", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers a string save field", "RegisterSaveFieldString(\"aString\", \"Hello, world!\");");
+
 	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntityScriptWrapper), asOBJ_VALUE);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(DestructEnt), asCALL_CDECL_OBJLAST);

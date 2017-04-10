@@ -45,3 +45,24 @@ int rData::Init(char * savefile)
 	}
 	return 0;
 }
+
+template <class T>
+void rData::RegisterSaveField(const char * name, T defaultValue)
+{
+	this->data[name] = defaultValue;
+}
+
+void RegisterSaveFieldInt(char * name, int defaultVal)
+{
+	gData.RegisterSaveField<int>(name, defaultVal);
+}
+
+void RegisterSaveFieldFloat(char * name, float defaultVal)
+{
+	gData.RegisterSaveField<float>(name, defaultVal);
+}
+
+void RegisterSaveFieldString(char * name, char* defaultVal)
+{
+	gData.RegisterSaveField<char*>(name, defaultVal);
+}

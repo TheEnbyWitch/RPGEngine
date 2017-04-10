@@ -370,6 +370,7 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			{
+				gSound.PlayMusic("ilive.flac");
 				gameState = GAME_STATE_MENU;
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_Z)
