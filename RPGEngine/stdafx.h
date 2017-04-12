@@ -113,6 +113,7 @@ typedef enum {
 extern gameState_e gameState;
 
 #include "Common.h"
+#include "rCommand.h"
 #include "rGameInfo.h"
 #include "rRenderer.h"
 #include "rData.h"

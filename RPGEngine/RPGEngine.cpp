@@ -344,7 +344,7 @@ void game_loop(void)
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_P)
 			{
-				stuff = gSound.PlayVoiceover("vox/mop.wav");
+				//stuff = gSound.PlayVoiceover("vox/mop.wav");
 			}
 			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 			{
@@ -420,9 +420,15 @@ void game_loop(void)
 						t->SetImage("Actor");
 						t->useEmissive = true;
 					}
-					if (strcmp(consoleInput.c_str(), "vidrestart") == 0)
+					else if (strcmp(consoleInput.c_str(), "vidrestart") == 0)
 					{
 						gRenderer.VideoRestart();
+					}
+					else
+					{
+						rCommand cmd(consoleInput.c_str());
+						cmd.ProcessInput();
+						cmd.Execute();
 					}
 					consoleInput.clear();
 				}

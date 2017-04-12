@@ -46,6 +46,12 @@
     <Filter Include="Source Files\AngelScript\add_on\scripthandle">
       <UniqueIdentifier>{c0b48849-3207-40a9-b16a-a408d19086e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Console">
+      <UniqueIdentifier>{d0536194-7bbb-4da9-ac38-fef588979a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Console">
+      <UniqueIdentifier>{3d163aff-cdfc-413b-ad45-bbc705cbaeb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -351,6 +357,12 @@
     </ClInclude>
     <ClInclude Include="rVoiceoverInstance.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rCommand.h">
+      <Filter>Header Files\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="rDVar.h">
+      <Filter>Header Files\Console</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -659,6 +671,12 @@
     </ClCompile>
     <ClCompile Include="rVoiceoverInstance.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rCommand.cpp">
+      <Filter>Source Files\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="rDVar.cpp">
+      <Filter>Source Files\Console</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

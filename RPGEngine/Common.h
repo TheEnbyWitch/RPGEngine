@@ -1,5 +1,6 @@
 #ifndef __RPG_COMMON
 #define __RPG_COMMON
+#include "rCommand.h"
 
 #define cvarBool(name) 0
 
