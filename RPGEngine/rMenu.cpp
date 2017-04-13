@@ -1,7 +1,7 @@
 #include "rMenu.h"
 #include "stdafx.h"
 
-#define MENU_VERBOSE if(cvarBool(menu_verbose))
+#define MENU_VERBOSE if(gConsole.GetDvar("menu_verbose")->ToInt())
 
 std::vector<class rMenu> Menus;
 char activeMenu[32]{ 'n','u','l','l'};

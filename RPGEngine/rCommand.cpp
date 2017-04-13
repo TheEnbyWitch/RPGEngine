@@ -58,6 +58,49 @@ void rCommand::ProcessInput()
 	inputWasProcessed = true;
 }
 
+rCommandArgs rCommand::GetArgs(const char* from)
+{
+	rCommandArgs a;
+	char t[8192];
+	int len = strlen(from);
+	strcpy(t, from);
+
+	bool isInStringLiteral = false;
+	int currentTokenID = 0;
+
+	for (int i = 0; i < len; i++)
+	{
+		if (i != 0)
+		{
+			if (t[i] == '"' && t[i - 1] != '\\') isInStringLiteral = !isInStringLiteral;
+		}
+		if (t[i] == ' ' && a.tokens[currentTokenID].length() != 0)
+		{
+			if (!isInStringLiteral)
+			{
+				a.tokens[currentTokenID] += '\0';
+				currentTokenID++;
+				continue;
+			}
+		}
+		if (t[i] == '"' && t[i - 1] == '\\')
+		{
+			a.tokens[currentTokenID] += t[i];
+			continue;
+		}
+		if (t[i] == 'n' && t[i - 1] == '\\')
+		{
+			a.tokens[currentTokenID] += '\n';
+			continue;
+		}
+
+		if (t[i] == '\\') continue;
+		if ((t[i] != ' ' || isInStringLiteral) && t[i] != '"') a.tokens[currentTokenID] += t[i];
+	}
+	a.tokenCount = currentTokenID + 1;
+	return a;
+}
+
 bool rCommand::Execute()
 {
 	if (!inputWasProcessed)
@@ -72,11 +115,14 @@ bool rCommand::Execute()
 		a.tokens[i] = tokens[i];
 	}
 
-	for (int i = 0; i < sizeof(CMDs) / sizeof(CMD_T); i++)
+	for (int i = 0; i < sizeof(rConsoleCMD::CMDs) / sizeof(CMD_T); i++)
 	{
-		if (strcmp(CMDs[i].cmd, this->tokens[0].c_str()) == 0)
+		if (strcmp(rConsoleCMD::CMDs[i].cmd, this->tokens[0].c_str()) == 0)
 		{
-			CMDs[i].func(a);
+			if (rConsoleCMD::CMDs[i].func != NULL)
+				rConsoleCMD::CMDs[i].func(a);
+			else
+				abort_game(va("\"%s\" command doesn't have a function assigned.\nPlease check the rCommand.h file!", rConsoleCMD::CMDs[i].cmd));
 			return true;
 		}
 	}
@@ -95,4 +141,33 @@ void CMD_Print(rCommandArgs args)
 	{
 		rpge_printf("Arg %d: %s\n", i, args.GetArg(i));
 	}
+}
+
+void CMD_Set(rCommandArgs args)
+{
+	if(args.tokenCount > 1)
+	{
+		if (gConsole.GetDvar(args.GetArg(1)) != NULL)
+		{
+			if (args.tokenCount > 2)
+				gConsole.GetDvar(args.GetArg(1))->SetValue(args.GetArg(2));
+			else
+				rpge_printf("%s is \"%s\"\n", args.GetArg(1), gConsole.GetDvar(args.GetArg(1))->ToConstChar());
+		}
+		else {
+			if (args.tokenCount > 2)
+				gConsole.RegisterDVar(args.GetArg(1), DVAR_STRING, args.GetArg(2));
+			else
+				rpge_printf("%s is not a valid dvar\n", args.GetArg(1));
+		}
+	}
+	else {
+		rpge_printf("Usage: set <dvar> [value]\n");
+	}
+}
+
+void CMD_Seta(rCommandArgs args)
+{
+	rpge_printf("[CMD_Seta] Not yet implemented, calling CMD_Set\n");
+	CMD_Set(args);
 }

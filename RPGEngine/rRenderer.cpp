@@ -65,32 +65,7 @@ void rRenderer::EndFrame()
 {
 	al_set_target_bitmap(displayBitmap);
 	al_draw_scaled_bitmap(renderBitmap, 0, 0, __width, __height, 0, 0, displayWidth, displayHeight, ALLEGRO_MIN_LINEAR);
-	if (showCon)
-	{
-		std::string resultConLog;
-		int currentLines = 0;
-		int lines = 0;
-		for (int i = 0; i < consoleLog.length(); i++)
-		{
-			if (consoleLog[i] == '\n')
-				lines++;
-		}
-		if (lineOffset + MAX_LINES_SHOWN > lines) lineOffset = lines - MAX_LINES_SHOWN;
-		for (int i = consoleLog.length() - 2; i >= 0; i--)
-		{
-			if (consoleLog[i] == '\n')
-			{
-				currentLines++;
-			}
-			if (currentLines > MAX_LINES_SHOWN + lineOffset)
-				break;
-			if (currentLines < lineOffset) continue;
-			resultConLog.insert(0, 1, consoleLog[i]);
-		}
-
-		gUI.DrawColoredWindowWithText(resultConLog.c_str(), 6, displayHeight - (((MAX_LINES_SHOWN + 1) * 13) + 6 + 14 + 6), displayWidth - (6 * 2), (MAX_LINES_SHOWN + 1) * 13, al_map_rgb(0, 128, 255));
-		gUI.DrawColoredWindowWithText(va("%s%s%s", ENGINE_STR, consoleInput.c_str(), (frames % 40 > 20 ? "_" : "")), 6, displayHeight - (13 + 6), displayWidth - (6 * 2), 14, al_map_rgb(255, 255, 0), ALLEGRO_ALIGN_LEFT);
-	}
+	gConsole.Draw();
 	al_set_target_bitmap(renderBitmap);
 	al_flip_display();
 	RefreshWindowTitle();

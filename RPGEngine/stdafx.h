@@ -94,6 +94,8 @@ extern int __height;
 extern double deltaTime;
 
 extern bool showCon;
+extern bool isShiftPressed;
+
 extern bool showDbgMenu;
 extern bool showFPS;
 extern bool showTOD;
@@ -113,7 +115,9 @@ typedef enum {
 extern gameState_e gameState;
 
 #include "Common.h"
+#include "rDVar.h"
 #include "rCommand.h"
+#include "rConsole.h"
 #include "rGameInfo.h"
 #include "rRenderer.h"
 #include "rData.h"
@@ -135,6 +139,7 @@ extern gameState_e gameState;
 
 extern rGameInfo gGameInfo;
 extern rRenderer gRenderer;
+extern rConsole gConsole;
 extern rUI gUI;
 extern rSound gSound;
 extern rScript gScript;

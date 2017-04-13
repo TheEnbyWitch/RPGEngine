@@ -55,6 +55,9 @@ void init(void)
 	
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
+	
+	gConsole.RegisterDVar("menu_verbose", DVAR_BOOL, 1);
+	gConsole.RegisterDVar("version", DVAR_STRING, va("RPGE_%s", CONFIG_STR));
 
 	rpge_printf("Creating the event queue\n"); 
 	aEventQueue = al_create_event_queue();
@@ -333,64 +336,53 @@ void game_loop(void)
 		}
 		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
 			if (event.keyboard.keycode == ALLEGRO_KEY_LSHIFT || event.keyboard.keycode == ALLEGRO_KEY_RSHIFT)
-				isShiftPressed = true; 
-			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-				
-			}
+				isShiftPressed = true;
 			if (event.keyboard.keycode == ALLEGRO_KEY_TILDE)
 			{
 				showCon = !showCon;
-				consoleInput.clear();
-			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_P)
-			{
-				//stuff = gSound.PlayVoiceover("vox/mop.wav");
-			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
-			{
-				lineOffset++;
-			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_HOME && IsDebug)
-			{
-				showDbgMenu = !showDbgMenu;
-				if(showDbgMenu) al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
-				else al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
-			}
-
-			if (event.keyboard.keycode == ALLEGRO_KEY_PGDN)
-			{
-				if (lineOffset > 0) lineOffset--;
-			}
-			for (int i = 0; i < Menus.size(); i++)
-			{
-				rMenu * menu = &Menus[i];
-				if(menu->isActive && gameState == GAME_STATE_MENU)
-					menu->Key(event.keyboard.keycode);
-				if (strcmp(menu->name, activeMenu) == 0)
-				{
-					menu->isActive = true;
-				}
-				else
-				{
-					menu->isActive = false;
-				}
-			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-			{
-				//gSound.PlayMusic("ilive.flac");
-				gameState = GAME_STATE_MENU;
-			}
-			if (event.keyboard.keycode == ALLEGRO_KEY_Z)
-			{
-				testDialogue.active = true;
-				gameState = GAME_STATE_DIALOGUE;
-			}
-			if (gameState == GAME_STATE_DIALOGUE)
-			{
-				testDialogue.Key(event.keyboard.keycode);
+				//consoleInput.clear();
 			}
 			if (!showCon)
 			{
+
+				if (event.keyboard.keycode == ALLEGRO_KEY_P)
+				{
+					//stuff = gSound.PlayVoiceover("vox/mop.wav");
+				}
+				if (event.keyboard.keycode == ALLEGRO_KEY_HOME && IsDebug)
+				{
+					showDbgMenu = !showDbgMenu;
+					if (showDbgMenu) al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
+					else al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
+				}
+				for (int i = 0; i < Menus.size(); i++)
+				{
+					rMenu * menu = &Menus[i];
+					if (menu->isActive && gameState == GAME_STATE_MENU)
+						menu->Key(event.keyboard.keycode);
+					if (strcmp(menu->name, activeMenu) == 0)
+					{
+						menu->isActive = true;
+					}
+					else
+					{
+						menu->isActive = false;
+					}
+				}
+				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+				{
+					//gSound.PlayMusic("ilive.flac");
+					gameState = GAME_STATE_MENU;
+				}
+				if (event.keyboard.keycode == ALLEGRO_KEY_Z)
+				{
+					testDialogue.active = true;
+					gameState = GAME_STATE_DIALOGUE;
+				}
+				if (gameState == GAME_STATE_DIALOGUE)
+				{
+					testDialogue.Key(event.keyboard.keycode);
+				}
 				if ((event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_SPACE) && gameState == GAME_STATE_INGAME)
 				{
 					rVector2 dir = rEntity::GetVectorForDirection(player.Direction);
@@ -404,34 +396,15 @@ void game_loop(void)
 				}
 			}
 			else {
-				// NEEDS A REWRITE DAMN IT
-				//char input = (char)event.keyboard.keycode+ 'a' - 1 + (event.keyboard.modifiers & ALLEGRO_KEYMOD_SHIFT ? 'A'-'a' : 0 );
-				char input = GetCharFromKeycode(event.keyboard.keycode, (isShiftPressed ? ALLEGRO_KEYMOD_SHIFT : 0 ));
-				if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
-					if(consoleInput.length() > 0) consoleInput.erase(consoleInput.length() - 1);
-				if(input > 0)
-					consoleInput += input;
-				if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+				if (event.keyboard.keycode == ALLEGRO_KEY_PGUP)
 				{
-					if (strcmp(consoleInput.c_str(), "spawnent") == 0)
-					{
-						rEntity *t = rEntity::SpawnEntity();
-						t->Activate();
-						t->SetImage("Actor");
-						t->useEmissive = true;
-					}
-					else if (strcmp(consoleInput.c_str(), "vidrestart") == 0)
-					{
-						gRenderer.VideoRestart();
-					}
-					else
-					{
-						rCommand cmd(consoleInput.c_str());
-						cmd.ProcessInput();
-						cmd.Execute();
-					}
-					consoleInput.clear();
+					lineOffset++;
 				}
+				if (event.keyboard.keycode == ALLEGRO_KEY_PGDN)
+				{
+					if (lineOffset > 0) lineOffset--;
+				}
+				gConsole.Key(event.keyboard.keycode);
 			}
 		}
 

@@ -97,8 +97,8 @@ char GetCharFromKeycode(int keycode, int modifiers)
 	KC_ST(QUOTE, '"');
 	KC_SF(QUOTE, '\'');
 
-	KC_ST(TILDE, '~');
-	KC_SF(TILDE, '`');
+	//KC_ST(TILDE, '~');
+	//KC_SF(TILDE, '`');  // dont want that
 	KC_ST(MINUS, '_');
 	KC_SF(MINUS, '-');
 	KC_ST(EQUALS, '+');

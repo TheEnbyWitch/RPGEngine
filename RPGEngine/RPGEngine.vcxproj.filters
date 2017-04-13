@@ -364,6 +364,9 @@
     <ClInclude Include="rDVar.h">
       <Filter>Header Files\Console</Filter>
     </ClInclude>
+    <ClInclude Include="rConsole.h">
+      <Filter>Header Files\Console</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -676,6 +679,9 @@
       <Filter>Source Files\Console</Filter>
     </ClCompile>
     <ClCompile Include="rDVar.cpp">
+      <Filter>Source Files\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="rConsole.cpp">
       <Filter>Source Files\Console</Filter>
     </ClCompile>
   </ItemGroup>

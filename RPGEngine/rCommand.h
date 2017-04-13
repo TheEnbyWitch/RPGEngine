@@ -13,16 +13,22 @@ public:
 typedef void ConsoleCommand(rCommandArgs args);
 void CMD_Print(rCommandArgs args);
 
+void CMD_Set(rCommandArgs args);
+void CMD_Seta(rCommandArgs args);
+
 typedef struct CMD_S {
 	const char * cmd;
 	ConsoleCommand * func;
+	const char * desc;
 } CMD_T;
-
-static CMD_T CMDs[]{
-	{"echo", &CMD_Print},
-	{"null", NULL}
-};
-
+namespace rConsoleCMD
+{
+	static CMD_T CMDs[]{
+		{ "set",		&CMD_Set,			"Set a DVar's value"},
+		{ "seta",		&CMD_Seta,			"Set a DVar's value and save it in the config file"},
+		{ "echo",		&CMD_Print,			"Used for testing arguments"}
+	};
+}
 class rCommand
 {
 public:
@@ -32,6 +38,8 @@ public:
 
 	bool inputWasProcessed = false;
 	void ProcessInput();
+
+	static rCommandArgs GetArgs(const char* from);
 
 	bool Execute();
 

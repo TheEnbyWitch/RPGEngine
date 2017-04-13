@@ -506,6 +506,7 @@
     <ClInclude Include="RapidXML\rapidxml_utils.hpp" />
     <ClInclude Include="rBitmap.h" />
     <ClInclude Include="rCommand.h" />
+    <ClInclude Include="rConsole.h" />
     <ClInclude Include="rData.h" />
     <ClInclude Include="rDialogue.h" />
     <ClInclude Include="rDVar.h" />
@@ -1305,6 +1306,7 @@
     </ClCompile>
     <ClCompile Include="rBitmap.cpp" />
     <ClCompile Include="rCommand.cpp" />
+    <ClCompile Include="rConsole.cpp" />
     <ClCompile Include="rData.cpp" />
     <ClCompile Include="rDialogue.cpp" />
     <ClCompile Include="rDVar.cpp" />
