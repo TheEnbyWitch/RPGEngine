@@ -14,6 +14,11 @@ rStreamInstance::rStreamInstance(char * filename)
 	sprintf(xmlName, "%s.xml", filename);
 }
 
+rStreamInstance::rStreamInstance(const char * filename)
+{
+	strcpy(name, filename);
+	sprintf(xmlName, "%s.xml", filename);
+}
 
 rStreamInstance::~rStreamInstance()
 {

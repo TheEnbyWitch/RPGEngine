@@ -4,6 +4,7 @@ class rSoundInstance
 public:
 	rSoundInstance();
 	rSoundInstance(char * filename);
+	rSoundInstance(const char * filename);
 	~rSoundInstance();
 
 	void Init();

@@ -12,6 +12,7 @@ class rStreamInstance
 public:
 	rStreamInstance();
 	rStreamInstance(char * filename);
+	rStreamInstance(const char * filename);
 	~rStreamInstance();
 
 	void Init();

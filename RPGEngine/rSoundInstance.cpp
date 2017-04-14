@@ -11,6 +11,10 @@ rSoundInstance::rSoundInstance(char * filename)
 	strcpy(name, filename);
 }
 
+rSoundInstance::rSoundInstance(const char * filename)
+{
+	strcpy(name, filename);
+}
 
 rSoundInstance::~rSoundInstance()
 {

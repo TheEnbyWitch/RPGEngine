@@ -17,8 +17,13 @@ public:
 	void Frame();
 	
 	void PlayMusic(char * musName);
+	void PlayMusic(const char * musName);
+
 	void PlaySample(char * sndName);
+	void PlaySample(const char * sndName);
+
 	float * PlayVoiceover(char * voxName, bool stopPrevious = true);
+	float * PlayVoiceover(const char * voxName, bool stopPrevious = true);
 
 private:
 	ALLEGRO_VOICE * mainVoice;

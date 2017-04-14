@@ -114,7 +114,8 @@ bool rCommand::Execute()
 	{
 		a.tokens[i] = tokens[i];
 	}
-
+	std::string localCopy = this->tokens[0];
+	std::transform(localCopy.begin(), localCopy.end(), localCopy.begin(), ::tolower);
 	for (int i = 0; i < sizeof(rConsoleCMD::CMDs) / sizeof(CMD_T); i++)
 	{
 		if (strcmp(rConsoleCMD::CMDs[i].cmd, this->tokens[0].c_str()) == 0)
@@ -170,4 +171,10 @@ void CMD_Seta(rCommandArgs args)
 {
 	rpge_printf("[CMD_Seta] Not yet implemented, calling CMD_Set\n");
 	CMD_Set(args);
+}
+
+void CMD_SetMusicState(rCommandArgs args)
+{
+	if(args.tokenCount >= 2)
+		gSound.PlayMusic(args.GetArg(1));
 }

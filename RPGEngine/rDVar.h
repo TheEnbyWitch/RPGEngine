@@ -19,7 +19,12 @@ public:
 
 	const char * GetName();
 	rDvarType_e GetType();
+	const char * GetTypeConstChar();
 
+	const std::string& GetStdStringDescription();
+	const char* GetConstCharDescription();
+
+	bool			ToBool();
 	int				ToInt();
 	float			ToFloat();
 	std::string		ToStdString();
@@ -31,6 +36,10 @@ public:
 	void SetValue(char * val);
 	void SetValue(const char * val);
 
+	void SetDescription(const std::string& val);
+	void SetDescription(const char * val);
+	void SetDescription(char * val);
+
 private:
 
 	rDvarType_e type;
@@ -39,4 +48,5 @@ private:
 	float valueFLOAT = 0.0f;
 	std::string valueSTRING = "";
 	std::string name = "";
+	std::string description = "";
 };

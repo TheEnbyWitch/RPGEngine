@@ -21,9 +21,36 @@ public:
 
 
 #define RG_DVP(t,t2) \
-	rDVar * RegisterDVar(t name, rDvarType_e type, t2 defaultVal);
+	rDVar * RegisterDVar(t name, rDvarType_e type, t2 defaultVal, const char* desc); \
+	rDVar * RegisterDVar(t name, rDvarType_e type, t2 defaultVal, char* desc); \
+	rDVar * RegisterDVar(t name, rDvarType_e type, t2 defaultVal, const std::string& desc); \
+	rDVar * RegisterDVar(t name, rDvarType_e type, t2 defaultVal); 
 
 #define RG_DV(t,t2) \
+	rDVar * rConsole::RegisterDVar(t name, rDvarType_e type, t2 defaultVal, const char* desc) \
+	{ \
+		rDVar * newDVAR = new rDVar(name, type); \
+		newDVAR->SetValue(defaultVal); \
+		newDVAR->SetDescription(desc); \
+		DVars.push_back(newDVAR); \
+		return newDVAR; \
+	} \
+	rDVar * rConsole::RegisterDVar(t name, rDvarType_e type, t2 defaultVal, char* desc) \
+	{ \
+		rDVar * newDVAR = new rDVar(name, type); \
+		newDVAR->SetValue(defaultVal); \
+		newDVAR->SetDescription(desc); \
+		DVars.push_back(newDVAR); \
+		return newDVAR; \
+	} \
+	rDVar * rConsole::RegisterDVar(t name, rDvarType_e type, t2 defaultVal, const std::string& desc) \
+	{ \
+		rDVar * newDVAR = new rDVar(name, type); \
+		newDVAR->SetValue(defaultVal); \
+		newDVAR->SetDescription(desc); \
+		DVars.push_back(newDVAR); \
+		return newDVAR; \
+	} \
 	rDVar * rConsole::RegisterDVar(t name, rDvarType_e type, t2 defaultVal) \
 	{ \
 		rDVar * newDVAR = new rDVar(name, type); \

@@ -4,6 +4,7 @@ class rVoiceoverInstance : public rSoundInstance
 public:
 	rVoiceoverInstance();
 	rVoiceoverInstance(char * filename);
+	rVoiceoverInstance(const char * filename);
 	~rVoiceoverInstance();
 
 	void Init();

@@ -16,6 +16,8 @@ void CMD_Print(rCommandArgs args);
 void CMD_Set(rCommandArgs args);
 void CMD_Seta(rCommandArgs args);
 
+void CMD_SetMusicState(rCommandArgs args);
+
 typedef struct CMD_S {
 	const char * cmd;
 	ConsoleCommand * func;
@@ -24,9 +26,10 @@ typedef struct CMD_S {
 namespace rConsoleCMD
 {
 	static CMD_T CMDs[]{
-		{ "set",		&CMD_Set,			"Set a DVar's value"},
-		{ "seta",		&CMD_Seta,			"Set a DVar's value and save it in the config file"},
-		{ "echo",		&CMD_Print,			"Used for testing arguments"}
+		{ "set",			&CMD_Set,				"Set a DVar's value\n\nset <dvar> [value]"},
+		{ "seta",			&CMD_Seta,				"Set a DVar's value and save it in the config file\n\nseta <dvar> [value]"},
+		{ "echo",			&CMD_Print,				"Used for testing arguments\n\necho [args]"},
+		{ "setmusicstate",	&CMD_SetMusicState,		"Set music state\n\nsetmusicstate <state>"}
 	};
 }
 class rCommand

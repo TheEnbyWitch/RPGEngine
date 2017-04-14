@@ -16,6 +16,11 @@ rVoiceoverInstance::rVoiceoverInstance(char * filename)
 	strcpy(name, filename);
 }
 
+rVoiceoverInstance::rVoiceoverInstance(const char * filename)
+{
+	strcpy(name, filename);
+}
+
 
 rVoiceoverInstance::~rVoiceoverInstance()
 {

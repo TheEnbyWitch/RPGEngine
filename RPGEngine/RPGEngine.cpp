@@ -56,8 +56,8 @@ void init(void)
 	if (!al_init())
 		abort_game("Failed to initialize allegro");
 	
-	gConsole.RegisterDVar("menu_verbose", DVAR_BOOL, 1);
-	gConsole.RegisterDVar("version", DVAR_STRING, va("RPGE_%s", CONFIG_STR));
+	gConsole.RegisterDVar("menu_verbose", DVAR_BOOL, 1, "Verbose menu info");
+	gConsole.RegisterDVar("version", DVAR_STRING, va("RPGE_%s", CONFIG_STR), "The game version");
 
 	rpge_printf("Creating the event queue\n"); 
 	aEventQueue = al_create_event_queue();

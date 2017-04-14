@@ -107,7 +107,7 @@ void rConsole::Draw()
 							index = i;
 							completions++;
 							std::string result = dvar->GetName();
-							cmp = "Value: " + dvar->ToStdString();
+							cmp = "Type: " + std::string(dvar->GetTypeConstChar()) + "\nValue: " + dvar->ToStdString() + "\nDescription: " + dvar->GetStdStringDescription();
 							autocomplete += result;
 							maxWidth = __max(maxWidth, al_get_text_width(font, result.c_str()) + 10);
 							autocomplete += "\n";
@@ -119,7 +119,7 @@ void rConsole::Draw()
 							index = i;
 							completions++;
 							std::string result = dvar->GetName();
-							cmp = "Value: " + dvar->ToStdString();
+							cmp = "Type: " + std::string(dvar->GetTypeConstChar()) + "\nValue: " + dvar->ToStdString() + "\nDescription: " + dvar->GetStdStringDescription();
 							autocomplete += result;
 							maxWidth = __max(maxWidth, al_get_text_width(font, result.c_str()) + 10);
 							autocomplete += "\n";
@@ -134,7 +134,7 @@ void rConsole::Draw()
 			gUI.DrawColoredWindowWithText(autocomplete.c_str(), 6 + al_get_text_width(font, ENGINE_STR) + 3, ((MAX_LINES_SHOWN + 1) * 13) + 32, maxWidth, 13 * completions, al_map_rgb(255, 0, 0));
 			if (completions == 1)
 			{
-				gUI.DrawColoredWindowWithText(cmp.c_str(), 6 + al_get_text_width(font, ENGINE_STR) + 3, ((MAX_LINES_SHOWN + 1) * 13) + 32 + 13 + 6, al_get_text_width(font, cmp.c_str()) + 10, 13 * completions, al_map_rgb(0, 255, 0));
+				gUI.DrawColoredWindowWithText(cmp.c_str(), 6 + al_get_text_width(font, ENGINE_STR) + 3, ((MAX_LINES_SHOWN + 1) * 13) + 32 + 13 + 6, gRenderer.displayWidth - (12 + al_get_text_width(font, ENGINE_STR) + 3), 13 * 3, al_map_rgb(0, 255, 0));
 			}
 		}
 	}
