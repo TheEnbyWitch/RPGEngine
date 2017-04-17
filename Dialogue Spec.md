@@ -21,6 +21,10 @@ List of instructions:
 		Waits a specified amount of frames
 	waittillvoxend
 		Waits until the currently playing VOX is finished
+	waittillkey
+		Waits until player presses Enter
+	waittillkeyorvox
+		Waits until VOX finishes playing or player presses enter
 	jmpif <string>[expression]
 		Skips next line if expression returns true
 	goto <string>[label]
