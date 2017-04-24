@@ -178,3 +178,8 @@ void CMD_SetMusicState(rCommandArgs args)
 	if(args.tokenCount >= 2)
 		gSound.PlayMusic(args.GetArg(1));
 }
+
+void CMD_RunDialogue(rCommandArgs args)
+{
+	gDialogue.DoDialogue(args.GetArg(1));
+}

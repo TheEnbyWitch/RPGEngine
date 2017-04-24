@@ -23,7 +23,7 @@ rBitmap gBitmap;
 rWorld gWorld;
 rData gData;
 
-rDialogue testDialogue;
+rDialogue gDialogue;
 
 rPlayer player;
 ALLEGRO_MENU *menu;
@@ -58,6 +58,7 @@ void init(void)
 	
 	gConsole.RegisterDVar("menu_verbose", DVAR_BOOL, 1, "Verbose menu info");
 	gConsole.RegisterDVar("version", DVAR_STRING, va("RPGE_%s", CONFIG_STR), "The game version");
+	gConsole.RegisterDVar("dialogue_debug", DVAR_BOOL, 1, "Debug dialogues");
 
 	rpge_printf("Creating the event queue\n"); 
 	aEventQueue = al_create_event_queue();
@@ -120,6 +121,7 @@ void init(void)
 	rpge_printf("Reading save data\n");
 	gData.Init("player");
 	gSound.Init();
+	gDialogue.Init();
 
 	rpge_printf("Creating display\n");
 	
@@ -169,14 +171,10 @@ void init(void)
 	player.SetImage("Actor");
 	player.useEmissive = true;
 
-	initialize_assets();
-
 	loadtime = clock() - loadtime;
 
 	DrawLoadWindow(va("Game loaded in %.4f ms", (loadtime/1000.0f)), -1, 100);
 	al_rest(1);
-	testDialogue.SetContent("This is a test dialogue! I might be working!");
-	testDialogue.SetSpeaker("A person");
 	bInitialized = true;
 
 #ifdef USE_INTRO
@@ -292,7 +290,7 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_DIALOGUE)
 				{
-					testDialogue.Frame();
+					gDialogue.Frame();
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
@@ -376,12 +374,12 @@ void game_loop(void)
 				}
 				if (event.keyboard.keycode == ALLEGRO_KEY_Z)
 				{
-					testDialogue.active = true;
+					gDialogue.active = true;
 					gameState = GAME_STATE_DIALOGUE;
 				}
 				if (gameState == GAME_STATE_DIALOGUE)
 				{
-					testDialogue.Key(event.keyboard.keycode);
+					gDialogue.Key(event.keyboard.keycode);
 				}
 				if ((event.keyboard.keycode == ALLEGRO_KEY_ENTER || event.keyboard.keycode == ALLEGRO_KEY_SPACE) && gameState == GAME_STATE_INGAME)
 				{
@@ -430,7 +428,7 @@ void game_loop(void)
 			if (gameState == GAME_STATE_DIALOGUE)
 			{
 				gWorld.Draw();
-				testDialogue.Draw();
+				gDialogue.Draw();
 			}
 			if (gameState == GAME_STATE_MENU)
 			{

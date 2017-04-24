@@ -147,7 +147,7 @@ extern rBitmap gBitmap;
 extern rWorld gWorld;
 extern rData gData;
 extern rLoadQueue gLoadQueue;
-extern rDialogue testDialogue;
+extern rDialogue gDialogue;
 
 extern rPlayer player;
 

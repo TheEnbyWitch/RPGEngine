@@ -11,9 +11,9 @@ List of instructions:
 		Set the dialogue content
 	playvox <string>[path to vox]
 		Play a voice clip (will animate active speaker)
-	lchrimg <string>[path to image sequence of left character]
+	lchrimg <bool>[show] <bool>[animate] <string>[path to image sequence of left character]
 		Set the image sequence for left speaker
-	rchrimg <string>[path to image sequence of right character]
+	rchrimg <bool>[show] <bool>[animate] <string>[path to image sequence of right character]
 		Set the image sequence for right speaker
 	setactive <int>[ 0 - left speaker speaking ; 1 - right speaker speaking ; -1 - no speaker speaking]
 		Set the active speaker (used for VOX and lipsync)

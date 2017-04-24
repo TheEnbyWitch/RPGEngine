@@ -125,17 +125,22 @@ void rSound::PlaySample(const char * sndName)
 float * rSound::PlayVoiceover(char * voxName, bool stopPrevious)
 {
 	SNDINIT_PTR;
+	bool found = false;
+	float * res = 0;
 	for (auto si : voiceoverInstances)
 	{
 		if (strcmp(voxName, si->name) == 0)
 		{
 			si->Play();
+			res = si->GetVoiceIntensityPtr();
+			found = true;
 		}
 		else {
 			if (stopPrevious)
 				si->Stop();
 		}
 	}
+	if (found) return res;
 	rVoiceoverInstance *t = new rVoiceoverInstance(voxName);
 	t->Init();
 	t->AttachToMixer(mainMixer);
@@ -148,17 +153,22 @@ float * rSound::PlayVoiceover(char * voxName, bool stopPrevious)
 float * rSound::PlayVoiceover(const char * voxName, bool stopPrevious)
 {
 	SNDINIT_PTR;
+	bool found = false;
+	float * res = 0;
 	for (auto si : voiceoverInstances)
 	{
 		if (strcmp(voxName, si->name) == 0)
 		{
 			si->Play();
+			res = si->GetVoiceIntensityPtr();
+			found = true;
 		}
 		else {
 			if (stopPrevious)
 				si->Stop();
 		}
 	}
+	if (found) return res;
 	rVoiceoverInstance *t = new rVoiceoverInstance(voxName);
 	t->Init();
 	t->AttachToMixer(mainMixer);
