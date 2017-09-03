@@ -26,7 +26,6 @@ public:
 	~rEntity();
 
 	ALLEGRO_BITMAP* cachedBitmap;
-	typedef void entCallback_t(rEntity * self);
 	char uniqueID[10];
 	int Layer = 1;
 	int Level = 1;
@@ -34,7 +33,6 @@ public:
 	int PositionY = 0;
 	int Speed = 2;
 	rEntityDirection Direction = ENT_DIRECTION_DOWN;
-	entCallback_t * entFrameCallback;
 	int animationFrame = 0;
 	bool isMoving = false;
 	bool isImageSet = false;
@@ -64,8 +62,6 @@ public:
 	void Draw();
 	void Frame();
 
-	void SetFrameCallback(entCallback_t &func);
-
 	bool Move(int x, int y);
 	void Interact();
 	void ChangeDirection(int targetDirection);
@@ -75,9 +71,12 @@ public:
 	static rVector2 GetVectorForDirection(rEntityDirection dir);
 	
 	// script
-	bool hasThinkFunc = true;
+	//bool hasThinkFunc = true;
 	asIScriptContext *thinkContext = 0;
 	asIScriptFunction *thinkFunc = 0;
+
+	asIScriptContext *interactContext = 0;
+	asIScriptFunction *interactFunc = 0;
 
 private:
 	int TargetX = 0;

@@ -290,18 +290,12 @@ void game_loop(void)
 				}
 				else if (gameState == GAME_STATE_DIALOGUE)
 				{
+					gWorld.Frame();
 					gDialogue.Frame();
+					player.Frame();
 				}
 				else if (gameState == GAME_STATE_INGAME)
 				{
-					/*if (0)//(frames % 60 == 0)
-					{
-						rEntity *t = rEntity::SpawnEntity();
-						t->Activate();
-						t->SetImage("Actor");
-						t->useEmissive = true;
-						t->SetFrameCallback(EntFrameCallback);
-					}*/
 					gWorld.Frame();
 					ALLEGRO_KEYBOARD_STATE state;
 					al_get_keyboard_state(&state);

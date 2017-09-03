@@ -6,9 +6,6 @@ rEntityTable entityList;
 
 rEntity::rEntity()
 {
-	entFrameCallback = NULL;
-	thinkContext = NULL;
-	thinkFunc = NULL;
 }
 
 
@@ -162,7 +159,6 @@ void rEntity::Draw()
 void rEntity::Frame()
 {
 	WS
-	if(entFrameCallback != NULL) entFrameCallback(this);
 
 	gScript.EntThink(this);
 	
@@ -189,11 +185,6 @@ void rEntity::Frame()
 
 	if (PositionX == TargetX && PositionY == TargetY)
 		isMoving = false;
-}
-
-void rEntity::SetFrameCallback(entCallback_t & func)
-{
-	entFrameCallback = func;
 }
 
 bool rEntity::Move(int x, int y)

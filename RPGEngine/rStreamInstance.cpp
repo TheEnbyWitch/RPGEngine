@@ -27,6 +27,11 @@ rStreamInstance::~rStreamInstance()
 void rStreamInstance::Init()
 {
 	audioStream = al_load_audio_stream(name, 8, 8192);
+	if (!audioStream)
+	{
+		rpge_printf("[AudioStream] Audio file %s not found\n", name);
+		return;
+	}
 	
 	ALLEGRO_FILE * xml;
 	xml = al_fopen(xmlName, "rb");
@@ -49,6 +54,11 @@ void rStreamInstance::Init()
 
 void rStreamInstance::Frame()
 {
+	if (!audioStream)
+	{
+		state = STREAM_IDLE;
+		return;
+	}
 	switch (state)
 	{
 	case STREAM_IDLE:
@@ -82,6 +92,10 @@ void rStreamInstance::Frame()
 
 void rStreamInstance::Start()
 {
+	if (!audioStream)
+	{
+		return;
+	}
 	if (state == STREAM_FADING_IN || state == STREAM_PLAYING) return;
 	al_set_audio_stream_gain(audioStream, 0.0);
 	al_set_audio_stream_playing(audioStream, true);
@@ -90,6 +104,10 @@ void rStreamInstance::Start()
 
 void rStreamInstance::Stop()
 {
+	if (!audioStream)
+	{
+		return;
+	}
 	al_set_audio_stream_playing(audioStream, false);
 	state = STREAM_IDLE;
 }
@@ -102,11 +120,21 @@ void rStreamInstance::FadeOut()
 
 void rStreamInstance::SetPlayMode(ALLEGRO_PLAYMODE playMode)
 {
+	if (!audioStream)
+	{
+		rpge_printf("[AudioStream] Can't set play mode on a missing audio stream %s\n", name);
+		return;
+	}
 	al_set_audio_stream_playmode(audioStream, playMode);
 }
 
 bool rStreamInstance::AttachToMixer(ALLEGRO_MIXER * mixer)
 {
+	if (!audioStream)
+	{
+		rpge_printf("[AudioStream] Can't attach a missing audio stream to a mixer %s\n", name);
+		return false;
+	}
 	return al_attach_audio_stream_to_mixer(audioStream, mixer);
 }
 

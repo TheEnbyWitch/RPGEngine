@@ -26,8 +26,6 @@
 #endif
 #define ENGINE_STR				"0.0.0: RPGE_"CONFIG_STR"> "
 
-#define __USE_ANGELSCRIPT		// uses angelscript
-
 #ifdef _WIN32
 #include "targetver.h"
 #endif
@@ -45,15 +43,7 @@
 #include <physfs.h>
 #include "tmx\NLTmxMap.h"
 #include "json.hpp"
-#ifdef __USE_LUA
-#include "Lua\lua.hpp"
-#endif
-#ifdef __USE_SQUIRREL
-#include <squirrel.h>
-#include <sqstdmath.h>
-#include <sqstdstring.h>
-#endif
-#ifdef __USE_ANGELSCRIPT
+
 #include "AngelScript\include\angelscript.h"
 #include "AngelScript\add_on\scriptarray\scriptarray.h"
 #include "AngelScript\add_on\scriptbuilder\scriptbuilder.h"
@@ -61,7 +51,6 @@
 #include "AngelScript\add_on\scriptmath\scriptmath.h"
 #include "AngelScript\add_on\scripthandle\scripthandle.h"
 #include "AngelScript\add_on\weakref\weakref.h"
-#endif
 
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_acodec.h>

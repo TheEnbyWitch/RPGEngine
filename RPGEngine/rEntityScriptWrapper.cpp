@@ -21,10 +21,22 @@ rEntityScriptWrapper::~rEntityScriptWrapper()
 {
 }
 
+rEntityScriptWrapper * rEntityScriptWrapper::operator=(rEntityScriptWrapper &rhs) const
+{
+	rEntityScriptWrapper *n = new rEntityScriptWrapper();
+	memcpy(n, &rhs, sizeof(rEntityScriptWrapper));
+	return n;
+}
+
 void rEntityScriptWrapper::SetEntityPointer(rEntity * pointer)
 {
 	target = pointer;
 	hasAssignedEnt = true;
+}
+
+rEntity * rEntityScriptWrapper::GetEntityPointer()
+{
+	return target;
 }
 
 void rEntityScriptWrapper::GetEnt(char * id)
@@ -99,5 +111,5 @@ void rEntityScriptWrapper::SetIntValue(char * key, int value)
 void rEntityScriptWrapper::SetBoolValue(char * key, bool value)
 {
 	SetValueTo("useEmissive", target->useEmissive);
-	rpge_printf("[rEntity] Failed to set a value of \"%s\" for (int)%s\n", (value ? "true" : "false"), key);
+	rpge_printf("[rEntity] Failed to set a value of \"%s\" for (bool)%s\n", (value ? "true" : "false"), key);
 }

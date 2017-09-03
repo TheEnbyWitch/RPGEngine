@@ -177,6 +177,11 @@ void rDialogueVirtualMachine::RunDLGFile(const char * file)
 	instructions.clear();
 	ALLEGRO_FILE * dlgScript;
 	dlgScript = al_fopen(file, "rb");
+	if (!dlgScript)
+	{
+		rpge_printf("[Dialogue] Failed to load dialogue file %s\n", file);
+		return;
+	}
 	int size = al_fsize(dlgScript);
 	char line[2048];
 	currentFile = file;
