@@ -48,7 +48,7 @@ void SCR_OpenMenu(char *txt);
 
 void SCR_OptimizeMap(char *txt);
 
-void SCR_SetEntityInteractCallback(rEntityScriptWrapper &ent, asIScriptFunction * callback);
-void SCR_SetEntityThinkCallback(rEntityScriptWrapper &ent, asIScriptFunction * callback);
+void SCR_SetEntityInteractCallback(rEntityScriptWrapper ent, asIScriptFunction * callback);
+void SCR_SetEntityThinkCallback(rEntityScriptWrapper ent, asIScriptFunction * callback);
  
 #endif

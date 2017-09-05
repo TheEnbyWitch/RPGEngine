@@ -21,10 +21,11 @@ rEntityScriptWrapper::~rEntityScriptWrapper()
 {
 }
 
-rEntityScriptWrapper * rEntityScriptWrapper::operator=(rEntityScriptWrapper &rhs) const
+rEntityScriptWrapper &rEntityScriptWrapper::operator=(rEntityScriptWrapper &rhs) const
 {
-	rEntityScriptWrapper *n = new rEntityScriptWrapper();
-	memcpy(n, &rhs, sizeof(rEntityScriptWrapper));
+	rEntityScriptWrapper n;
+	memcpy(&n, &rhs, sizeof(rEntityScriptWrapper));
+	memcpy((void *)this, &rhs, sizeof(rEntityScriptWrapper));
 	return n;
 }
 
