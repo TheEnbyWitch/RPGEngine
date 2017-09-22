@@ -117,6 +117,8 @@ public:
 	float * voxIntensity = 0;
 
 	string content;
+	string contentWritten;
+	int currentWrittenIndex = 0;
 	string speaker;
 
 	rDialogueVirtualMachine vm;

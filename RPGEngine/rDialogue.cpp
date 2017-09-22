@@ -32,6 +32,10 @@ void rDialogue::Frame()
 	{
 		isWaitActive = false;
 	}
+	if (currentWrittenIndex < content.length())
+	{
+		contentWritten.push_back(content[currentWrittenIndex++]);
+	}
 }
 
 void rDialogue::Draw()
@@ -62,6 +66,8 @@ void rDialogue::SetSpeaker(const char * speaker)
 void rDialogue::SetContent(const char * content)
 {
 	this->content = content;
+	this->contentWritten = "";
+	this->currentWrittenIndex = 0;
 }
 
 void rDialogue::PlayVOX(const char * vox)

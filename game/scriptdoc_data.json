@@ -95,38 +95,6 @@
         "example": "RegisterSaveFieldString(\"aString\", \"Hello, world!\");",
         "returnType": "void"
     },
-    "SetEntityInteractCallback": {
-        "args": {
-            "entityInteractCallbackFunction": {
-                "desc": "The function to call when player interacts with this entity",
-                "type": "EntityInteractCallback @"
-            },
-            "in": {
-                "desc": "The entity to set the callback for",
-                "type": "rEntity &"
-            }
-        },
-        "decl": "void SetEntityInteractCallback(rEntity & in, EntityInteractCallback @ entityInteractCallbackFunction)",
-        "desc": "Sets the callback function for an entity to be called when player interacts with it",
-        "example": "<TODO>",
-        "returnType": "void"
-    },
-    "SetEntityThinkCallback": {
-        "args": {
-            "entityThinkCallbackFunction": {
-                "desc": "The function to call every frame",
-                "type": "EntityThinkCallback @"
-            },
-            "in": {
-                "desc": "The entity to set the callback for",
-                "type": "rEntity &"
-            }
-        },
-        "decl": "void SetEntityThinkCallback(rEntity & in, EntityThinkCallback @ entityThinkCallbackFunction)",
-        "desc": "Sets the callback function for an entity to be called every frame",
-        "example": "<TODO>",
-        "returnType": "void"
-    },
     "print": {
         "args": {
             "text": {
