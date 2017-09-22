@@ -121,9 +121,9 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectMethod("rEntity", "rEntity &opAssign(const rEntity &in)", asMETHOD(rEntityScriptWrapper, operator=), asCALL_THISCALL);
 
 	asEngine->RegisterFuncdef("void EntityThinkCallback(rEntity ent)");
-	helper.AddScriptFunction("void", "SetEntityThinkCallback", ScrArgArray(2, ScrArg("rEntity &", "in", "The entity to set the callback for"), ScrArg("EntityThinkCallback @", "entityThinkCallbackFunction", "The function to call every frame")), asFUNCTION(SCR_SetEntityThinkCallback), asCALL_CDECL, "Sets the callback function for an entity to be called every frame");
+	helper.AddScriptFunction("void", "SetEntityThinkCallback", ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"), ScrArg("EntityThinkCallback @", "entityThinkCallbackFunction", "The function to call every frame")), asFUNCTION(SCR_SetEntityThinkCallback), asCALL_CDECL, "Sets the callback function for an entity to be called every frame");
 	asEngine->RegisterFuncdef("void EntityInteractCallback(rEntity ent)");
-	helper.AddScriptFunction("void", "SetEntityInteractCallback", ScrArgArray(2, ScrArg("rEntity &", "in", "The entity to set the callback for"), ScrArg("EntityInteractCallback @", "entityInteractCallbackFunction", "The function to call when player interacts with this entity")), asFUNCTION(SCR_SetEntityInteractCallback), asCALL_CDECL, "Sets the callback function for an entity to be called when player interacts with it");
+	helper.AddScriptFunction("void", "SetEntityInteractCallback", ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"), ScrArg("EntityInteractCallback @", "entityInteractCallbackFunction", "The function to call when player interacts with this entity")), asFUNCTION(SCR_SetEntityInteractCallback), asCALL_CDECL, "Sets the callback function for an entity to be called when player interacts with it");
 
 
 	helper.WriteScriptDoc();
@@ -210,8 +210,8 @@ void rScript::EntInteract(rEntity * parent)
 	rEntityScriptWrapper t;
 	t.SetEntityPointer(parent);
 
-	parent->thinkContext->SetArgObject(0, &t);
 	parent->interactContext->Prepare(parent->interactFunc);
+	parent->interactContext->SetArgObject(0, &t);
 	parent->interactContext->Execute();
 }
 
@@ -228,8 +228,8 @@ void rScript::EntThink(rEntity * parent)
 	rEntityScriptWrapper t;
 	t.SetEntityPointer(parent);
 
-	parent->thinkContext->SetArgObject(0, &t);
 	parent->thinkContext->Prepare(parent->thinkFunc);
+	parent->thinkContext->SetArgObject(0, &t);
 	parent->thinkContext->Execute();
 }
 
@@ -273,7 +273,7 @@ void SCR_OpenMenu(char* txt)
 	strcpy(activeMenu, txt);
 }
 
-void SCR_SetEntityInteractCallback(rEntityScriptWrapper &ent, asIScriptFunction * callback)
+void SCR_SetEntityInteractCallback(rEntityScriptWrapper ent, asIScriptFunction * callback)
 {
 	
 	if (!ent.HasAnAssignedEnt())
@@ -285,12 +285,12 @@ void SCR_SetEntityInteractCallback(rEntityScriptWrapper &ent, asIScriptFunction 
 	ent.GetEntityPointer()->interactFunc = callback;
 }
 
-void SCR_SetEntityThinkCallback(rEntityScriptWrapper &ent, asIScriptFunction * callback)
+void SCR_SetEntityThinkCallback(rEntityScriptWrapper ent, asIScriptFunction * callback)
 {
 	
 	if (!ent.HasAnAssignedEnt())
 	{
-		rpge_printf("[rScript] Tried to assign an interact callback for a null entity\n");
+		rpge_printf("[rScript] Tried to assign a think callback for a null entity\n");
 		return;
 	}
 	

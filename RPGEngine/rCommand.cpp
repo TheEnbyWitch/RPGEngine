@@ -183,3 +183,8 @@ void CMD_RunDialogue(rCommandArgs args)
 {
 	gDialogue.DoDialogue(args.GetArg(1));
 }
+
+void CMD_Quit(rCommandArgs args)
+{
+	exit(0);
+}

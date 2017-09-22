@@ -20,6 +20,8 @@ void CMD_SetMusicState(rCommandArgs args);
 
 void CMD_RunDialogue(rCommandArgs args);
 
+void CMD_Quit(rCommandArgs args);
+
 typedef struct CMD_S {
 	const char * cmd;
 	ConsoleCommand * func;
@@ -32,7 +34,8 @@ namespace rConsoleCMD
 		{ "seta",			&CMD_Seta,				"Set a DVar's value and save it in the config file\n\nseta <dvar> [value]"},
 		{ "echo",			&CMD_Print,				"Used for testing arguments\n\necho [args]"},
 		{ "setmusicstate",	&CMD_SetMusicState,		"Set music state\n\nsetmusicstate <state>"},
-		{ "rundialogue",	&CMD_RunDialogue,		"Runs the specified dialogue file\n\nrundialogue <file>"}
+		{ "rundialogue",	&CMD_RunDialogue,		"Runs the specified dialogue file\n\nrundialogue <file>"},
+		{ "quit",			&CMD_Quit,				"Quit the game" }
 	};
 }
 class rCommand

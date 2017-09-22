@@ -7,7 +7,7 @@ public:
 	rEntityScriptWrapper();
 	~rEntityScriptWrapper();
 
-	rEntityScriptWrapper * operator=(rEntityScriptWrapper &rhs) const;
+	rEntityScriptWrapper &operator=(rEntityScriptWrapper &rhs) const;
 
 	void SetEntityPointer(rEntity *pointer);
 	rEntity * GetEntityPointer();
