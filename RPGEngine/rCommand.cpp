@@ -188,3 +188,13 @@ void CMD_Quit(rCommandArgs args)
 {
 	exit(0);
 }
+
+void CMD_Teleport(rCommandArgs args)
+{
+	if (args.tokenCount < 3)
+	{
+		rpge_printf("[CMD] Teleport: Invalid argument count.\n[CMD] Usage: teleport <x> <y>\n");
+		return;
+	}
+	player.Teleport(atoi(args.GetArg(1)), atoi(args.GetArg(2)));
+}

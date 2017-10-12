@@ -33,13 +33,13 @@ void rMap::ProcessMap()
 					firstGid = map->tilesets[p]->firstGid;
 			}
 			tile.tileID = map->layers[i]->data[o]-firstGid;
-			tile.PositionX = (o % map->layers[i]->width-1)*32;
-			tile.pX = (o % map->layers[i]->width - 1);
+			tile.PositionX = (o % map->layers[i]->width) * 32;//-1)*32;
+			tile.pX = (o % map->layers[i]->width);// - 1);
 			int Yofs = 0;
 			int oo = o;
-			while (oo > map->layers[i]->width)
+			while (oo >= map->layers[i]->width)
 			{
-				oo -= map->layers[i]->width-1;
+				oo -= map->layers[i]->width;//-1;
 				Yofs++;
 			}
 			tile.PositionY = Yofs * 32;

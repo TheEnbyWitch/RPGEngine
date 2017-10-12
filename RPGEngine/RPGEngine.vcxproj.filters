@@ -286,6 +286,9 @@
     <ClInclude Include="rConsole.h">
       <Filter>Header Files\Console</Filter>
     </ClInclude>
+    <ClInclude Include="rCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -503,6 +506,9 @@
     </ClCompile>
     <ClCompile Include="rConsole.cpp">
       <Filter>Source Files\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="rCollision.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

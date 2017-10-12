@@ -204,6 +204,14 @@ bool rEntity::Move(int x, int y)
 	return false;
 }
 
+void rEntity::Teleport(int x, int y)
+{
+	TargetX = x * 32;
+	TargetY = y * 32;
+	PositionX = x * 32;
+	PositionY = y * 32;
+}
+
 void rEntity::Interact()
 {
 	gScript.EntInteract(this);

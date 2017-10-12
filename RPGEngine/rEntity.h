@@ -63,6 +63,7 @@ public:
 	void Frame();
 
 	bool Move(int x, int y);
+	void Teleport(int x, int y);
 	void Interact();
 	void ChangeDirection(int targetDirection);
 

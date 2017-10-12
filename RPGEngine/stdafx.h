@@ -116,6 +116,7 @@ extern gameState_e gameState;
 #include "rUI.h"
 #include "rEntity.h"
 #include "rEntityScriptWrapper.h"
+#include "rCollision.h"
 #include "rTile.h"
 #include "rMap.h"
 #include "rMenu.h"

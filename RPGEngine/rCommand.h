@@ -22,6 +22,8 @@ void CMD_RunDialogue(rCommandArgs args);
 
 void CMD_Quit(rCommandArgs args);
 
+void CMD_Teleport(rCommandArgs args);
+
 typedef struct CMD_S {
 	const char * cmd;
 	ConsoleCommand * func;
@@ -35,7 +37,8 @@ namespace rConsoleCMD
 		{ "echo",			&CMD_Print,				"Used for testing arguments\n\necho [args]"},
 		{ "setmusicstate",	&CMD_SetMusicState,		"Set music state\n\nsetmusicstate <state>"},
 		{ "rundialogue",	&CMD_RunDialogue,		"Runs the specified dialogue file\n\nrundialogue <file>"},
-		{ "quit",			&CMD_Quit,				"Quit the game" }
+		{ "quit",			&CMD_Quit,				"Quit the game" },
+		{ "teleport",       &CMD_Teleport,			"Teleport the player\n\nteleport <x> <y>" }
 	};
 }
 class rCommand

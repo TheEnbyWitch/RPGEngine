@@ -479,6 +479,7 @@
     <ClInclude Include="RapidXML\rapidxml_print.hpp" />
     <ClInclude Include="RapidXML\rapidxml_utils.hpp" />
     <ClInclude Include="rBitmap.h" />
+    <ClInclude Include="rCollision.h" />
     <ClInclude Include="rCommand.h" />
     <ClInclude Include="rConsole.h" />
     <ClInclude Include="rData.h" />
@@ -949,6 +950,7 @@
     </ClCompile>
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="rBitmap.cpp" />
+    <ClCompile Include="rCollision.cpp" />
     <ClCompile Include="rCommand.cpp" />
     <ClCompile Include="rConsole.cpp" />
     <ClCompile Include="rData.cpp" />

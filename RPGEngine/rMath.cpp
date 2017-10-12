@@ -26,6 +26,11 @@ float rMath::Clamp(float in, float l, float h)
 	return max(min(in, h),l);
 }
 
+inline rVector2 rMath::operator+(rVector2 & rh)
+{
+	return rVector2();
+}
+
 rVector2::rVector2(float x, float y)
 {
 	this->X = x;
