@@ -23,6 +23,7 @@ void CMD_RunDialogue(rCommandArgs args);
 void CMD_Quit(rCommandArgs args);
 
 void CMD_Teleport(rCommandArgs args);
+void CMD_Time(rCommandArgs args);
 
 typedef struct CMD_S {
 	const char * cmd;
@@ -38,6 +39,7 @@ namespace rConsoleCMD
 		{ "setmusicstate",	&CMD_SetMusicState,		"Set music state\n\nsetmusicstate <state>"},
 		{ "rundialogue",	&CMD_RunDialogue,		"Runs the specified dialogue file\n\nrundialogue <file>"},
 		{ "quit",			&CMD_Quit,				"Quit the game" },
+		{ "time",			&CMD_Time,				"Set or add time to Time of Day\n\ntime <add/set> 0-24000"},
 		{ "teleport",       &CMD_Teleport,			"Teleport the player\n\nteleport <x> <y>" }
 	};
 }

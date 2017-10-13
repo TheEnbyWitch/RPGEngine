@@ -198,3 +198,38 @@ void CMD_Teleport(rCommandArgs args)
 	}
 	player.Teleport(atoi(args.GetArg(1)), atoi(args.GetArg(2)));
 }
+
+void CMD_Time(rCommandArgs args)
+{
+	if (args.tokenCount < 3)
+	{
+		rpge_printf("[CMD] Invalid argument count\n");
+		return;
+	}
+	double result = atoi(args.GetArg(2)) / 24000.0;
+	result = result > 1.0 ? 1.0 : result;
+	result = result < 0.0 ? 0.0 : result;
+	if (strcmp(args.GetArg(1), "add") == 0)
+	{
+		gWorld.timeOfDay += result;
+		if (gWorld.timeOfDay > 1.0) gWorld.timeOfDay -= 1.0;
+	}
+	else if (strcmp(args.GetArg(1), "set") == 0)
+	{
+		gWorld.timeOfDay = result;
+	}
+	else if (strcmp(args.GetArg(1), "pause") == 0)
+	{
+		if (atoi(args.GetArg(2)) == 0)
+		{
+			gWorld.timeOfDayProgress = true;
+		}
+		else {
+			gWorld.timeOfDayProgress = false;
+		}
+	}
+	else {
+		rpge_printf("[CMD] Invalid argument %s\n", args.GetArg(1));
+		return;
+	}
+}

@@ -13,7 +13,7 @@ rWorld::~rWorld()
 
 void rWorld::Frame()
 {
-	timeOfDay += 1.0 / (1440.0*10.0);//1.0/(1440.0 * 60.0);
+	if(timeOfDayProgress) timeOfDay += 1.0 / (1440.0*10.0);//1.0/(1440.0 * 60.0);
 	if (timeOfDay > 1) timeOfDay -= 1;
 
 	for (int o = 0; o < entityList.size(); o++)
@@ -143,12 +143,17 @@ ALLEGRO_COLOR rWorld::ProcessTOD()
 {
 	ALLEGRO_COLOR res;
 	int colorPos = 0;
+
+	colorPos = timeOfDay * TIMEOFDAY_TINT_MAX;
+	if (colorPos == TIMEOFDAY_TINT_MAX) colorPos = TIMEOFDAY_TINT_MAX - 1;
+	/*
 	if (timeOfDay > 0.25)	colorPos = 1;
 	if (timeOfDay > 0.5)	colorPos = 2;
 	if (timeOfDay > 0.75)	colorPos = 3;
-	double mix = GetMod(timeOfDay, 0.25)*4.0;
+	*/
+	double mix = GetMod(timeOfDay, 1.0f/TIMEOFDAY_TINT_MAX)*TIMEOFDAY_TINT_MAX;
 	ALLEGRO_COLOR c1 = timeOfDayTint[colorPos];
-	ALLEGRO_COLOR c2 = timeOfDayTint[(colorPos + 1 > 3 ? colorPos - 3 : colorPos + 1)];
+	ALLEGRO_COLOR c2 = timeOfDayTint[(colorPos + 1 > TIMEOFDAY_TINT_MAX-1 ? colorPos - (TIMEOFDAY_TINT_MAX-1) : colorPos + 1)];
 	res = MixColors(c1, c2, mix);
 	return res;
 }
