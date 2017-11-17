@@ -25,6 +25,8 @@ void CMD_Quit(rCommandArgs args);
 void CMD_Teleport(rCommandArgs args);
 void CMD_Time(rCommandArgs args);
 
+void CMD_VidRestart(rCommandArgs args);
+
 typedef struct CMD_S {
 	const char * cmd;
 	ConsoleCommand * func;
@@ -40,7 +42,8 @@ namespace rConsoleCMD
 		{ "rundialogue",	&CMD_RunDialogue,		"Runs the specified dialogue file\n\nrundialogue <file>"},
 		{ "quit",			&CMD_Quit,				"Quit the game" },
 		{ "time",			&CMD_Time,				"Set or add time to Time of Day\n\ntime <add/set> 0-24000"},
-		{ "teleport",       &CMD_Teleport,			"Teleport the player\n\nteleport <x> <y>" }
+		{ "teleport",       &CMD_Teleport,			"Teleport the player\n\nteleport <x> <y>" },
+		{ "vid_restart",	&CMD_VidRestart,		"Restart display" },
 	};
 }
 class rCommand

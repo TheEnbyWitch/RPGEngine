@@ -39,7 +39,7 @@ int rRenderer::Start()
 
 void rRenderer::VideoRestart()
 {
-	rpge_printf("[rRenderer] VideoRestart doesn't work properly yet\n");
+	//rpge_printf("[rRenderer] VideoRestart doesn't work properly yet\n");
 	//return;
 
 	if (!isDisplayActive)
@@ -47,18 +47,29 @@ void rRenderer::VideoRestart()
 		rpge_printf("[rRenderer] Display is not active, cannot restart video\n");
 		return;
 	}
-	al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
-	al_destroy_user_event_source(al_get_display_event_source(display));
-	al_set_target_bitmap(displayBitmap);
-	al_destroy_display(display);
-	//al_destroy_bitmap(displayBitmap);
-	al_destroy_bitmap(renderBitmap);
-	Start();
-	if (IsDebug)
+	SetDisplayRes(gConsole.GetDvar("r_width")->ToInt(), gConsole.GetDvar("r_height")->ToInt());
+	al_resize_display(display, displayWidth, displayHeight);
+	if (gConsole.GetDvar("r_fullscreen")->ToBool())
 	{
-		if (showDbgMenu) al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
-		else al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
+		al_set_display_flag(GetDisplayPtr(), ALLEGRO_FULLSCREEN_WINDOW, true);
 	}
+	else
+	{
+		al_set_display_flag(GetDisplayPtr(), ALLEGRO_FULLSCREEN_WINDOW, false);
+	}
+	
+	//al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
+	//al_destroy_user_event_source(al_get_display_event_source(display));
+	//al_set_target_bitmap(displayBitmap);
+	//al_destroy_display(display);
+	//al_destroy_bitmap(displayBitmap);
+	//al_destroy_bitmap(renderBitmap);
+	//Start();
+	//if (IsDebug)
+	//{
+	//	if (showDbgMenu) al_set_display_menu(gRenderer.GetDisplayPtr(), menu);
+	//	else al_set_display_menu(gRenderer.GetDisplayPtr(), NULL);
+	//}
 }
 
 void rRenderer::EndFrame()

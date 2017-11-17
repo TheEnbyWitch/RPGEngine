@@ -233,3 +233,8 @@ void CMD_Time(rCommandArgs args)
 		return;
 	}
 }
+
+void CMD_VidRestart(rCommandArgs args)
+{
+	gRenderer.VideoRestart();
+}

@@ -60,6 +60,10 @@ void init(void)
 	gConsole.RegisterDVar("version", DVAR_STRING, va("RPGE_%s", CONFIG_STR), "The game version");
 	gConsole.RegisterDVar("dialogue_debug", DVAR_BOOL, 1, "Debug dialogues");
 
+	gConsole.RegisterDVar("r_fullscreen", DVAR_BOOL, 0, "Should the game run in fullscreen?");
+	gConsole.RegisterDVar("r_width", DVAR_INTEGER, 960, "Display width");
+	gConsole.RegisterDVar("r_height", DVAR_INTEGER, 540, "Display height");
+
 	rpge_printf("Creating the event queue\n"); 
 	aEventQueue = al_create_event_queue();
 	if (!aEventQueue)
