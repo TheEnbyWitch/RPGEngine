@@ -93,15 +93,57 @@ void rScript::ExecuteScript()
 	asScriptBuilder.DefineWord("DEBUG");
 #endif
 	helper.AssignEngine(asEngine);
-	helper.AddScriptFunction("void", "LoadMenu", ScrArgArray(1, ScrArg("string", "menuToLoad", "The menu file to load")), asFUNCTION(SCR_LoadMenu), asCALL_CDECL, "Loads the specified menufile", "LoadMenu(\"main\");");
-	helper.AddScriptFunction("void", "print", ScrArgArray(1, ScrArg("string", "text", "The text to print")), asFUNCTION(SCR_Print), asCALL_CDECL, "Print a string to console", "print(\"Hello, world!\");");
-	helper.AddScriptFunction("void", "LoadTexture", ScrArgArray(1, ScrArg("string", "textureToLoad", "The texture to load")), asFUNCTION(SCR_LoadTexture), asCALL_CDECL, "Loads the specified texture. It's possible to load a texture at will ingame, but it can cause a freeze.", "LoadTexture(\"guy.tga\");");
-	helper.AddScriptFunction("void", "LoadMap", ScrArgArray(1, ScrArg("string", "mapToLoad", "The map to load")), asFUNCTION(SCR_LoadMap), asCALL_CDECL, "Loads the specified map into memory. Call in init().", "LoadMap(\"e1m1\");");
-	helper.AddScriptFunction("void", "OpenMenu", ScrArgArray(1, ScrArg("string", "menuToOpen", "The menu to open")), asFUNCTION(SCR_OpenMenu), asCALL_CDECL, "Opens a previously loaded menu.", "OpenMenu(\"main\");");
+
+	helper.AddScriptFunction("void", "LoadMenu",
+		ScrArgArray(1, ScrArg("string", "menuToLoad", "The menu file to load")),
+		asFUNCTION(SCR_LoadMenu), asCALL_CDECL,
+		"Loads the specified menufile",
+		"LoadMenu(\"main\");");
+
+	helper.AddScriptFunction("void", "print",
+		ScrArgArray(1, ScrArg("string", "text", "The text to print")),
+		asFUNCTION(SCR_Print), asCALL_CDECL,
+		"Print a string to console",
+		"print(\"Hello, world!\");");
+
+	helper.AddScriptFunction("void", "LoadTexture",
+		ScrArgArray(1, ScrArg("string", "textureToLoad", "The texture to load")),
+		asFUNCTION(SCR_LoadTexture), asCALL_CDECL,
+		"Loads the specified texture. It's possible to load a texture at will ingame, but it can cause a freeze.",
+		"LoadTexture(\"guy.tga\");");
+
+	helper.AddScriptFunction("void", "LoadMap",
+		ScrArgArray(1, ScrArg("string", "mapToLoad", "The map to load")),
+		asFUNCTION(SCR_LoadMap), asCALL_CDECL,
+		"Loads the specified map into memory. Call in init().",
+		"LoadMap(\"e1m1\");");
+
+	helper.AddScriptFunction("void", "OpenMenu",
+		ScrArgArray(1, ScrArg("string", "menuToOpen", "The menu to open")),
+		asFUNCTION(SCR_OpenMenu), asCALL_CDECL,
+		"Opens a previously loaded menu.",
+		"OpenMenu(\"main\");");
 	
-	helper.AddScriptFunction("void", "RegisterSaveFieldInt", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("int", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers an int save field", "RegisterSaveFieldInt(\"aNumber\", 115);");
-	helper.AddScriptFunction("void", "RegisterSaveFieldFloatt", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("float", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers a float save field", "RegisterSaveFieldFloat(\"aFloat\", 1.15);");
-	helper.AddScriptFunction("void", "RegisterSaveFieldString", ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"), ScrArg("string", "defaultValue", "The default value for the field")), 0, asCALL_CDECL, "Registers a string save field", "RegisterSaveFieldString(\"aString\", \"Hello, world!\");");
+	helper.AddScriptFunction("void", "RegisterSaveFieldInt",
+		ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"),
+			ScrArg("int", "defaultValue", "The default value for the field")),
+		0, asCALL_CDECL,
+		"Registers an int save field",
+		"RegisterSaveFieldInt(\"aNumber\", 115);");
+
+	helper.AddScriptFunction("void", "RegisterSaveFieldFloatt",
+		ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"),
+			ScrArg("float", "defaultValue", "The default value for the field")),
+		0, asCALL_CDECL,
+		"Registers a float save field",
+		"RegisterSaveFieldFloat(\"aFloat\", 1.15);");
+
+	helper.AddScriptFunction("void", "RegisterSaveFieldString",
+		ScrArgArray(2, ScrArg("string", "field", "The field to store the value in"),
+			ScrArg("string", "defaultValue", "The default value for the field")),
+		0, asCALL_CDECL,
+		"Registers a string save field",
+		"RegisterSaveFieldString(\"aString\", \"Hello, world!\");");
 
 	r = asEngine->RegisterObjectType("rEntity", sizeof(rEntityScriptWrapper), asOBJ_VALUE | asOBJ_APP_CLASS_CDA);
 	r = asEngine->RegisterObjectBehaviour("rEntity", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ConstructEnt), asCALL_CDECL_OBJLAST);
@@ -121,10 +163,18 @@ void rScript::ExecuteScript()
 	r = asEngine->RegisterObjectMethod("rEntity", "rEntity &opAssign(const rEntity &in)", asMETHOD(rEntityScriptWrapper, operator=), asCALL_THISCALL);
 
 	asEngine->RegisterFuncdef("void EntityThinkCallback(rEntity ent)");
-	helper.AddScriptFunction("void", "SetEntityThinkCallback", ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"), ScrArg("EntityThinkCallback @", "entityThinkCallbackFunction", "The function to call every frame")), asFUNCTION(SCR_SetEntityThinkCallback), asCALL_CDECL, "Sets the callback function for an entity to be called every frame");
-	asEngine->RegisterFuncdef("void EntityInteractCallback(rEntity ent)");
-	helper.AddScriptFunction("void", "SetEntityInteractCallback", ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"), ScrArg("EntityInteractCallback @", "entityInteractCallbackFunction", "The function to call when player interacts with this entity")), asFUNCTION(SCR_SetEntityInteractCallback), asCALL_CDECL, "Sets the callback function for an entity to be called when player interacts with it");
+	helper.AddScriptFunction("void", "SetEntityThinkCallback",
+		ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"),
+			ScrArg("EntityThinkCallback @", "entityThinkCallbackFunction", "The function to call every frame")),
+		asFUNCTION(SCR_SetEntityThinkCallback), asCALL_CDECL,
+		"Sets the callback function for an entity to be called every frame");
 
+	asEngine->RegisterFuncdef("void EntityInteractCallback(rEntity ent)");
+	helper.AddScriptFunction("void", "SetEntityInteractCallback",
+		ScrArgArray(2, ScrArg("rEntity ", "ent", "The entity to set the callback for"),
+			ScrArg("EntityInteractCallback @", "entityInteractCallbackFunction", "The function to call when player interacts with this entity")),
+		asFUNCTION(SCR_SetEntityInteractCallback), asCALL_CDECL,
+		"Sets the callback function for an entity to be called when player interacts with it");
 
 	helper.WriteScriptDoc();
 
