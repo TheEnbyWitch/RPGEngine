@@ -249,7 +249,7 @@ rVector2 rEntity::GetVectorForDirection(rEntityDirection dir)
 	{
 		return rVector2(1, 0);
 	}
-	return rVector2(0,1); // return default if for some retarded reason a different ENT_DIRECTION was passed which should be impossible
+	return rVector2(0,1); // return default if for some reason a different ENT_DIRECTION was passed which should be impossible
 }
 
 rEntity *GetEntityById(string id)
