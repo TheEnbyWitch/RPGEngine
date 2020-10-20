@@ -1,0 +1,142 @@
+{
+    "LoadMap": {
+        "args": {
+            "mapToLoad": {
+                "desc": "The map to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadMap(string mapToLoad)",
+        "desc": "Loads the specified map into memory. Call in init().",
+        "example": "LoadMap(\"e1m1\");",
+        "returnType": "void"
+    },
+    "LoadMenu": {
+        "args": {
+            "menuToLoad": {
+                "desc": "The menu file to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadMenu(string menuToLoad)",
+        "desc": "Loads the specified menufile",
+        "example": "LoadMenu(\"main\");",
+        "returnType": "void"
+    },
+    "LoadTexture": {
+        "args": {
+            "textureToLoad": {
+                "desc": "The texture to load",
+                "type": "string"
+            }
+        },
+        "decl": "void LoadTexture(string textureToLoad)",
+        "desc": "Loads the specified texture. It's possible to load a texture at will ingame, but it can cause a freeze.",
+        "example": "LoadTexture(\"guy.tga\");",
+        "returnType": "void"
+    },
+    "OpenMenu": {
+        "args": {
+            "menuToOpen": {
+                "desc": "The menu to open",
+                "type": "string"
+            }
+        },
+        "decl": "void OpenMenu(string menuToOpen)",
+        "desc": "Opens a previously loaded menu.",
+        "example": "OpenMenu(\"main\");",
+        "returnType": "void"
+    },
+    "RegisterSaveFieldFloatt": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "float"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldFloatt(string field, float defaultValue)",
+        "desc": "Registers a float save field",
+        "example": "RegisterSaveFieldFloat(\"aFloat\", 1.15);",
+        "returnType": "void"
+    },
+    "RegisterSaveFieldInt": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "int"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldInt(string field, int defaultValue)",
+        "desc": "Registers an int save field",
+        "example": "RegisterSaveFieldInt(\"aNumber\", 115);",
+        "returnType": "void"
+    },
+    "RegisterSaveFieldString": {
+        "args": {
+            "defaultValue": {
+                "desc": "The default value for the field",
+                "type": "string"
+            },
+            "field": {
+                "desc": "The field to store the value in",
+                "type": "string"
+            }
+        },
+        "decl": "void RegisterSaveFieldString(string field, string defaultValue)",
+        "desc": "Registers a string save field",
+        "example": "RegisterSaveFieldString(\"aString\", \"Hello, world!\");",
+        "returnType": "void"
+    },
+    "SetEntityInteractCallback": {
+        "args": {
+            "ent": {
+                "desc": "The entity to set the callback for",
+                "type": "rEntity "
+            },
+            "entityInteractCallbackFunction": {
+                "desc": "The function to call when player interacts with this entity",
+                "type": "EntityInteractCallback @"
+            }
+        },
+        "decl": "void SetEntityInteractCallback(rEntity  ent, EntityInteractCallback @ entityInteractCallbackFunction)",
+        "desc": "Sets the callback function for an entity to be called when player interacts with it",
+        "example": "<TODO>",
+        "returnType": "void"
+    },
+    "SetEntityThinkCallback": {
+        "args": {
+            "ent": {
+                "desc": "The entity to set the callback for",
+                "type": "rEntity "
+            },
+            "entityThinkCallbackFunction": {
+                "desc": "The function to call every frame",
+                "type": "EntityThinkCallback @"
+            }
+        },
+        "decl": "void SetEntityThinkCallback(rEntity  ent, EntityThinkCallback @ entityThinkCallbackFunction)",
+        "desc": "Sets the callback function for an entity to be called every frame",
+        "example": "<TODO>",
+        "returnType": "void"
+    },
+    "print": {
+        "args": {
+            "text": {
+                "desc": "The text to print",
+                "type": "string"
+            }
+        },
+        "decl": "void print(string text)",
+        "desc": "Print a string to console",
+        "example": "print(\"Hello, world!\");",
+        "returnType": "void"
+    }
+}

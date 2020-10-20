@@ -40,6 +40,9 @@ char loadtxt[4][1024];
 
 long loadtime = 0;
 
+int g_argC = 0;
+char** g_argV = NULL;
+
 void init(void)
 {
 	memset(loadtxt, 0, sizeof(loadtxt));
@@ -70,7 +73,8 @@ void init(void)
 		abort_game("Failed to create event queue");
 
 	rpge_printf("Initializing PhysicsFS\n");
-	PHYSFS_init(NULL);
+	PHYSFS_init(g_argV[0]);
+	PHYSFS_mount("../game/_build", NULL, 0);
 	PHYSFS_mount("_build", NULL, 0);
 	PHYSFS_mount("_resources", NULL, 1);
 	PHYSFS_mount("_audio", "sound/", 1);
@@ -340,7 +344,17 @@ void game_loop(void)
 			}
 			if (!showCon)
 			{
+				{
+#define DBG_ACTN_T(id, var) if(event.keyboard.keycode == ALLEGRO_KEY_ ## id) var = !var;
+#define DBG_ACTN(id, action) if(event.keyboard.keycode == ALLEGRO_KEY_ ## id) action
 
+					DBG_ACTN_T(3, showFPS);
+					DBG_ACTN_T(4, showTOD);
+					DBG_ACTN_T(5, showPlayerPos);
+
+					DBG_ACTN(6, exit(1));
+					DBG_ACTN(7, al_show_native_message_box(al_get_current_display(), "About", ENGINE_STR, "Made by X", NULL, NULL));
+				}
 				if (event.keyboard.keycode == ALLEGRO_KEY_P)
 				{
 					//stuff = gSound.PlayVoiceover("vox/mop.wav");
@@ -509,5 +523,7 @@ int game_main(int argc, char* argv[])
 // Parappa The Wrappa
 int main(int argc, char* argv[])
 {
+	g_argC = argc;
+	g_argV = argv;
 	game_main(argc, argv);
 }
